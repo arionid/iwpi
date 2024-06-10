@@ -1,0 +1,115 @@
+<!--Start Main Header One -->
+<header class="main-header main-header-three about">
+    <div class="main-header-three__top">
+        <div class="container">
+            <div class="main-header-three__top-inner">
+                <div class="main-header-three__top-left">
+                    <div class="welcome-text-one">
+                        <p><span class="icon-pin"></span> Grand Slipi Tower, Unit 36-E Perkantoran. Jalan. Kota Adm Jakarta Barat
+                        </p>
+                    </div>
+                </div>
+                <div class="main-header-three__top-right">
+                    <div class="header-contact-info-one">
+                        <ul>
+                            <li>
+                                <div class="icon">
+                                    <span class="icon-phone-call"></span>
+                                </div>
+                                <p><a href="tel:082245519467">+62 822 4551 94067</a></p>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <span class="icon-email"></span>
+                                </div>
+                                <p><a href="mailto:konsultansi@iwpi.com">admin@iwpi.com</a></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-header-three__bottom">
+        <div id="sticky-header" class="menu-area">
+            <div class="container">
+                <div class="main-header-three__bottom-inner">
+                    <div class="main-header-three__bottom-left">
+                        <div class="logo-box-one">
+                            <a href="{{ route('/') }}">
+                                <img src="{{ asset('assets/img/resource/logo-iwpi-light.webp') }}" alt="IWPI">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="main-header-three__bottom-middle">
+                        <div class="menu-area__inner">
+                            <div class="mobile-nav-toggler">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                            <div class="menu-wrap">
+                                <nav class="menu-nav">
+                                    <div class="navbar-wrap main-menu">
+                                        <ul class="navigation">
+                                            <li><a href="{{ route('/') }}">Beranda</a></li>
+                                            <li><a href="{{ route('/') }}#bidang-pelayanan">Bidang Pelayanan</a></li>
+                                            <li><a href="{{ route('/') }}#keanggotaan">Keanggotaan</a></li>
+                                            <li><a href="{{ route('news') }}">Artikel</a></li>
+                                            <li class="menu-item-has-children"><a href="#">Keanggotaan</a>
+                                                <ul class="sub-menu">
+                                                    <li>
+                                                        <a href="#">Diskusi Online</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Konsultasi Gratis</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Konsultasi Litigasi</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Konsultasi Non Litigasi</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Surat Menyurat Administrasi</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-header-three__bottom-right">
+                        <div class="header-btn-box-one">
+                            <a class="thm-btn" href="{{ route('register.member') }}">
+                                <span class="txt">
+                                    Daftar Sekarang
+                                    <i class="icon-next"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Start Mobile Menu  -->
+    <div class="mobile-menu">
+        <nav class="menu-box">
+            <div class="close-btn">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="nav-logo">
+                <a href="{{ route('/') }}">
+                    <img src="{{ asset('assets/img/resource/logo-iwpi.webp') }}" alt="Logo IWPI">
+                </a>
+            </div>
+            <div class="menu-outer">
+                <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+            </div>
+        </nav>
+    </div>
+    <div class="menu-backdrop"></div>
+    <!-- End Mobile Menu -->
+</header>
+<!--End Main Header One -->

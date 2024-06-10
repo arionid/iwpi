@@ -1,0 +1,12 @@
+.RData
+.Rhistory
+.git
+.gitignore
+manifest.json
+rsconnect/
+.Rproj.user
+data
+node_modules/
+npm-debug.log
+docker-storage/
+vendor/

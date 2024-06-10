@@ -1,0 +1,247 @@
+
+# ----------------------------------------------------------------------
+# Better website experience for IE users
+# ----------------------------------------------------------------------
+
+# Force the latest IE version, in various cases when it may fall back to IE7 mode
+#  github.com/rails/rails/commit/123eb25#commitcomment-118920
+
+<IfModule mod_headers.c>
+  Header set X-UA-Compatible "IE=Edge"
+  # mod_headers can't match by content-type, but we don't want to send this header on *everything*...
+  <FilesMatch "\.(appcache|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svg|svgz|ttf|vcf|webm|webp|woff|woff2|xml|xpi)$">
+    Header unset X-UA-Compatible
+  </FilesMatch>
+</IfModule>
+
+
+# ----------------------------------------------------------------------
+# Cross-domain AJAX requests
+# ----------------------------------------------------------------------
+
+# Serve cross-domain Ajax requests, disabled by default.
+# enable-cors.org
+# code.google.com/p/html5security/wiki/CrossOriginRequestSecurity
+
+#  <IfModule mod_headers.c>
+#    Header set Access-Control-Allow-Origin "*"
+#  </IfModule>
+
+
+# ----------------------------------------------------------------------
+# CORS-enabled images (@crossorigin)
+# ----------------------------------------------------------------------
+
+# Send CORS headers if browsers request them; enabled by default for images.
+# developer.mozilla.org/en/CORS_Enabled_Image
+# blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
+# hacks.mozilla.org/2011/11/using-cors-to-load-webgl-textures-from-cross-domain-images/
+# wiki.mozilla.org/Security/Reviews/crossoriginAttribute
+
+<IfModule mod_setenvif.c>
+  <IfModule mod_headers.c>
+    # mod_headers, y u no match by Content-Type?!
+    <FilesMatch "\.(gif|ico|jpe?g|png|svg|svgz|webp)$">
+      SetEnvIf Origin ":" IS_CORS
+      Header set Access-Control-Allow-Origin "*" env=IS_CORS
+    </FilesMatch>
+  </IfModule>
+</IfModule>
+
+
+# ----------------------------------------------------------------------
+# Webfont access
+# ----------------------------------------------------------------------
+
+# Allow access from all domains for webfonts.
+# Alternatively you could only whitelist your
+# subdomains like "subdomain.example.com".
+
+# <IfModule mod_headers.c>
+#   <FilesMatch "\.(eot|font.css|otf|ttc|ttf|woff|woff2)$">
+#     Header set Access-Control-Allow-Origin "*"
+#   </FilesMatch>
+# </IfModule>
+
+
+# ----------------------------------------------------------------------
+# Proper MIME type for all files
+# ----------------------------------------------------------------------
+
+# JavaScript
+#   Normalize to standard type (it's sniffed in IE anyways)
+#   tools.ietf.org/html/rfc4329#section-7.2
+AddType application/javascript         js jsonp
+AddType application/json               json
+
+# Audio
+AddType audio/mp4                      m4a f4a f4b
+AddType audio/ogg                      oga ogg
+
+# Video
+AddType video/mp4                      mp4 m4v f4v f4p
+AddType video/ogg                      ogv
+AddType video/webm                     webm
+AddType video/x-flv                    flv
+
+# SVG
+#   Required for svg webfonts on iPad
+#   twitter.com/FontSquirrel/status/14855840545
+AddType     image/svg+xml              svg svgz
+AddEncoding gzip                       svgz
+
+# Webfonts
+AddType application/vnd.ms-fontobject  eot
+AddType application/x-font-ttf         ttf ttc
+AddType application/x-font-woff        woff
+AddType application/x-font-woff        woff2
+AddType font/opentype                  otf
+
+# Assorted types
+AddType application/octet-stream            safariextz
+AddType application/x-chrome-extension      crx
+AddType application/x-opera-extension       oex
+AddType application/x-shockwave-flash       swf
+AddType application/x-web-app-manifest+json webapp
+AddType application/x-xpinstall             xpi
+AddType application/xml                     rss atom xml rdf
+AddType image/webp                          webp
+AddType image/x-icon                        ico
+AddType text/cache-manifest                 appcache manifest
+AddType text/vtt                            vtt
+AddType text/x-component                    htc
+AddType text/x-vcard                        vcf
+
+
+# ----------------------------------------------------------------------
+# Allow concatenation from within specific js and css files
+# ----------------------------------------------------------------------
+
+# e.g. Inside of script.combined.js you could have
+#   <!--#include file="libs/jquery-1.5.0.min.js" -->
+#   <!--#include file="plugins/jquery.idletimer.js" -->
+# and they would be included into this single file.
+
+# This is not in use in the boilerplate as it stands. You may
+# choose to use this technique if you do not have a build process.
+
+#<FilesMatch "\.combined\.js$">
+#  Options +Includes
+#  AddOutputFilterByType INCLUDES application/javascript application/json
+#  SetOutputFilter INCLUDES
+#</FilesMatch>
+
+#<FilesMatch "\.combined\.css$">
+#  Options +Includes
+#  AddOutputFilterByType INCLUDES text/css
+#  SetOutputFilter INCLUDES
+#</FilesMatch>
+
+
+# ----------------------------------------------------------------------
+# Gzip compression
+# ----------------------------------------------------------------------
+
+<IfModule mod_deflate.c>
+
+  # Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/
+  <IfModule mod_setenvif.c>
+    <IfModule mod_headers.c>
+      SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+      RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+    </IfModule>
+  </IfModule>
+
+  # Compress all output labeled with one of the following MIME-types
+  # (for Apache versions below 2.3.7, you don't need to enable `mod_filter`
+  # and can remove the `<IfModule mod_filter.c>` and `</IfModule>` lines as
+  # `AddOutputFilterByType` is still in the core directives)
+  <IfModule mod_filter.c>
+    AddOutputFilterByType DEFLATE application/atom+xml \
+                                  application/javascript \
+                                  application/json \
+                                  application/rss+xml \
+                                  application/vnd.ms-fontobject \
+                                  application/x-font-ttf \
+                                  application/xhtml+xml \
+                                  application/xml \
+                                  font/opentype \
+                                  image/svg+xml \
+                                  image/x-icon \
+                                  text/css \
+                                  text/html \
+                                  text/plain \
+                                  text/x-component \
+                                  text/xml
+  </IfModule>
+
+</IfModule>
+
+
+# ----------------------------------------------------------------------
+# Expires headers (for better cache control)
+# ----------------------------------------------------------------------
+
+# These are pretty far-future expires headers.
+# They assume you control versioning with filename-based cache busting
+# Additionally, consider that outdated proxies may miscache
+#   www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/
+
+# If you don't use filenames to version, lower the CSS and JS to something like
+# "access plus 1 week".
+
+
+<IfModule mod_expires.c>
+  # Turn on the module.
+  ExpiresActive on
+  # Set the default expiry times.
+  ExpiresDefault "access plus 1 days"
+  # Favicon
+  ExpiresByType image/ico                   "access plus 1 month"
+  ExpiresByType image/x-icon                "access plus 1 month"
+  # CSS and JavaScript
+  ExpiresByType application/JavaScript      "access plus 1 month"
+  ExpiresByType text/css                    "access plus 1 month"
+
+  # Webfonts
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+  ExpiresByType application/x-font-ttf    "access plus 1 month"
+  ExpiresByType application/x-font-woff   "access plus 1 month"
+  ExpiresByType font/opentype             "access plus 1 month"
+  ExpiresByType image/svg+xml             "access plus 1 month"
+
+  ExpiresByType image/jpg "access plus 1 month"
+  ExpiresByType image/svg+xml "access 1 month"
+  ExpiresByType image/gif "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-shockwave-flash "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType text/html "access plus 600 seconds"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} !^www.
+    RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
