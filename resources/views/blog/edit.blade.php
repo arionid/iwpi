@@ -84,7 +84,7 @@
 				</div>
                 <div class="mb-3">
                     <label for="inpFeaturedImages">Featured Image:</label><br>
-					<img src="{{Storage::url($data->featured_img)}}" class="img-thumbnail rounded float-start" alt="{{ $data->title }}" height="250px">
+					<img src="{{ asset("uploads/".$data->featured_img) }}" class="img-thumbnail rounded float-start" alt="{{ $data->title }}" height="250px">
                     <input name="featured_img" class="form-control" id="inpFeaturedImages" type="file">
                     <small class="form-text text-muted" id="emailHelp">File Gambar yang di ijikan upload hanya file dengan extension <b>[.jpg, .jpeg, .png]</b> dengan ukuran file maksimal <b>2Mb</b></small>
                   </div>

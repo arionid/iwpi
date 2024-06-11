@@ -22,7 +22,7 @@
 		<div class="col-xl-6 set-col-12 box-col-12">
 			<div class="card">
 				<div class="blog-box blog-shadow">
-					<img class="img-fluid" src="{{ file_exists("storage/".$blog[0]->featured_img) ? asset("uploads/".$blog[0]->featured_img) : "https://via.placeholder.com/756x423?text=".$blog[0]->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $blog[0]->title }}">
+					<img class="img-fluid" src="{{ file_exists("uploads/".$blog[0]->featured_img) ? asset("uploads/".$blog[0]->featured_img) : "https://via.placeholder.com/756x423?text=".$blog[0]->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $blog[0]->title }}">
 					<div class="blog-details">
 						<p class="digits">{{ \Carbon\Carbon::parse($blog[0]->created_at)->format('F, d Y') }}</p>
 						<h4>{{ $blog[0]->title }} </h4>
@@ -41,7 +41,7 @@
                 @if ($loop->first) @continue @endif
                 <div class="card">
                     <div class="blog-box blog-list row">
-                        <div class="col-sm-5"><img class="img-fluid sm-100-w" src="{{ file_exists('storage/'.$item->featured_img) ? asset("uploads/".$item->featured_img) : "https://via.placeholder.com/756x423?text=".$item->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $item->title }}"></div>
+                        <div class="col-sm-5"><img class="img-fluid sm-100-w" src="{{ file_exists('uploads/'.$item->featured_img) ? asset("uploads/".$item->featured_img) : "https://via.placeholder.com/756x423?text=".$item->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $item->title }}"></div>
                         <div class="col-sm-7">
                             <div class="blog-details">
                                 <div class="blog-date digits"><span>{{ \Carbon\Carbon::parse($item->published_at)->format('d') }}</span> {{ \Carbon\Carbon::parse($item->published_at)->format('F Y') }}</div>
@@ -70,7 +70,7 @@
             <div class="col-md-6 col-xl-3 set-col-6">
                 <div class="card">
                     <div class="blog-box blog-grid text-center">
-                        <img class="img-fluid top-radius-blog" src="{{ file_exists('storage/'.$item->featured_img) ? asset("uploads/".$item->featured_img) : "https://via.placeholder.com/756x423?text=".$item->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $item->title }}">
+                        <img class="img-fluid top-radius-blog" src="{{ file_exists('uploads/'.$item->featured_img) ? asset("uploads/".$item->featured_img) : "https://via.placeholder.com/756x423?text=".$item->category->name ?? 'Article' }}" onerror="this.src='https://via.placeholder.com/756x423?text={{ $item->category->name ?? 'Article' }}';" alt="{{ $item->title }}">
                         <div class="blog-details-main">
                             <ul class="blog-social">
                                 <li class="digits">{{ \Carbon\Carbon::parse($item->published_at)->format('F, d Y') }}</li>
