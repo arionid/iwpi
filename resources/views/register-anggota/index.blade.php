@@ -36,7 +36,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>NIK</th>
+                                        <th>NPWP</th>
                                         <th>Email</th>
                                         <th>No. HP</th>
                                         <th>Provinsi</th>
@@ -50,7 +50,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->fullname }}</td>
-                                        <td>{{ $item->nik }}</td>
+                                        <td>{{ $item->npwp }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->phone }}</td>
                                         <td>{{ $item->provinces_name ?? '-' }}</td>

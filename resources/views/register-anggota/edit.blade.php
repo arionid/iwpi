@@ -43,7 +43,7 @@
                                     <div class="media-body">
                                         <h5>Status Keanggotaan <br>
                                             @if($user->status == 'Waiting')
-                                            <span class="badge badge-info blinking">Menunggu Konfirmasi</span>
+                                                <span class="badge badge-info blinking">{{ $user->detail->status }}</span>
                                             @elseif($user->status == 'Approve')
                                             <span class="badge badge-success">Anggota Telah Aktif Hingga {{
                                                 \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
@@ -51,6 +51,14 @@
                                             <span class="badge badge-default">{{ $user->status }}</span>
                                             @endif
                                         </h5>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media"><i data-feather="mail"></i>
+                                    <div class="media-body">
+                                        <h5>Jenis Layanan</h5>
+                                        <p>{{ $user->detail->layanan }}</p>
                                     </div>
                                 </div>
                             </li>
@@ -84,12 +92,25 @@
                                 <div class="media"><i data-feather="image"></i>
                                     <div class="media-body">
                                         <h5>Foto KTP</h5>
-                                        <img src="{{ file_exists("storage/".$user->file_ktp) ?
-                                        asset("storage/".$user->file_ktp) :
+                                        <img src="{{ file_exists("uploads/".$user->file_ktp) ?
+                                        asset("uploads/".$user->file_ktp) :
                                         "https://placehold.co/600x350/e8e5ff/7366ff?text=FOTO+KTP&font=Playfair+Displayn"
                                         }}" class="img-fluid">
-                                        <p><a href="{{ asset("storage/".$user->file_ktp) }}" target="_blank"
+                                        <p><a href="{{ asset("uploads/".$user->file_ktp) }}" target="_blank"
                                                 class="text-underline">Lihat Foto KTP </a></p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media"><i data-feather="image"></i>
+                                    <div class="media-body">
+                                        <h5>Foto NPWP</h5>
+                                        <img src="{{ file_exists("uploads/".$user->file_npwp) ?
+                                        asset("uploads/".$user->file_npwp) :
+                                        "https://placehold.co/600x350/e8e5ff/7366ff?text=FOTO+NPWP&font=Playfair+Displayn"
+                                        }}" class="img-fluid">
+                                        <p><a href="{{ asset("uploads/".$user->file_npwp) }}" target="_blank"
+                                                class="text-underline">Lihat Foto NPWP </a></p>
                                     </div>
                                 </div>
                             </li>
@@ -113,10 +134,22 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3 row fw-bold text-danger">
-                            <label class="col-sm-3 col-form-label ">NOMOR ANGGOTA PARTAI</label>
+                            <label class="col-sm-3 col-form-label ">NOMOR ANGGOTA IWPI</label>
                             <div class="col-sm-9">
-                                <input class="form-control fw-bold text-danger" type="text" value="{{ $user->nik }}"
+                                <input class="form-control fw-bold text-danger" type="text" value="{{ $user->village_id.".".sprintf( '%04d', $user->id ) }}"
                                     readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">NPWP 15 Digit</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="npwp" value="{{ $user->npwp }}">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Nama Perusahaan</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="perusahaan" value="{{ $user->perusahaan }}">
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -158,8 +191,8 @@
                                 <select class="form-select" name="province_id" id="in_province_id" required>
                                     <option value="" selected="" disabled>Pilih Provinsi</option>
                                     @foreach ($province as $item)
-                                    <option value="{{ $item->id }}" @if($item->id == $user->province_id) selected
-                                        @endif>{{ $item->name }}</option>
+                                    <option value="{{ $item->kode }}" @if($item->kode == $user->province_id) selected
+                                        @endif>{{ $item->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -261,8 +294,8 @@ $('#in_province_id').change(function(){
             removeOptions(select, 'Pilih Kota/Kabupaten');
             $.each(data, function (index, data) {
                 option = document.createElement( 'option' );
-                option.value = data.id;
-                option.text = data.name;
+                option.value = data.kode;
+                option.text = data.nama;
                 select.selectedIndex ="0";
                 select.add( option );
             });
@@ -287,8 +320,8 @@ $('#in_regency_id').change(function(){
             removeOptions(select, 'Pilih Kecamatan');
             $.each(data, function (index, data) {
                 option = document.createElement( 'option' );
-                option.value = data.id;
-                option.text = data.name;
+                option.value = data.kode;
+                option.text = data.nama;
                 select.selectedIndex ="0";
                 select.add( option );
             });
@@ -313,8 +346,8 @@ $('#in_district_id').change(function(){
             removeOptions(select, 'Pilih Kelurahan');
             $.each(data, function (index, data) {
                 option = document.createElement( 'option' );
-                option.value = data.id;
-                option.text = data.name;
+                option.value = data.kode;
+                option.text = data.nama;
                 select.selectedIndex ="0";
                 select.add( option );
             });

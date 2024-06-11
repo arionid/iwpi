@@ -68,7 +68,7 @@
                                         Partai X sebagai bukti bahwa pemegang e-KTA merupakan anggota Partai X</li>
                                     <li>Dilarang menggunakan kartu ini dalam kegiatan yang melanggar Hukum.</li>
                                     <li>Kartu ini adalah hasil cetak mandiri dari KTA Elektronik melalui
-                                        https://www.partaix.id</li>
+                                        https://www.iwpi.info</li>
                                     <li>Segala bentuk pelanggaran termasuk manipulasi data akan diproses sesuai
                                         ketentuan dan undang-undang yang berlaku di wilayah Republik Indonesia.</li>
                                     <li>Jika menemukan kartu ini harap dikembalikan ke: <br>

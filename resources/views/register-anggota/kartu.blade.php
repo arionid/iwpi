@@ -8,8 +8,8 @@
         <div class="desc">
             <ul class="datadiri">
                 <li>
-                    <div>NIK</div>
-                    <span class="red">{{ $user->nik }}</span>
+                    <div>NO. ANGGOTA</div>
+                    <span class="red">{{ $user->nomor_anggota }}</span>
                 </li>
                 <li>
                     <div>Jabatan</div>

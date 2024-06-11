@@ -137,6 +137,7 @@ if( !function_exists("fUserStatus"))
                 break;
 
             case 'approve':
+                $status = "Active";
                 $badge = 'badge-light-success';
                 break;
 

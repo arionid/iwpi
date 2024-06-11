@@ -14,7 +14,7 @@
         margin-bottom: 1.5em;
     }
     .name-anggota {
-        color: #990000;
+        color: #394f89;
         font-size: 21px;
         font-weight: 900;
         letter-spacing: 5px;
@@ -30,7 +30,7 @@
         width: 2.8em;
     }
     .red {
-        color: #990000 !important;
+        color: #394f89 !important;
     }
     .card {
         display: flex;
@@ -45,20 +45,21 @@
         border-radius: 20px;
         /* background-color: rgba(255, 255, 255, 0.75); */
         box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-        background-image: url("{{ url('/adm-assets/images/1-kartu-anggota-partai-x.jpg') }}");
+        background-image: url("{{ url('/adm-assets/images/1-kartu-anggota.jpg') }}");
         background-position: center;
         background-size: 630px 400px;
     }
-    .header {}
     .header h2 {
         font-size: 2em;
-        text-align: center
+        padding-top: 2.3em;
+        margin-left: 4.2em;
     }
     .card-footer {
         font-size: 0.65em;
         color: #446;
     }
     .biodata {
+        padding-top: 10rem;
         vertical-align: middle;
         display: block;
         float: left;
@@ -95,10 +96,10 @@
         text-align: right;
     }
     .date>b {
-        color: #990000;
+        color: #394f89;
     }
     .ket-kartu {
-        color: #fff;
+        color: #000;
         font-size: 9px;
         padding: 0 20px;
     }
@@ -109,7 +110,7 @@
         position: absolute;
         top: 1em;
         left: 1em;
-        background-color: #990000;
+        background-color: #394f89;
         /* Green */
         border: none;
         color: white;
@@ -126,16 +127,13 @@
     <button class="btn-download" id="saveReport">DOWNLOAD KARTU ANGGOTA</button>
 </div>
 <div class="card page">
-    <div class="header">
-        <h2>KARTU TANDA ANGGOTA</h2>
-    </div>
     <div class="biodata">
         <h4 class="name-anggota">{{ $user->fullname }}</h4>
         <div class="desc">
             <ul class="datadiri">
                 <li>
-                    <div>NIK</div>
-                    <span class="red">: {{ $user->nik }}</span>
+                    <div>NO. ANGGOTA</div>
+                    <span class="red">: {{ $user->nomor_anggota }}</span>
                 </li>
                 <li>
                     <div>Jabatan</div>
@@ -158,19 +156,18 @@
                     <span>: {{ $user->village_name }}</span>
                 </li>
                 <li>
-                    <div>Anggota Sejak</div>
-                    <span>: {{ \Carbon\Carbon::parse($user->date_active)->format('d/m/Y') }}</span>
+                    <div>Masa Aktif</div>
+                    <span>: @if(\Carbon\Carbon::parse($user->date_active) >= \Carbon\Carbon::now()) {{ \Carbon\Carbon::parse($user->date_active)->format('d/m/Y') }} @else TIDAK AKTIF @endif</span>
                 </li>
             </ul>
         </div>
         <div class="qrcode">
             <img src="data:image/png;base64, {!! base64_encode($qrcode) !!}" class="img-qrcode">
-            <small style="color:#fff;">www.partaix.id</small>
+            <small style="color:#fff; background:#1a8aca; padding:3px">www.iwpi.info</small>
         </div>
     </div>
     <div class="ket-kartu">
-        &copy;Kartu ini merupakan kartu tanda anggota partai yang dikeluarkan resmi oleh Partai X,
-        Untuk validasi pastikan data tersebut sesuai dengan dengan KTP Elektronik Indonesia.
+        &copy;Kartu ini merupakan kartu tanda anggota partai yang dikeluarkan resmi oleh IWPI,
         Scan Barcode untuk mengetahui status dan kebenaran kartu anggota ini.
     </div>
 </div>

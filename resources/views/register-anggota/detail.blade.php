@@ -58,13 +58,22 @@
                                         <div class="media-body">
                                             <h5>Status Keanggotaan <br>
                                                 @if($user->status == 'Waiting')
-                                                <span class="badge badge-info blinking">Menunggu Konfirmasi</span>
+                                                    <span class="badge badge-info blinking">{{ $user->detail->status }}</span>
                                                 @elseif($user->status == 'Approve')
-                                                <span class="badge badge-success">Anggota Telah Aktif Hingga {{ \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
+                                                <span class="badge badge-success">Anggota Telah Aktif Hingga {{
+                                                    \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
                                                 @else
                                                 <span class="badge badge-default">{{ $user->status }}</span>
                                                 @endif
                                             </h5>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media"><i data-feather="mail"></i>
+                                        <div class="media-body">
+                                            <h5>Jenis Layanan</h5>
+                                            <p>{{ $user->detail->layanan }}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -99,37 +108,29 @@
                                     <div class="media"><i data-feather="image"></i>
                                         <div class="media-body">
                                             <h5>Foto KTP</h5>
-                                            <img src="{{ file_exists("storage/".$user->file_ktp) ?
-                                            asset("storage/".$user->file_ktp) :
+                                            <img src="{{ file_exists("uploads/".$user->file_ktp) ?
+                                            asset("uploads/".$user->file_ktp) :
                                             "https://placehold.co/600x350/e8e5ff/7366ff?text=FOTO+KTP&font=Playfair+Displayn"
                                             }}" class="img-fluid">
-                                            <p><a href="{{ asset("storage/".$user->file_ktp) }}" target="_blank"
+                                            <p><a href="{{ asset("uploads/".$user->file_ktp) }}" target="_blank"
                                                     class="text-underline">Lihat Foto KTP </a></p>
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="media"><i data-feather="image"></i>
+                                        <div class="media-body">
+                                            <h5>Foto NPWP</h5>
+                                            <img src="{{ file_exists("uploads/".$user->file_npwp) ?
+                                            asset("uploads/".$user->file_npwp) :
+                                            "https://placehold.co/600x350/e8e5ff/7366ff?text=FOTO+KTP&font=Playfair+Displayn"
+                                            }}" class="img-fluid">
+                                            <p><a href="{{ asset("uploads/".$user->file_npwp) }}" target="_blank"
+                                                    class="text-underline">Lihat Foto NPWP </a></p>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
-                        </div>
-
-                        <div class="m-t-15 btn-group">
-                            @if($user->status != 'Approve')
-                            <a class="btn btn-block btn-info" href="javascript:void();" onclick="updatestat('Approve')">
-                                <i class="fa fa-check-square me-1"></i>Setujui Pendaftaran
-                            </a>
-                            @endif
-                            <div class="btn-group" role="group">
-                                <button class="btn btn-danger dropdown-toggle" id="btnGroupDrop1" type="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                        class="fa fa-times-circle me-1"></i>Tolak Pendaftaran</button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="javascript:void();"
-                                        onclick="updatestat('Decline')">Tolak Pendaftaran</a>
-                                    <a class="dropdown-item" href="javascript:void();"
-                                        onclick="updatestat('Blacklist')">Block Anggota</a>
-                                    <a class="dropdown-item" href="javascript:void();"
-                                        onclick="updatestat('Overdue')">Nonaktif Anggota</a>
-                                </div>
-                            </div>
                         </div>
                     </form>
                     <hr />
@@ -151,7 +152,7 @@
                                 </ol>
                             </li>
                             <li>Proses Pengiriman Kartu Anggota serta Ebook Terkait <b>dikirimkan secara Manual Oleh
-                                    Admin Partai</b></li>
+                                    Admin</b></li>
                         </ol>
                     </div>
 
@@ -163,20 +164,67 @@
                     </div>
                 </div>
             </div>
+            @if($user->status == "Waiting" && $user->detail->status =="Menunggu Validasi")
+            <div class="card">
+                <div class="card-header">
+                    <h4>Bukti Pembayaran</h4>
+                </div>
+                <div class="card-body">
+                    <div class="collection-filter-block">
+                        <ul class="pro-services">
+                            <li>
+                                <div class="media"><i data-feather="image"></i>
+                                    <div class="media-body">
+                                        <h5>Bukti Pembayaran</h5>
+                                        <img src="{{ file_exists("uploads/".$user->detail->bukti_bayar) ?
+                                        asset("uploads/".$user->detail->bukti_bayar) :
+                                        "https://placehold.co/600x350/e8e5ff/7366ff?text=FOTO+KTP&font=Playfair+Displayn"
+                                        }}" class="img-fluid">
+                                        <p><a href="{{ asset("uploads/".$user->detail->bukti_bayar) }}" target="_blank"
+                                                class="text-underline">Lihat Bukti Bayar </a></p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="m-t-15 btn-group">
+                        @if($user->status != 'Approve')
+                        <a class="btn btn-block btn-info" href="javascript:void();" onclick="updatestat('Approve')">
+                            <i class="fa fa-check-square me-1"></i>Setujui Pendaftaran
+                        </a>
+                        @endif
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-danger dropdown-toggle" id="btnGroupDrop1" type="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                    class="fa fa-times-circle me-1"></i>Tolak Pendaftaran</button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" href="javascript:void();"
+                                    onclick="updatestat('Decline')">Tolak Pendaftaran</a>
+                                <a class="dropdown-item" href="javascript:void();"
+                                    onclick="updatestat('Blacklist')">Block Anggota</a>
+                                <a class="dropdown-item" href="javascript:void();"
+                                    onclick="updatestat('Overdue')">Nonaktif Anggota</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
         <div class="col-sm-9">
             <div class="card">
-                <div class="card-header bg-danger" style="background: #990000 !important;">
+                <div class="card-header bg-danger" style="background: #394f89 !important;">
                     <div class="media">
                         <img class="img-100 img-fluid m-r-20 rounded-circle update_img_6"
-                            src="{{ asset('/assets/img/body-2.png') }}" alt="">
+                            src="{{ asset('/assets/img/logo-white.webp') }}" alt="">
                         <div class="media-body mt-0 f-w-700">
                             <h4>{{ $user->fullname }}</h4>
-                            <p>{{ $user->nik }}</p>
+                            <p>{{ $user->npwp }}</p>
+                            @if(!empty($user->detail->nomor_anggota))
                             <ul>
-                                <li><a href="{{ route('anggota.profile', $user->nik) }}" target="_blank" class="txt-light">Buka Kartu Anggota Digital</a></li>
-                                <li><a href="{{ route('register-anggota.kartu-anggota', $user->nik) }}" target="_blank" class="txt-light">Download File Kartu Anggota</a></li>
+                                <li><a href="{{ route('register-anggota.kartu-anggota', $user->detail->nomor_anggota) }}" target="_blank" class="txt-light">Download File Kartu Anggota</a></li>
                             </ul>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -185,9 +233,11 @@
                         <div class="email-general p-5 f-w-600 f-16">
                             <h5 class="mb-3 txt-primary f-w-700">Biodata Diri</h5>
                             <ul class="biodata">
-                                <li>Nomor Anggota Partai<span class="font-danger">{{ $user->nik }}</span></li>
+                                <li>Nomor Anggota IWPI<span class="font-danger">{{ (!empty($user->detail->nomor_anggota)) ? $user->detail->nomor_anggota : $user->village_id.".".sprintf( '%04d', $user->id ) }}</span></li>
                                 <li>Nama Lengkap <span class="font-primary">{{ $user->fullname }}</span></li>
+                                <li>NPWP 15 Digit <span class="font-primary">{{ $user->npwp }}</span></li>
                                 <li>NIK <span class="font-primary">{{ $user->nik }}</span></li>
+                                <li>Perusahaan / Perseorangan <span class="font-primary">{{ $user->perusahaan ?? "Perseorangan" }}</span></li>
                                 <li>Jenis Kelamin <span class="font-primary">{{ $user->gender }}</span></li>
                                 <li>Status Perkawinan <span class="font-primary">{{ $user->perkawinan }}</span></li>
                                 <li>Tempat Tanggal Lahir <span class="font-primary">{{ $user->city_born.'
@@ -217,7 +267,7 @@
 <script>
     function updatestat(params) {
         document.getElementById("set_user_status").value=params;
-        if(confirm('Apakah anda yakin untuk mengkonfirmasi pendaftaran anggota Partai X?')) {
+        if(confirm('Apakah anda yakin untuk Memvalidasi Pembayaran Registrasi Anggota, dan mengaktifkan akun ini?')) {
                 $('#form-konfirmasi-anggota').submit();
         }
     }

@@ -128,7 +128,7 @@ class FrontendController extends Controller
             // recaptchaFieldName() => recaptchaRuleName()
         ],[
             'throttle' => 'Terlalu banyak mengirimkan form pendaftaran. Coba lagi dalam waktu :seconds detik.',
-            'npwp.required' => 'Nomor KTP Harus diisi',
+            'npwp.required' => 'Nomor NPWP Harus diisi',
             'nik.required' => 'Nomor KTP Harus diisi',
             'nik.unique' => 'Nomor NIK ini telah terdaftar di database kami',
             'npwp.unique' => 'Nomor NPWP ini telah terdaftar di database kami',
@@ -194,6 +194,7 @@ class FrontendController extends Controller
             // add to anggota iwpi
             $anggota = new AnggotaIWPI();
             $anggota->pendaftaran_id = $data->id;
+            $anggota->nomor_anggota  = $data->village_id.".".sprintf( '%04d', $data->id );
             $anggota->layanan = $validated['layanan_keanggotaan'];
             $anggota->layanan_nominal = $nominalLayanan;
             $anggota->status = "Menunggu Pembayaran";

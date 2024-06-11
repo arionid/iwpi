@@ -24,8 +24,8 @@ class PendaftaranAnggotaController extends Controller
      */
     public function index()
     {
-        $data = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinces.name AS provinces_name')
-        ->leftjoin('provinces', 'pendaftaran_anggota.province_id', 'provinces.id')
+        $data = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name')
+        ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->orderBy('id', 'desc')->get();
         return view('register-anggota.index', compact('data'));
     }
@@ -59,12 +59,12 @@ class PendaftaranAnggotaController extends Controller
      */
     public function show($id)
     {
-        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinces.name AS provinces_name', 'provinces.name AS provinces_name', 'regencies.name AS regency_name', 'districts.name AS district_name', 'villages.name AS village_name')
+        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
         ->where('pendaftaran_anggota.id', $id)
-        ->leftjoin('provinces', 'pendaftaran_anggota.province_id', 'provinces.id')
-        ->leftjoin('regencies', 'pendaftaran_anggota.regency_id', 'regencies.id')
-        ->leftjoin('districts', 'pendaftaran_anggota.district_id', 'districts.id')
-        ->leftjoin('villages', 'pendaftaran_anggota.village_id', 'villages.id')
+        ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
+        ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')
+        ->leftjoin('kecamatan', 'pendaftaran_anggota.district_id', 'kecamatan.kode')
+        ->leftjoin('kelurahan', 'pendaftaran_anggota.village_id', 'kelurahan.kode')
         ->first();
         if(empty($user))
             \abort(404);
@@ -79,18 +79,18 @@ class PendaftaranAnggotaController extends Controller
      */
     public function edit($id)
     {
-        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinces.name AS provinces_name', 'provinces.name AS provinces_name', 'regencies.name AS regency_name', 'districts.name AS district_name', 'villages.name AS village_name')
+        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
         ->where('pendaftaran_anggota.id', $id)
-        ->leftjoin('provinces', 'pendaftaran_anggota.province_id', 'provinces.id')
-        ->leftjoin('regencies', 'pendaftaran_anggota.regency_id', 'regencies.id')
-        ->leftjoin('districts', 'pendaftaran_anggota.district_id', 'districts.id')
-        ->leftjoin('villages', 'pendaftaran_anggota.village_id', 'villages.id')
+        ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
+        ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')
+        ->leftjoin('kecamatan', 'pendaftaran_anggota.district_id', 'kecamatan.kode')
+        ->leftjoin('kelurahan', 'pendaftaran_anggota.village_id', 'kelurahan.kode')
         ->first();
         if(empty($user))
             \abort(404);
 
         $province =  Cache::remember('dt_province', now()->addYear(1), function () {
-            return \DB::table('provinces')->orderBy('id', 'ASC')->get();
+            return \DB::table('provinsi')->orderBy('kode', 'ASC')->get();
             });
 
         return view('register-anggota.edit', compact('user'))->with([
@@ -108,8 +108,10 @@ class PendaftaranAnggotaController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate( [
+            'npwp' => 'required|unique:pendaftaran_anggota,npwp,'. $id,
             'nik' => 'required|unique:pendaftaran_anggota,nik,'. $id,
             'email' => ['required', 'unique:pendaftaran_anggota,email,'. $id ],
+            'layanan_keanggotaan' => 'required|string',
             'fullname' => 'required|string',
             'born' => 'required|date',
             'city_born' => 'required|string',
@@ -118,16 +120,20 @@ class PendaftaranAnggotaController extends Controller
             'district_id' => 'required|string',
             'village_id' => 'required|string',
             'address' => 'required',
-            'gender' => 'required',
             'phone' => 'required|max:20',
+            'gender' => 'required',
             'perkawinan' => 'required',
-            'jabatan' => 'nullable',
         ],[
             'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+            'throttle' => 'Terlalu banyak mengirimkan form pendaftaran. Coba lagi dalam waktu :seconds detik.',
+            'npwp.required' => 'Nomor NPWP Harus diisi',
             'nik.required' => 'Nomor KTP Harus diisi',
             'nik.unique' => 'Nomor NIK ini telah terdaftar di database kami',
+            'npwp.unique' => 'Nomor NPWP ini telah terdaftar di database kami',
+
             'email.required' => 'Nomor Email Harus diisi',
             'email.unique' => 'Nomor Email ini telah terdaftar di database kami',
+
             'province_id.required' => 'Data Provinsi tidak Di Ijinkan Kosong',
             'regency_id.required' => 'Data Kabupaten/KOta tidak Di Ijinkan Kosong',
             'district_id.required' => 'Data Kecamatan tidak Di Ijinkan Kosong',
@@ -146,7 +152,9 @@ class PendaftaranAnggotaController extends Controller
         try {
             $data = PendaftaranAnggota::findOrFail($id);
             $data->email = $validated['email'];
+            $data->npwp = $validated['npwp'];
             $data->nik = $validated['nik'];
+            $data->perusahaan = $request->perusahaan ?? "Perseorangan";
             $data->fullname = $validated['fullname'];
             $data->city_born = $validated['city_born'];
             $data->born = Carbon::parse($validated['born'])->format('Y-m-d');
@@ -158,7 +166,6 @@ class PendaftaranAnggotaController extends Controller
             $data->phone = $validated['phone'];
             $data->gender = $validated['gender'];
             $data->perkawinan = $validated['perkawinan'];
-            $data->jabatan = (empty($validated['jabatan'])) ? 'Anggota X4' : \Str::title($validated['jabatan']);
             $data->save();
         } catch (\Throwable $th) {
             // throw $th;
@@ -195,11 +202,32 @@ class PendaftaranAnggotaController extends Controller
             return back()->withErrors( $validated );
         }
 
+
+        $data = PendaftaranAnggota::findOrFail($id);
+
+        if($request->status == "Approve"){
+            if($data->detail->status == 'Menunggu Validasi'){
+                // update masa aktif status
+                $AnggotaIwpi = AnggotaIWPI::where('pendaftaran_id', $data->id)->update([
+                    'nomor_anggota' =>  $data->village_id.".".sprintf( '%04d', $data->id ),
+                    'status'    => 'Pembayaran Valid',
+                    'tgl_mulai' => Carbon::now(),
+                    'tgl_akhir' => Carbon::now()->addYear(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+        }elseif($request->status == "Decline"){
+            $AnggotaIwpi = AnggotaIWPI::where('pendaftaran_id', $data->id)->update([
+                'status'    => 'Pembayaran Tidak Valid',
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+
         try {
-            $data = PendaftaranAnggota::findOrFail($id);
             $data->status = \Str::title($request->status);
-            $data->date_active = Carbon::now()->addYears(5);
+            $data->date_active = Carbon::now()->addYear();
             $data->save();
+
         } catch (\Throwable $th) {
             //throw $th;
             Log::critical($th);
@@ -208,21 +236,24 @@ class PendaftaranAnggotaController extends Controller
         ->with('success',"Konfirmasi Pendaftaran Anggota <b>".$data->fullname."</b> berhasil diperbarui.");
     }
 
-    public function kartuAnggota($nik) {
-        $data = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinces.name AS provinces_name', 'provinces.name AS provinces_name', 'regencies.name AS regency_name', 'districts.name AS district_name', 'villages.name AS village_name')
-        ->where('pendaftaran_anggota.nik', $nik)
-        ->leftjoin('provinces', 'pendaftaran_anggota.province_id', 'provinces.id')
-        ->leftjoin('regencies', 'pendaftaran_anggota.regency_id', 'regencies.id')
-        ->leftjoin('districts', 'pendaftaran_anggota.district_id', 'districts.id')
-        ->leftjoin('villages', 'pendaftaran_anggota.village_id', 'villages.id')->first();
+    public function kartuAnggota($no_anggota) {
+        $data = PendaftaranAnggota::select('pendaftaran_anggota.*', 'anggota_iwpi.nomor_anggota', 'anggota_iwpi.tgl_mulai', 'anggota_iwpi.tgl_akhir', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
+        ->where('anggota_iwpi.nomor_anggota', $no_anggota)
+        ->leftjoin('anggota_iwpi', 'pendaftaran_anggota.id', 'anggota_iwpi.pendaftaran_id')
+        ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
+        ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')
+        ->leftjoin('kecamatan', 'pendaftaran_anggota.district_id', 'kecamatan.kode')
+        ->leftjoin('kelurahan', 'pendaftaran_anggota.village_id', 'kelurahan.kode')->first();
         if(empty($data))
             \abort(404);
-        $link = route('anggota.kartu-anggota', $data->nik);
-        $qrcode = QrCode::size(140)
-                ->backgroundColor(0,0,0, 0)
+        $link = route('anggota.kartu-anggota', ["id" => $data->nomor_anggota]);
+        $qrcode = QrCode::size(130)
+                ->backgroundColor(255, 255, 255)
+                ->margin(2)
+                // ->backgroundColor(0,0,0, 0)
                 // ->color(166, 17, 7)
                 ->format('png')
-                ->eyeColor(1, 0, 0, 0, 166, 17, 7)
+                ->eyeColor(1, 0, 0, 0, 26, 138, 255)
                 // ->eyeColor(0, 81, 82, 139, 213, 149, 47)
                 ->generate($link);
 

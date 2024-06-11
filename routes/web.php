@@ -20,8 +20,8 @@ Route::get('/blog/{slug}', [App\Http\Controllers\FrontendController::class, 'new
 Route::get('/registrasi-anggota', [App\Http\Controllers\FrontendController::class, 'registerMember'])->name('register.member');
 Route::post('/registrasi-anggota', [App\Http\Controllers\FrontendController::class, 'submitRegisterMember'])->name('register.member.submit')->middleware('throttle:5,5');
 Route::post('/list-region', [App\Http\Controllers\FrontendController::class, 'getWilayah'])->name('get-wilayah');
-Route::get('verifikasi-anggota/{id}/partai/by-qr', [App\Http\Controllers\FrontendController::class, 'anggotaProfile'])->name('anggota.profile');
-Route::get('kartu-anggota/{id}/partai/by-qr', [App\Http\Controllers\FrontendController::class, 'kartuAnggota'])->name('anggota.kartu-anggota');
+Route::get('verifikasi-anggota/{id}/iwpi/by-qr', [App\Http\Controllers\FrontendController::class, 'anggotaProfile'])->name('anggota.profile');
+Route::get('kartu-anggota/{id}/iwpi/by-qr', [App\Http\Controllers\FrontendController::class, 'kartuAnggota'])->name('anggota.kartu-anggota');
 Route::post('kta/digital', [App\Http\Controllers\FrontendController::class, 'postKTA'])->name('form.kta-digital')->middleware('throttle:posts_routes');
 Route::get('refresh_captcha', [App\Http\Controllers\FrontendController::class, 'refreshCaptcha'])->name('refresh_captcha');
 Route::get('cara-pembayaran', [App\Http\Controllers\FrontendController::class, 'caraPembayaran'])->name('cara_pembayaran');
@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     // Route::get('register-anggota', [App\Http\Controllers\UserController::class, 'registerAnggota'])->name('register-anggota');
     Route::resource('register-anggota', App\Http\Controllers\PendaftaranAnggotaController::class);
     Route::post('register-anggota/update/{id}/status', [App\Http\Controllers\PendaftaranAnggotaController::class, 'updateStatusAggota'])->name('register-anggota.updatestatus');
-    Route::get('register-anggota/kartu/{id}/download', [App\Http\Controllers\PendaftaranAnggotaController::class, 'kartuAnggota'])->name('register-anggota.kartu-anggota');
+    Route::get('register-anggota/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaController::class, 'kartuAnggota'])->name('register-anggota.kartu-anggota');
     Route::resource('management-user', App\Http\Controllers\UserController::class);
     Route::get('profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::match(['put', 'patch'], 'myprofile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('myprofile.update');
