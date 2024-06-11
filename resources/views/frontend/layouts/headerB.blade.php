@@ -1,5 +1,5 @@
-<!--Start Main Header One -->
-<header class="main-header main-header-two">
+ <!--Start Main Header One -->
+ <header class="main-header main-header-two">
     <div class="main-header-two__bottom">
         <div id="sticky-header" class="menu-area">
             <div class="container">
@@ -8,12 +8,12 @@
                     <div class="main-header-two__bottom-left">
                         <div class="logo-box-one">
                             <a href="{{ route('/') }}">
-                                <img src="{{ asset('assets/img/resource/logo-iwpi-light.webp') }}" alt="Logo">
+                                <img src="{{ asset('assets/img/resource/logo-iwpi-light.webp') }}" alt="Logo Ikatan Wajib Pajak Indonesia">
                             </a>
                         </div>
                     </div>
 
-                    <div class="main-header-one__bottom-middle">
+                    <div class="main-header-two__bottom-middle">
                         <div class="menu-area__inner">
                             <div class="mobile-nav-toggler">
                                 <i class="fas fa-bars"></i>
@@ -55,5 +55,29 @@
             </div>
         </div>
     </div>
+
+    <!--Start Mobile Menu  -->
+    <div class="mobile-menu">
+        <nav class="menu-box">
+            <div class="close-btn">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="nav-logo">
+                <a href="{{ route('/') }}">
+                    <img src="{{ asset('assets/img/resource/mobile-menu-logo.webp') }}" alt="Logo Ikatan Wajib Pajak Indonesia">
+                </a>
+            </div>
+            <div class="menu-outer">
+                <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+            </div>
+            <div class="contact-info">
+                <div class="icon-box"><span class="icon-phone-call"></span>
+                </div>
+                <p><a href="tel:082245519467">+62 822 4551 94067</a></p>
+            </div>
+        </nav>
+    </div>
+    <div class="menu-backdrop"></div>
+    <!-- End Mobile Menu -->
 </header>
 <!--End Main Header One -->

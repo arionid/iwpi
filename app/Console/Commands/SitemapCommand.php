@@ -61,21 +61,9 @@ class SitemapCommand extends Command
                     <priority>1.0</priority>
                 </url>
                 <url>
-                    <loc>'.$baseurl.'/about-us</loc>
-                    <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
-                    <changefreq>yearly</changefreq>
-                    <priority>0.9</priority>
-                </url>
-                <url>
-                    <loc>'.$baseurl.'/news</loc>
+                    <loc>'.$baseurl.'/blog</loc>
                     <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
                     <changefreq>daily</changefreq>
-                    <priority>0.9</priority>
-                </url>
-                <url>
-                    <loc>'.$baseurl.'/merchandise</loc>
-                    <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
-                    <changefreq>yearly</changefreq>
                     <priority>0.9</priority>
                 </url>
                 <url>
@@ -83,43 +71,73 @@ class SitemapCommand extends Command
                     <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
                     <changefreq>yearly</changefreq>
                     <priority>0.9</priority>
+                </url>
+                <url>
+                    <loc>'.$baseurl.'/cara-pembayaran</loc>
+                    <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
+                    <changefreq>yearly</changefreq>
+                    <priority>0.9</priority>
+                </url>
+                <url>
+                    <loc>'.$baseurl.'/konfirmasi-pembayaran</loc>
+                    <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
+                    <changefreq>yearly</changefreq>
+                    <priority>0.9</priority>
                 </url>';
             $this->fGenerateItem($main);
         // for news-sitemap
         } else {
-            $dataLelang = Blogs::select('id', 'slug', 'title');
+            $fileName = 'news-sitemap.xml';
+            $dataArtikel = Blogs::select('id', 'slug', 'title')->whereNull('deleted_at');
             try {
-                $this->xml->load(('public/news-sitemap.xml'));
+                $this->xml->load(('public/'.$fileName));
             } catch (\Throwable $th) {
-                $fileNews = false;
+                $fileExist = false;
             }
-            try {
-                $urlset = $this->xml->getElementsByTagName('urlset')->item(0);
-                $keyIDLelang = $this->xml->getElementsByTagName('url')->length; //5
-                $path = $this->xml->getElementsByTagName('url')[($keyIDLelang - 1)];
-                $lastArticleId = $path->getAttribute('article-id') ?? 0;
-            } catch (\Throwable $th) {
-            }
-            if ($lastArticleId != 0 && !empty($lastArticleId)) {
-                $dataLelang = $dataLelang->where('id', '>', $lastArticleId)->orderBy('id', 'asc')->limit(2500)->get();
-            } else {
-                $dataLelang = $dataLelang->orderBy('id', 'asc')->limit(2500)->get();
-            }
-            if (count($dataLelang) < 1) {
-                return \fLogs('=========SITEMAP HAS UPTODATE BOSS!=========', 's');
-            }
-            foreach ($dataLelang as $item) {
+            if( $fileExist ) {
+                try {
+                    $urlset = $this->xml->getElementsByTagName('urlset')->item(0);
+                    $keyIDLelang = $this->xml->getElementsByTagName('url')->length; //5
+                    $path = $this->xml->getElementsByTagName('url')[($keyIDLelang - 1)];
+                    $lastArticleId = $path->getAttribute('article-id') ?? 0;
+                } catch (\Throwable $th) {
+                    $lastArticleId = 0;
+                }
+                if ($lastArticleId != 0 && !empty($lastArticleId)) {
+                    $dataArtikel = $dataArtikel->where('id', '>', $lastArticleId)->orderBy('id', 'asc')->limit(2500)->get();
+                } else {
+                    $dataArtikel = $dataArtikel->orderBy('id', 'asc')->limit(2500)->get();
+                }
+                if (count($dataArtikel) < 1) {
+                    return \fLogs('=========SITEMAP HAS UPTODATE BOSS!=========', 's');
+                }
+
+            foreach ($dataArtikel as $item) {
                 $loc = $this->fAddElement('url', $urlset);
                 $loc->setAttribute('article-id', $item->id);
                 $locVal = $this->fAddElement('loc', $loc);
-                $this->fAddValueElement($baseurl.'/news/'.$item->slug, $locVal);
+                $this->fAddValueElement($baseurl.'/blog/'.$item->slug, $locVal);
                 $lastmodeVal = $this->fAddElement('lastmod', $loc);
                 $this->fAddValueElement(Carbon::now()->format('Y-m-d\TH:i:s.uP'), $lastmodeVal);
                 $changefreqVal = $this->fAddElement('changefreq', $loc);
                 $this->fAddValueElement('never', $changefreqVal);
                 $priorityVal = $this->fAddElement('priority', $loc);
                 $this->fAddValueElement('0.5', $priorityVal);
+
                 $test = $this->xml->save(('public/'.$fileName));
+            }
+
+            }else{
+                $dataArtikel = $dataArtikel->orderBy('id', 'asc')->limit(2500)->get();
+
+                $sitemap = '';
+                foreach ($dataArtikel as $item) {
+                    $sitemap .= '<url article-id="'.$item->id.'"><loc>'.$baseurl.'/blog/'.$item->slug.'</loc><lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>';
+                    $sitemap .= '<changefreq>never</changefreq><priority>0.5</priority></url>';
+                }
+
+                $this->fGenerateItem($sitemap, $fileName);
+
             }
             \fLogs('Data Appended successfully.', 's');
         }

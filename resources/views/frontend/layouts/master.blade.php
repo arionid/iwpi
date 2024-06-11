@@ -116,7 +116,7 @@
                 <div class="container">
                     <div class="footer-bottom__inner">
                         <div class="copyright-text text-center">
-                            <p>Copyright © 2024 Diligent by <a href="#"><b>#nnd</b>project.</a>
+                            <p>Copyright © 2024 IWPI.INFO by <a href="#"><b>#nnd</b>project.</a>
                                 All Rights Reserved</p>
                         </div>
                     </div>

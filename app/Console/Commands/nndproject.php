@@ -54,7 +54,7 @@ class nndproject extends Command
                     'nama_dagri'  => $valu->nama_dagri
                 ]);
             }
-            return true; */
+            return true;
             switch ($this->option('type')) {
             case 'kota':
                 $db = DB::connection('db_bps')->table('bridging_provinsi')->orderBy('kode_bps', 'ASC')->get();
@@ -85,6 +85,7 @@ class nndproject extends Command
 
                 break;
         }
+                */
 
     }
 

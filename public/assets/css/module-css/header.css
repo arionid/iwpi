@@ -973,7 +973,7 @@
 .main-header-three__top-right .header-contact-info-one ul li {
     padding-left: 0px;
     padding-right: 0px;
-    border-left: 0px solid #dddddf;
+    border: 0px solid #dddddf;
     margin-right: 65px;
 }
 

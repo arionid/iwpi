@@ -24,6 +24,11 @@
 @endsection
 @section('header')
 @include('frontend.layouts.headerB')
+<style>
+    .cta-one__inner {
+    background-color: var(--thm-heading-font-color) !important;
+}
+</style>
 @stop
 @section('content')
 <!--Start Banner Two-->
@@ -161,6 +166,38 @@
     </div>
 </section>
 <!--End Service Two-->
+
+ <!--Start Cta One-->
+ <section class="cta-one">
+    <div class="container">
+        <div class="cta-one__inner text-center">
+            <div class="cta-one__shape1 float-bob-y">
+                <img src="{{ asset('assets/img/shape/cta-one__shape1.png') }}" alt="#">
+            </div>
+            <div class="cta-one__shape2 float-bob-y">
+                <img src="{{ asset('assets/img/shape/cta-one__shape2.png') }}" alt="#">
+            </div>
+            <div class="cta-one__shape3 rotate-me">
+                <img src="{{ asset('assets/img/shape/cta-one__shape2.png') }}" alt="#">
+            </div>
+            <div class="cta-one__shape4 float-bob-x">
+                <img src="{{ asset('assets/img/shape/cta-one__shape2.png') }}" alt="#">
+            </div>
+            <div class="cta-one__shape5 float-bob-x">
+                <img src="{{ asset('assets/img/shape/cta-one__shape2.png') }}" alt="#">
+            </div>
+            <div class="cta-one__shape6 float-bob-y">
+                <img src="{{ asset('assets/img/shape/cta-one__shape2.png') }}" alt="#">
+            </div>
+            <div class="cta-one__inner-title-box">
+                <h2>Sebagai Wajib Pajak, Bayar Pajaklah Sesuai Kewajiban Agar Negara Kuat,
+                    dan Fiskus Menerima Haknya demi Terciptanya Keadilan.</h2>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End Cta One-->
+
 <!--Start Skills One-->
 <section class="skills-one" id="bidang-pelayanan">
     <div class="container">

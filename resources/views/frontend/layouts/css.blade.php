@@ -19,16 +19,5 @@
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 <style>
-    .muter{
-        animation: animName 60s linear infinite !important;
-    }
-    @keyframes animName {
-0%{
-transform: rotate(0deg);
-}
-100%{
-transform: rotate(360deg);
-}
-}
-
+.muter{animation:60s linear infinite animName!important}@keyframes animName{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 </style>
