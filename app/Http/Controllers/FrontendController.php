@@ -68,7 +68,7 @@ class FrontendController extends Controller
     }
 
     public function newsDetail($slug) {
-        $blog = Cache::remember('detail-new-'.$slug, now()->addSeconds(10), function () use ($slug){
+        $blog = Cache::remember('detail-new-'.$slug, now()->addDay(), function () use ($slug){
             return Blogs::with(["category" => function($query){
                 $query->select('name','id');
                 }])
@@ -80,7 +80,7 @@ class FrontendController extends Controller
         });
 
         if(empty($blog)){ \abort(404); }
-        $recentBlog = Cache::remember('recent-blog', now()->addMinutes(10), function () {
+        $recentBlog = Cache::remember('recent-blog', now()->addMinutes(30), function () {
             return Blogs::with(["category" => function($query){
                 $query->select('name','id');
                 }])
@@ -158,11 +158,11 @@ class FrontendController extends Controller
 
         if( isset($validated['file_ktp']) )
         $img_ktp          =   saveAndResizeImage(
-                                        $validated['file_ktp'], 'pendaftaran', 'ktp', 800, 420
+                                        $validated['file_ktp'], 'pendaftaran', 'ktp', 850, 450
                                     );
         if( isset($validated['file_npwp']) )
         $img_npwp          =   saveAndResizeImage(
-                                        $validated['file_npwp'], 'pendaftaran', 'npwp', 800, 420
+                                        $validated['file_npwp'], 'pendaftaran', 'npwp', 850, 450
                                     );
 
         $nominalLayanan = ($validated['layanan_keanggotaan'] == 'Badan Usaha') ? 150000 : 50000;
@@ -362,7 +362,7 @@ class FrontendController extends Controller
 
         if( isset($request->file_bukti) )
         $file_bukti          =   saveAndResizeImage(
-                                        $request->file_bukti, 'Konfirmasi', 'Pembayaran', 800, 420
+                                        $request->file_bukti, 'Konfirmasi', 'Pembayaran', 850, 450
                                     );
         $data = AnggotaIWPI::where('pendaftaran_id', $request->pendaftar_id)->update([
             'nama_pengirim' => $request->pengirim,

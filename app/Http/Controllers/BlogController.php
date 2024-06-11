@@ -59,7 +59,7 @@ class BlogController extends Controller
 
         if( isset($validated['featured_img']) )
             $featured_img          =   saveAndResizeImage(
-                                            $validated['featured_img'], 'blog', 'featured', 800, 420
+                                            $validated['featured_img'], 'blog', 'featured', 850, 450
                                         );
         try {
             $blog = new Blogs();
@@ -148,7 +148,7 @@ class BlogController extends Controller
 
         if( isset($validated['featured_img']) )
             $featured_img          =   saveAndResizeImage(
-                                            $validated['featured_img'], 'blog', 'featured', 800, 420, $blog->featured_img
+                                            $validated['featured_img'], 'blog', 'featured', 850, 450, $blog->featured_img
                                         );
 
         try {

@@ -40,7 +40,7 @@ if( !function_exists("saveAndResizeImage") )
 
         $file_name  =   uniqid() . '_' . $width . 'x' . $height . '.' . $image->getClientOriginalExtension();
         $str_path   =   $dir . '/' . $file_name;
-        $path       =   public_path( 'storage/' . $str_path );
+        $path       =   public_path( 'uploads/' . $str_path );
 
 
         // Create new Canvas and insert the image
@@ -75,7 +75,7 @@ if( !function_exists('uploadFile') )
         if( $file )
         {
             $file_name  =   uniqid() . '.' . $file->extension();
-            $output     =   $file->move( public_path('storage/' . $file_path), $file_name);
+            $output     =   $file->move( public_path('uploads/' . $file_path), $file_name);
         }
 
         return $file_path . $file_name;
@@ -89,14 +89,14 @@ if( !function_exists("unlinkFile"))
 	if( empty($path) || !isset($path) || !$path )
             return false;
 
-        if(File::exists(public_path( 'storage/' . $path )))
+        if(File::exists(public_path( 'uploads/' . $path )))
         {
-            File::delete(public_path( 'storage/' . $path ));
+            File::delete(public_path( 'uploads/' . $path ));
 
             //Check if folder empty
-            $files  =   File::files(public_path( 'storage/' . dirname($path) ));
+            $files  =   File::files(public_path( 'uploads/' . dirname($path) ));
             if(empty($files))
-                File::deleteDirectory( public_path( 'storage/' . dirname($path)) );
+                File::deleteDirectory( public_path( 'uploads/' . dirname($path)) );
         }
     }
 }
