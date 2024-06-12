@@ -4,7 +4,6 @@
         <div id="sticky-header" class="menu-area">
             <div class="container">
                 <div class="main-header-two__bottom-inner">
-
                     <div class="main-header-two__bottom-left">
                         <div class="logo-box-one">
                             <a href="{{ route('/') }}">
@@ -12,7 +11,6 @@
                             </a>
                         </div>
                     </div>
-
                     <div class="main-header-two__bottom-middle">
                         <div class="menu-area__inner">
                             <div class="mobile-nav-toggler">
@@ -35,13 +33,10 @@
                                                         <a href="#">Konsultasi Gratis</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#">Konsultasi Litigasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Litigasi</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#">Konsultasi Non Litigasi</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">Surat Menyurat Administrasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Non Litigasi</a>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -55,7 +50,6 @@
             </div>
         </div>
     </div>
-
     <!--Start Mobile Menu  -->
     <div class="mobile-menu">
         <nav class="menu-box">

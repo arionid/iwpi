@@ -133,6 +133,7 @@
                     <form action="{{ route('register-anggota.update',$user->id) }}" class="theme-form" method="POST">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="layanan_keanggotaan" value="{{ $user->detail->layanan ?? 'Perseorangan' }}">
                         <div class="mb-3 row fw-bold text-danger">
                             <label class="col-sm-3 col-form-label ">NOMOR ANGGOTA IWPI</label>
                             <div class="col-sm-9">
@@ -226,7 +227,7 @@
                             <div class="col-sm-9">
                                 <select class="form-select" name="gender">
                                     <option @if($user->gender == 'Perempuan') selected @endif >Perempuan</option>
-                                    <option @if($user->gender == 'Laki-laki') selected @endif>Laki-laki</option>
+                                    <option @if($user->gender == 'Laki-Laki') selected @endif>Laki-Laki</option>
                                 </select>
                             </div>
                         </div>

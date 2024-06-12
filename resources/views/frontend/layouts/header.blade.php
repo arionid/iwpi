@@ -63,13 +63,10 @@
                                                         <a href="#">Konsultasi Gratis</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#">Konsultasi Litigasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Litigasi</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#">Konsultasi Non Litigasi</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">Surat Menyurat Administrasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Non Litigasi</a>
                                                     </li>
                                                 </ul>
                                             </li>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +18,6 @@
     @include('frontend.layouts.css')
     @yield('style')
 </head>
-
 <body class="body-white-bg">
     <!-- preloader -->
     <div id="preloader">
@@ -116,8 +114,7 @@
                 <div class="container">
                     <div class="footer-bottom__inner">
                         <div class="copyright-text text-center">
-                            <p>Copyright © 2024 IWPI.INFO by <a href="#"><b>#nnd</b>project.</a>
-                                All Rights Reserved</p>
+                            <p>Copyright © 2024 IWPI.INFO by <a href="#"><b>#nnd</b>project.</a> All Rights Reserved</p>
                         </div>
                     </div>
                 </div>
@@ -135,5 +132,4 @@
     @include('frontend.layouts.script')
     @yield('footer-script')
 </body>
-
 </html>

@@ -375,7 +375,7 @@ class FrontendController extends Controller
         ]);
 
         try {
-            $anggota = PendaftaranAnggota::where('id', $data->pendaftar_id)->first();
+            $anggota = PendaftaranAnggota::where('id', $data->pendaftaran_id)->first();
             $notifyParam=[
                 'title'     =>'Pembayaran Registrasi IWPI',
                 'message'   =>"*".$anggota->fullname."* Berhasil Melakukan Konfirmasi Pembayaran Anggota *IWPI.INFO*\n".
