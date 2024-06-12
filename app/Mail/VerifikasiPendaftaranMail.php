@@ -17,9 +17,11 @@ class VerifikasiPendaftaranMail extends Mailable
      * @return void
      */
     protected $offerData;
+    public $subject;
 
     public function __construct($msg)
     {
+        $this->subject = 'Verifikasi Pendaftaran Anggota Baru';
         $this->offerData = $msg;
     }
 
@@ -36,7 +38,8 @@ class VerifikasiPendaftaranMail extends Mailable
             'tagihan'  => "Rp.".\number_format($this->offerData->detail->layanan_nominal),
         ];
 
-        return $this->from('admin@iwpi.info', 'Ikatan Wajib Pajak Indonesia')->markdown('vendor.mail.verifikasianggota', [
+        return $this->from('admin@iwpi.info', 'Ikatan Wajib Pajak')
+        ->markdown('vendor.mail.verifikasianggota', [
                     'data' => $body,
                 ]);
     }
