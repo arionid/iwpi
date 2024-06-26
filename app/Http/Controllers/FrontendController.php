@@ -39,6 +39,10 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function aboutUs() {
+        return view('frontend.about-us');
+    }
+
     public function news() {
         $recentBlog = Cache::remember('recent-blog', now()->addHours(2), function () {
             return Blogs::with(["category" => function($query){

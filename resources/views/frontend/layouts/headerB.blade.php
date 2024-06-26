@@ -21,10 +21,10 @@
                                     <div class="navbar-wrap main-menu">
                                         <ul class="navigation">
                                             <li><a href="{{ route('/') }}">Beranda</a></li>
+                                            <li><a href="{{ route('about-us') }}">Tentang Kami</a></li>
                                             <li><a href="{{ route('/') }}#bidang-pelayanan">Bidang Pelayanan</a></li>
-                                            <li><a href="{{ route('/') }}#keanggotaan">Keanggotaan</a></li>
                                             <li><a href="{{ route('news') }}">Artikel</a></li>
-                                            <li class="menu-item-has-children"><a href="#">Keanggotaan</a>
+                                            <li class="menu-item-has-children"><a href="{{ route('/') }}#keanggotaan">Keanggotaan</a>
                                                 <ul class="sub-menu">
                                                     <li>
                                                         <a href="#">Diskusi Online</a>

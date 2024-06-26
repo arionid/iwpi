@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\FrontendController::class, 'beranda'])->name('/');
+Route::get('/tentang-kami', [App\Http\Controllers\FrontendController::class, 'aboutUs'])->name('about-us');
 Route::get('/blog', [App\Http\Controllers\FrontendController::class, 'news'])->name('news');
 Route::get('/blog/{slug}', [App\Http\Controllers\FrontendController::class, 'newsDetail'])->name('news.detail');
 Route::get('/registrasi-anggota', [App\Http\Controllers\FrontendController::class, 'registerMember'])->name('register.member');
