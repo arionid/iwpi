@@ -16,13 +16,13 @@
                                 <div class="icon">
                                     <span class="icon-phone-call"></span>
                                 </div>
-                                <p><a href="tel:082245519467">+62 822 4551 94067</a></p>
+                                <p><a href="//wa.me/6282245519467?text=iwpi.info">+62 822 4551 9467</a></p>
                             </li>
                             <li>
                                 <div class="icon">
                                     <span class="icon-email"></span>
                                 </div>
-                                <p><a href="mailto:konsultansi@iwpi.com">admin@iwpi.com</a></p>
+                                <p><a href="mailto:admin@iwpi.com">admin@iwpi.com</a></p>
                             </li>
                         </ul>
                     </div>

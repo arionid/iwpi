@@ -67,7 +67,7 @@
             <div class="contact-info">
                 <div class="icon-box"><span class="icon-phone-call"></span>
                 </div>
-                <p><a href="tel:082245519467">+62 822 4551 94067</a></p>
+                <p><a href="//wa.me/6282245519467?text=iwpi.info">+62 822 4551 9467</a></p>
             </div>
         </nav>
     </div>
