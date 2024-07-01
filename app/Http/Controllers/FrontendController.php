@@ -222,11 +222,10 @@ class FrontendController extends Controller
                 "PHONE : ".$validated['phone']."\n",
             ];
             Notification::route('telegram', env('TELEGRAM_ID_CHAT_ADMIN', '-321143573'))
-                        // ->route('mail', 'nando.arionid@gmail.com')
                         ->notify(new AnggotaRegisterNotification($notifyParam));
 
             // notif pendaftar
-            $user = PendaftaranAnggota::with('detail')->find($data->id)->first();
+            $user = PendaftaranAnggota::with('detail')->where('email',$validated['email'])->first();
             KirimEmailNotifikasiPendaftaranJob::dispatch($user)
                 ->delay(now()->addSeconds(5));
 
