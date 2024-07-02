@@ -193,10 +193,8 @@
                     <div class="card kartu-anggota wow animate__animated animate__fadeInUp">
                         <div class="card-header" style="background: #0d4e84 !important;">
                             <div class="media">
-                                <img class="img-100 img-fluid m-r-20 rounded-circle"
-                                    src="{{ asset('/assets/img/body-2.png') }}" alt="">
                                 <div class="media-body mt-0 fw-700">
-                                    <h4 class="display-3 text-light font-weight-bold text-uppercase">{{ $user->fullname
+                                    <h4 class="display-3 text-light font-weight-bold text-uppercase ms-2">{{ $user->fullname
                                         }}
                                     </h4>
                                 </div>
