@@ -121,7 +121,7 @@
                                     <div class="form-group">
                                         <label class="form-label text-dark fw-bold">Nominal Tagihan</label>
                                         <input type="text" name="nominal_tagihan" class="form-control"
-                                            placeholder="Jumalah Tagihan" id="nominal_tagihan" disabled>
+                                            placeholder="Nilai Tagihan" id="nominal_tagihan" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -223,7 +223,7 @@
 <script>
     // document.onkeydown=function(e){return!e.ctrlKey||67!==e.keyCode&&86!==e.keyCode&&85!==e.keyCode&&117!==e.keyCode},document.addEventListener("keydown",function(){if(123==event.keyCode||event.ctrlKey&&event.shiftKey&&73==event.keyCode||event.ctrlKey&&85==event.keyCode)return!1},!1),document.addEventListener?document.addEventListener("contextmenu",function(e){e.preventDefault()},!1):document.attachEvent("oncontextmenu",function(){window.event.returnValue=!1}),$(document).keypress("u",function(e){return!e.ctrlKey});
 $('.format_npwp').mask('00.000.000.0-000.0000');
-$( "#datepicker" ).datepicker({maxDate: "-1m", dateFormat: "yy-mm-dd"});
+$( "#datepicker" ).datepicker({maxDate: "d", dateFormat: "yy-mm-dd"});
 $(".btn-refresh").click(function(){
   $.ajax({
      type:'GET',

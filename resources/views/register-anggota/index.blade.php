@@ -54,14 +54,20 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->phone }}</td>
                                         <td>{{ $item->provinces_name ?? '-' }}</td>
-                                        <th>{!! fUserStatus($item->status) !!}</th>
+                                        <th>
+                                            @if($item->detail && $item->detail->status == 'Menunggu Validasi')
+                                            <span class="badge badge-light-danger">Menunggu Validasi Pembayaran</span>
+                                            @else
+                                            {!! fUserStatus($item->status) !!}
+                                            @endif
+                                        </th>
                                         <td>
                                             <ul class="action">
                                                 <li class="fw-bold me-2 edit">
                                                     <a href="{{ route('register-anggota.edit', $item->id) }}" data-bs-original-title="" title=""><i class="icon-pencil"></i></a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('register-anggota.show', $item->id) }}" data-bs-original-title="" title="Lihat Data"><i class="icon-zoom-in"></i></a>
+                                                    <a href="{{ route('register-anggota.show', $item->id) }}" data-bs-original-title="" title="Lihat Data"><i class="icon-write"></i></a>
                                                 </li>
                                             </ul>
                                         </td>
@@ -69,7 +75,7 @@
                                     @endforeach
                                     @else
                                     <tr>
-                                        <td colspan="7">Data Register Anggota is Empty</td>
+                                        <td colspan="8">Data Register Anggota is Empty</td>
                                     </tr>
                                     @endisset
 

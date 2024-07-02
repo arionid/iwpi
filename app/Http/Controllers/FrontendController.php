@@ -159,6 +159,10 @@ class FrontendController extends Controller
             // dd($request);
             return back()->withErrors( $validated );
         }
+        $perusahaan = "Perseorangan";
+        if(!empty($request->perusahaan) && $request->perusahaan != ''){
+            $perusahaan = $request->perusahaan;
+        }
 
         if( isset($validated['file_ktp']) )
         $img_ktp          =   saveAndResizeImage(
@@ -210,18 +214,17 @@ class FrontendController extends Controller
         }
 
         // notif telegram ada calon angota baru mendaftar
-        // dd($request);
-
         try {
             $notifyParam=[
                 'title'     =>'Registrasi Anggota IWPI',
                 'message'   =>"*".$validated['fullname']."* Berhasil Melakukan Pendaftaran Calon Anggota  *IWPI.INFO*\n".
                 "NPWP : ".$validated['npwp']."\n".
-                "Perusahaan : ".$request->perusahaan ?? "Perseorangan"."\n".
+                "Perusahaan : ".$perusahaan."\n".
+                "Layanan : ".$validated['layanan_keanggotaan']."\n".
                 "E-MAIL : ".$validated['email']."\n".
-                "PHONE : ".$validated['phone']."\n",
+                "No.Tlp : ".$validated['phone']."\n",
             ];
-            Notification::route('telegram', env('TELEGRAM_ID_CHAT_ADMIN', '-321143573'))
+            Notification::route('telegram', \config('nnd.telegram_id_chat_admin'))
                         ->notify(new AnggotaRegisterNotification($notifyParam));
 
             // notif pendaftar
@@ -345,7 +348,6 @@ class FrontendController extends Controller
     }
 
     public function konfirmasiPembayaran() {
-
         return view('frontend.konfirmasi-pembayaran');
     }
 
@@ -378,19 +380,18 @@ class FrontendController extends Controller
         ]);
 
         try {
-            $anggota = PendaftaranAnggota::where('id', $data->pendaftaran_id)->first();
+            $anggota = PendaftaranAnggota::where('id', $request->pendaftar_id)->first();
             $notifyParam=[
                 'title'     =>'Pembayaran Registrasi IWPI',
                 'message'   =>"*".$anggota->fullname."* Berhasil Melakukan Konfirmasi Pembayaran Anggota *IWPI.INFO*\n".
                 "segera validasi pembayarannya \n",
             ];
-            Notification::route('telegram', env('TELEGRAM_ID_CHAT_ADMIN', '-321143573'))
+            Notification::route('telegram', \config('nnd.telegram_id_chat_admin'))
                         ->notify(new AnggotaRegisterNotification($notifyParam));
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
             \Log::error("Notifikasi Telegram Error");
         }
-
         \sleep(3);
 
         return redirect()->route('konfirmasi-pembayaran')->with('success',"Konfirmasi Pembayaran untuk anggota NPWP : <strong>".$request->npwp."</strong> Berhasil upload, Admin IWPI Akan segera menghubungi anda");

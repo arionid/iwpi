@@ -90,10 +90,10 @@
                                     <p><a href="{{ route('news') }}">Artikel</a></p>
                                 </li>
                                 <li>
-                                    <p><a href="{{ route('register.member') }}">Pendaftaran Anggota</a></p>
+                                    <p><a href="{{ route('cara_pembayaran') }}">Cara Pembayaran</a></p>
                                 </li>
                                 <li>
-                                    <p><a href="{{ route('cara_pembayaran') }}">Cara Pembayaran</a></p>
+                                    <p><a href="{{ route('konfirmasi-pembayaran') }}">Konfirmasi Pembayaran</a></p>
                                 </li>
                             </ul>
                         </div>

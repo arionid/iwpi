@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnggotaIWPI;
 use App\Models\PendaftaranAnggota;
 use App\Models\User;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class PendaftaranAnggotaController extends Controller
      */
     public function index()
     {
-        $data = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name')
+        $data = PendaftaranAnggota::with('detail')->select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name')
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->orderBy('id', 'desc')->get();
         return view('register-anggota.index', compact('data'));

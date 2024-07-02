@@ -36,7 +36,7 @@ return [
     | services the application utilizes. Set this in your ".env" file.
     |
     */
-    'telegram_id_chat_admin' => env('TELEGRAM_ID_CHAT_ADMIN', null),
+    'telegram_id_chat_admin' => env('TELEGRAM_ID_CHAT_ADMIN', '-4259907184'),
 
 
     'link-online' =>  env('ONLINE_LINK', null),

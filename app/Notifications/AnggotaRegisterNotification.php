@@ -28,7 +28,7 @@ class AnggotaRegisterNotification extends Notification implements ShouldQueue
     {
         $this->queue = 'default';
         $this->offerData= $msg;
-        // $this->idTele= -321143573;
+        // $this->idTele= -4259907184;
     }
 
     /**
@@ -53,7 +53,7 @@ class AnggotaRegisterNotification extends Notification implements ShouldQueue
             ->options([
                 'disable_web_page_preview' => true
             ])
-            // ->to(env('TELEGRAM_ID_CHAT_ADMIN', '-321143573'))
+            // ->to(env('TELEGRAM_ID_CHAT_ADMIN', '-4259907184'))
             ->content("\xF0\x9F\x94\x94*".$this->offerData['title']."*\n".$this->offerData['message'])
             ->button('Buka Halaman Admin', $url);
             // ->button('Download Invoice', $url);
