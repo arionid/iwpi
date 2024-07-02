@@ -54,25 +54,6 @@
                             <p>IWPI saat ini merupakan wadah asosiasi bagi Wajib Pajak di seluruh Indonesia <br>
                                 yang berbentuk Perkumpulan berbadan hukum</p>
                         </div>
-                        <div class="footer-one__socel-link">
-                            <ul class="clearfix">
-                                <li>
-                                    <a href="#">
-                                        <i class="icon-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="icon-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="icon-instagram-symbol"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -21,7 +21,7 @@ Route::get('/blog/{slug}', [App\Http\Controllers\FrontendController::class, 'new
 Route::get('/registrasi-anggota', [App\Http\Controllers\FrontendController::class, 'registerMember'])->name('register.member');
 Route::post('/registrasi-anggota', [App\Http\Controllers\FrontendController::class, 'submitRegisterMember'])->name('register.member.submit')->middleware('throttle:5,5');
 Route::post('/list-region', [App\Http\Controllers\FrontendController::class, 'getWilayah'])->name('get-wilayah');
-Route::get('verifikasi-anggota/{id}/iwpi/by-qr', [App\Http\Controllers\FrontendController::class, 'anggotaProfile'])->name('anggota.profile');
+// Route::get('verifikasi-anggota/{id}/iwpi/by-qr', [App\Http\Controllers\FrontendController::class, 'anggotaProfile'])->name('anggota.profile');
 Route::get('kartu-anggota/{id}/iwpi/by-qr', [App\Http\Controllers\FrontendController::class, 'kartuAnggota'])->name('anggota.kartu-anggota');
 Route::post('kta/digital', [App\Http\Controllers\FrontendController::class, 'postKTA'])->name('form.kta-digital')->middleware('throttle:posts_routes');
 Route::get('refresh_captcha', [App\Http\Controllers\FrontendController::class, 'refreshCaptcha'])->name('refresh_captcha');

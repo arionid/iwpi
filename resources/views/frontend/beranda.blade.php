@@ -1,7 +1,7 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
 <!-- Primary Meta Tags -->
-<title>IWPI - Ikatan Wajib Pajak Indonesia</title>
+<title>Ikatan Wajib Pajak Indonesia</title>
 <meta name="title" content="IWPI - Ikatan Wajib Pajak Indonesia" />
 <meta name="description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
@@ -10,14 +10,14 @@
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />

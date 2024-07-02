@@ -1,14 +1,14 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
 <!-- Primary Meta Tags -->
-<meta name="title" content="Pendaftaran Anggota IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta name="title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
 <meta name="description" content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta name="keywords"
     content="IWPI, Ikatan Wajib Pajak Indonesia, Wajib Pajak, Asosiasi Wajib Pajak, Perkumpulan Wajib Pajak, Pajak Indonesia, DJP, Melawan DJP, Pajak Transparan, Organisasi Pajak" />
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="Pendaftaran Anggota IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
@@ -16,7 +16,7 @@
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="Pendaftaran Anggota IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />
@@ -45,7 +45,7 @@
 @include('frontend.layouts.header')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 @stop
-@section('title', 'Pendaftaran Anggota IWPI - Ikatan Wajib Pajak Indonesia')
+@section('title', 'Pendaftaran Anggota Ikatan Wajib Pajak Indonesia')
 @section('content')
 <!-- About Us section start here -->
 {{-- <script src="https://www.google.com/recaptcha/api.js"></script> --}}

@@ -278,7 +278,7 @@ class FrontendController extends Controller
     }
 
     public function anggotaProfile($nik){
-        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
+       /*  $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
         ->where('pendaftaran_anggota.nik', $nik)
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')
@@ -286,7 +286,7 @@ class FrontendController extends Controller
         ->leftjoin('kelurahan', 'pendaftaran_anggota.village_id', 'kelurahan.kode')->first();
         if(empty($user)) { \abort(404); }
 
-        return view('register-anggota.kartu', compact('user'));
+        return view('register-anggota.kartu', compact('user')); */
     }
 
     public function kartuAnggota($nik){
@@ -307,20 +307,21 @@ class FrontendController extends Controller
             return back()->withErrors( $validator );
         }
 
+
         $user = PendaftaranAnggota::select('pendaftaran_anggota.fullname',
         'pendaftaran_anggota.jabatan',
-        'pendaftaran_anggota.date_active',
+        'anggota_iwpi.nomor_anggota',
+        'anggota_iwpi.tgl_akhir AS date_active',
         'pendaftaran_anggota.status',
         'pendaftaran_anggota.nik',
-        'provinces.name AS provinces_name',
-        'provinces.name AS provinces_name',
-        'regencies.name AS regency_name')
-        ->where('pendaftaran_anggota.nik', $request->kta)
-        ->leftjoin('provinces', 'pendaftaran_anggota.province_id', 'provinces.id')
-        ->leftjoin('regencies', 'pendaftaran_anggota.regency_id', 'regencies.id')->first();
+        'provinsi.nama AS provinces_name',
+        'kabupaten.nama AS regency_name')
+        ->where('anggota_iwpi.nomor_anggota', $request->kta)
+        ->leftjoin('anggota_iwpi', 'pendaftaran_anggota.id', 'anggota_iwpi.pendaftaran_id')
+        ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
+        ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')->first();
         if(empty($user)) { \abort(404); }
-
-        \sleep(3);
+        // \sleep(3);
         return view('frontend.anggota', compact('user'));
     }
 

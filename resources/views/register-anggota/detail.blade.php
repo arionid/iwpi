@@ -146,13 +146,12 @@
                                 link aktif sebagai bukti / Kartu Anggota Digital</li>
                             <li>
                                 <ol>
-                                    <li>Kirimkan Surat/ Ebook Terkait Hak, Kewajiban serta Aturan Anggota Partai</li>
-                                    <li>Kirimkan Gambar Kartu Anggota Partai kepada anggota</li>
+                                    <li>Kirimkan Surat/ Ebook Terkait Hak, Kewajiban serta Aturan Organisasi</li>
+                                    <li>Kirimkan Gambar Kartu Anggota kepada anggota</li>
                                     <li>Kirimkan Link tersebut sebagai bukti sah</li>
                                 </ol>
                             </li>
-                            <li>Proses Pengiriman Kartu Anggota serta Ebook Terkait <b>dikirimkan secara Manual Oleh
-                                    Admin</b></li>
+                            <li>Proses Pengiriman Kartu Anggota serta Ebook Terkait <b>dikirimkan secara Manual Oleh Admin</b></li>
                         </ol>
                     </div>
 

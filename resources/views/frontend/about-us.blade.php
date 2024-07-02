@@ -3,7 +3,7 @@
 <meta name="title" content="Struktur Organisasi Ikatan Wajib Pajak Indonesia" />
 <meta name="description"
     content="Struktur Organisasi Ikatan Wajib Pajak Indonesia" />
-<meta name="keywords" content="partai x, partaixid, satu bangsa satu kesatuan, partai politik, pemilu 2024" />
+<meta name="keywords" content="IWPI, Ikatan Wajib Pajak Indonesia, Wajib Pajak, Asosiasi Wajib Pajak, Perkumpulan Wajib Pajak, Pajak Indonesia, DJP, Melawan DJP, Pajak Transparan, Organisasi Pajak" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />

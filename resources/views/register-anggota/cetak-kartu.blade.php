@@ -167,7 +167,7 @@
         </div>
     </div>
     <div class="ket-kartu">
-        &copy;Kartu ini merupakan kartu tanda anggota partai yang dikeluarkan resmi oleh IWPI,
+        &copy;Kartu ini merupakan kartu tanda anggota yang dikeluarkan resmi oleh IWPI,
         Scan Barcode untuk mengetahui status dan kebenaran kartu anggota ini.
     </div>
 </div>
