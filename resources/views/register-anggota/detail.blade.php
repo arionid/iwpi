@@ -63,7 +63,7 @@
                                                 <span class="badge badge-success">Anggota Telah Aktif Hingga {{
                                                     \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
                                                 @else
-                                                <span class="badge badge-default">{{ $user->status }}</span>
+                                                <span class="badge badge-secondary">{{ $user->status }}</span>
                                                 @endif
                                             </h5>
                                         </div>
@@ -266,7 +266,7 @@
 <script>
     function updatestat(params) {
         document.getElementById("set_user_status").value=params;
-        if(confirm('Apakah anda yakin untuk Memvalidasi Pembayaran Registrasi Anggota, dan mengaktifkan akun ini?')) {
+        if(confirm('Apakah anda yakin untuk merubah status Akun ini?')) {
                 $('#form-konfirmasi-anggota').submit();
         }
     }
