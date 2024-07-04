@@ -209,6 +209,10 @@
                                                 @else {{ $user->nomor_anggota }}@endif</span></li>
                                         <li>Nama Lengkap <span class="text-primary">{{ $user->fullname }}</span></li>
                                         <li>NIK <span>...</span></li>
+                                        @if($user->layanan == 'Badan Usaha')
+                                        <li>Jenis Anggota<span>{{ $user->layanan }}</span></li>
+                                        <li>Perusahaan<span>{!! \Str::upper($user->perusahaan) !!}</span></li>
+                                        @endif
                                         <li>Jabatan <span>{{ $user->jabatan }}</span></li>
                                         <li>Jenis Kelamin <span>...</span></li>
                                         <li>Status Perkawinan <span>...</span></li>

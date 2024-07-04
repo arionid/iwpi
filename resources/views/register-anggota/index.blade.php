@@ -37,7 +37,7 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>NPWP</th>
-                                        <th>Email</th>
+                                        <th>Layanan</th>
                                         <th>No. HP</th>
                                         <th>Provinsi</th>
                                         <th>Status</th>
@@ -51,8 +51,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->fullname }}</td>
                                         <td>{{ $item->npwp }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->phone }}</td>
+                                        <td>{{ $item->detail->layanan }}</td>
+                                        <td><a href="//wa.me/{{ fWaNumber($item->phone) }}" class="text-success"><i class="fa fa-whatsapp me-1"></i>{{ $item->phone }}</a></td>
                                         <td>{{ $item->provinces_name ?? '-' }}</td>
                                         <th>
                                             @if($item->detail && $item->detail->status == 'Menunggu Validasi')

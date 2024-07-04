@@ -45,7 +45,6 @@
         border-radius: 20px;
         /* background-color: rgba(255, 255, 255, 0.75); */
         box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-        background-image: url("{{ url('/adm-assets/images/1-kartu-anggota.jpg') }}");
         background-position: center;
         background-size: 630px 400px;
     }
@@ -65,7 +64,7 @@
         float: left;
     }
     ul.datadiri {
-        width: 350px;
+        width: 370px;
         display: table;
     }
     ul.datadiri>li {
@@ -126,7 +125,11 @@
 <div class="download">
     <button class="btn-download" id="saveReport">DOWNLOAD KARTU ANGGOTA</button>
 </div>
-<div class="card page">
+@if($user->detail->layanan == 'Badan Usaha')
+<div class="card page" style="background-image: url({{ url('/adm-assets/images/2-kartu-anggota.jpg') }})">
+@else
+<div class="card page" style="background-image: url({{ url('/adm-assets/images/1-kartu-anggota.jpg') }})">
+@endif
     <div class="biodata">
         <h4 class="name-anggota">{{ $user->fullname }}</h4>
         <div class="desc">
@@ -135,9 +138,15 @@
                     <div>NO. ANGGOTA</div>
                     <span class="red">: {{ $user->nomor_anggota }}</span>
                 </li>
+                @if($user->detail->layanan == 'Badan Usaha')
+                <li>
+                    <div>Perusahaan</div>
+                    <span>: {!! \Str::upper($user->perusahaan) !!}</span>
+                </li>
+                @endif
                 <li>
                     <div>Jabatan</div>
-                    <span>: {{ \Str::upper($user->jabatan) }}</span>
+                    <span>: {!! \Str::upper($user->jabatan." - ".$user->detail->layanan) !!}</span>
                 </li>
                 <li>
                     <div>Provinsi</div>
@@ -182,7 +191,7 @@
 					onrendered: function(canvas){
 						var a = document.createElement('a');
 						a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-						a.download = 'KTA-{{ $user->fullname }}.jpg';
+						a.download = 'KTA-{{ $user->detail->layanan."-".$user->fullname }}.jpg';
 						a.click();
 					}
 				});

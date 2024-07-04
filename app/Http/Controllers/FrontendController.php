@@ -311,9 +311,11 @@ class FrontendController extends Controller
         $user = PendaftaranAnggota::select('pendaftaran_anggota.fullname',
         'pendaftaran_anggota.jabatan',
         'anggota_iwpi.nomor_anggota',
+        'anggota_iwpi.layanan',
         'anggota_iwpi.tgl_akhir AS date_active',
         'pendaftaran_anggota.status',
         'pendaftaran_anggota.nik',
+        'pendaftaran_anggota.perusahaan',
         'provinsi.nama AS provinces_name',
         'kabupaten.nama AS regency_name')
         ->where('anggota_iwpi.nomor_anggota', $request->kta)
