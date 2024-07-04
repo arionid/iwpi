@@ -248,7 +248,7 @@
                                 <li>Alamat KTP<span class="font-primary"> <span>{!! $user->address !!}</span></li>
                                 <li>Provinsi<span class="font-primary">{{ $user->provinces_name }}</span></li>
                                 <li>Kota/Kabupaten<span class="font-primary">{{ $user->regency_name }}</span></li>
-                                <li>Kecamatan<span class="font-primary">{{ $user->regency_name }}</span></li>
+                                <li>Kecamatan<span class="font-primary">{{ $user->district_name }}</span></li>
                                 <li>Kelurahan<span class="font-primary">{{ $user->village_name }}</span></li>
                             </ul>
                         </div>

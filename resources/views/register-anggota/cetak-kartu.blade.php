@@ -158,7 +158,7 @@
                 </li>
                 <li>
                     <div>Kecamatan</div>
-                    <span>: {{ $user->village_name }}</span>
+                    <span>: {{ $user->district_name }}</span>
                 </li>
                 <li>
                     <div>Kelurahan</div>
