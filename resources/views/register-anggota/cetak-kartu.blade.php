@@ -64,7 +64,7 @@
         float: left;
     }
     ul.datadiri {
-        width: 370px;
+        width: 450px;
         display: table;
     }
     ul.datadiri>li {
@@ -75,14 +75,14 @@
     }
     .desc {
         display: inline-block;
-        margin-top: -15px;
+        margin-top: -20px;
         padding-top: 0px;
     }
     .qrcode {
         position: absolute;
         display: inline;
         text-align: center;
-        width: 300px;
+        /* width: 300px; */
     }
     .img-qrcode {
         display: block;
