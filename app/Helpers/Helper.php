@@ -4,6 +4,12 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
+if(! function_exists('fUrlGenerator')){
+    function fUrlGenerator($user = '')
+    {
+        return time().bin2hex(random_bytes(20)).'c4llme62816554176Y'.uniqid($user);
+    }
+}
 if(! function_exists('fWaNumber')){
     function fWaNumber($phone)
     {

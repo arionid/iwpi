@@ -29,6 +29,14 @@ Route::get('cara-pembayaran', [App\Http\Controllers\FrontendController::class, '
 Route::get('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran');
 Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'submitKonfirmasiPembayaran'])->name('konfirmasi-pembayaran.submit')->middleware('throttle:5,5');
 
+// payment gateway midtrans system
+
+Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {
+    Route::get('payment-waiting', [App\Http\Controllers\MidtransController::class, 'waitingPayment'])->name('waiting');
+    Route::get('payment-success', [App\Http\Controllers\MidtransController::class, 'paymentSuccess'])->name('success');
+    Route::get('payment-error', [App\Http\Controllers\MidtransController::class, 'paymentError'])->name('error');
+});
+
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('blog', App\Http\Controllers\BlogController::class);
