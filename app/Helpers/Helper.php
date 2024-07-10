@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 if(! function_exists('fUrlGenerator')){
-    function fUrlGenerator($user = '')
+    function fUrlGenerator($user = '0')
     {
-        return time().bin2hex(random_bytes(20)).'c4llme62816554176Y'.uniqid($user);
+        return "iwpi-".bin2hex(random_bytes(5)).time().'c4llme62816554176Y'.$user;
     }
 }
 if(! function_exists('fWaNumber')){

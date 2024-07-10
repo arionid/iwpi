@@ -20,3 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/list-region', [App\Http\Controllers\FrontendController::class, 'getWilayah']);
 Route::post('/pembayaran/npwp', [App\Http\Controllers\FrontendController::class, 'cekTagihan'])->middleware('throttle:5,5');
+
+
+Route::prefix('/v1/midtrans')->group(function () {
+    Route::post('notification-handler', [App\Http\Controllers\MidtransController::class, 'notificationHandler']);
+});

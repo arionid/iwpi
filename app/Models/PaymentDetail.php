@@ -26,6 +26,6 @@ class PaymentDetail extends Model
 
     public function anggota()
     {
-        return  $this->hasOne(AnggotaIWPI::class, 'id', 'pendaftaran_id');
+        return  $this->hasOne(AnggotaIWPI::class, 'pendaftaran_id', 'pendaftaran_id');
     }
 }

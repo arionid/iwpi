@@ -19,7 +19,8 @@ class CreatePaymentDetailTable extends Migration
             $table->unsignedBigInteger('pendaftaran_id');
             $table->string('payment_link_id', 50);
             $table->dateTime('expired_at');
-            $table->enum('status', ['Waiting', 'Error', 'Success'])->default('Waiting');
+            $table->enum('status', ['pending', 'deny', 'expired','cancel','capture','accept','settlement'])->default('pending');
+            $table->string('payment_type', 190);
             $table->timestamps();
 
             $table->foreign('pendaftaran_id')

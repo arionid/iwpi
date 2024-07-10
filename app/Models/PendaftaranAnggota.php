@@ -36,4 +36,9 @@ class PendaftaranAnggota extends Model
     {
         return  $this->hasOne(AnggotaIWPI::class, 'pendaftaran_id', 'id');
     }
+
+    public function payment_detail()
+    {
+        return  $this->hasOne(PaymentDetail::class, 'pendaftaran_id', 'id');
+    }
 }

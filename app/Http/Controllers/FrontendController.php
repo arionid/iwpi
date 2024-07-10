@@ -6,9 +6,11 @@ use App\Jobs\KirimEmailNotifikasiPendaftaranJob;
 use App\Mail\VerifikasiPendaftaranMail;
 use App\Models\AnggotaIWPI;
 use App\Models\Blogs;
+use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
 use App\Notifications\AnggotaRegisterNotification;
 use App\Rules\ReCaptcha;
+use App\Traits\MidtransTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -17,11 +19,13 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\validated;
 
 class FrontendController extends Controller
 {
+    use MidtransTrait;
     public function beranda() {
         $blog = Blogs::with(["category" => function($query){
             $query->select('name','id');
@@ -208,14 +212,17 @@ class FrontendController extends Controller
             $anggota->status = "Menunggu Pembayaran";
             $anggota->save();
 
-        } catch (\Throwable $th) {
-            throw $th;
-            Log::emergency("Query Pendaftaran Error :".$th->getMessage());
-        }
-
         // notif telegram ada calon angota baru mendaftar
-        try {
-            $notifyParam=[
+
+            $midtrans = $this->createPaymentLinkApi($anggota);
+            $paymentDetail =  new PaymentDetail();
+            $paymentDetail->pendaftaran_id = $data->id;
+            $paymentDetail->order_id = $midtrans->order_id;
+            $paymentDetail->payment_link_id = $midtrans->payment_url;
+            $paymentDetail->expired_at = Carbon::now();
+            $paymentDetail->save();
+
+            /* $notifyParam=[
                 'title'     =>'Registrasi Anggota IWPI',
                 'message'   =>"*".$validated['fullname']."* Berhasil Melakukan Pendaftaran Calon Anggota  *IWPI.INFO*\n".
                 "NPWP : ".$validated['npwp']."\n".
@@ -225,18 +232,18 @@ class FrontendController extends Controller
                 "No.Tlp : ".$validated['phone']."\n",
             ];
             Notification::route('telegram', \config('nnd.telegram_id_chat_admin'))
-                        ->notify(new AnggotaRegisterNotification($notifyParam));
+                        ->notify(new AnggotaRegisterNotification($notifyParam)); */
 
             // notif pendaftar
-            $user = PendaftaranAnggota::with('detail')->where('email',$validated['email'])->first();
+            $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('email',$validated['email'])->first();
             KirimEmailNotifikasiPendaftaranJob::dispatch($user)
                 ->delay(now()->addSeconds(5));
 
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             \Log::error("Notifikasi Telegram Error");
         }
-
+        dd($request);
         return redirect()->route('register.member')
         ->with('nominal', $nominalLayanan)
         ->with('success',"Form Pendaftaran Anggota Atas Nama <strong>".$data->fullname."</strong> Telah di Kirimkan,
@@ -403,4 +410,6 @@ class FrontendController extends Controller
     public function refreshCaptcha() {
         return response()->json(['captcha'=> captcha_img('flat')]);
     }
+
+
 }

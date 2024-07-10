@@ -36,6 +36,7 @@ class VerifikasiPendaftaranMail extends Mailable
             'nama'  => $this->offerData->fullname,
             'npwp'  => $this->offerData->npwp,
             'tagihan'  => "Rp.".\number_format($this->offerData->detail->layanan_nominal),
+            'link_pembayaran'    => $this->offerData->payment_detail->payment_link_id
         ];
 
         return $this->from('admin@iwpi.info', 'Ikatan Wajib Pajak')
