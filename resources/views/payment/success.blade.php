@@ -1,21 +1,19 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
+<meta name="robots" content="noindex,nofollow" />
 <!-- Primary Meta Tags -->
-<meta name="title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
-<meta name="description"
-    content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
-<meta name="keywords" content="IWPI, Ikatan Wajib Pajak Indonesia, Cara Pembayaran IWPI, registrasi iwpi" />
+<meta name="title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />
@@ -64,8 +62,8 @@
                     </div>
                     <div class="cta-two__content">
                         <h2>Pembayaran Berhasil</h2>
-                        <p>Pembayaran registrasi anggota berhasil dilakukan dan tervalidasi oleh sistem,
-                        Selanjutnya Admin kami akan menghubungi anda melalui Kontak yang telah disertakan.</p>
+                        <p>Pembayaran Biaya Registrasi Anggota Berhasil dilakukan dan tervalidasi oleh sistem,
+                        Selanjutnya Admin kami akan menghubungi anda melalui Kontak Telepon yang telah disertakan.</p>
                     </div>
                     <div class="cta-two__btn">
                         <a class="thm-btn" href="{{ route('/') }}">

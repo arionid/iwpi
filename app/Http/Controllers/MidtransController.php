@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Notification;
 class MidtransController extends Controller
 {
     public function waitingPayment() {
-
-        dd(fUrlGenerator());
         return view('payment.unfinish');
     }
 
@@ -42,7 +40,7 @@ class MidtransController extends Controller
 
         if( !$validated )
         {
-            return back()->withErrors( $validated );
+            return response()->json(['errors'=>$validated]);
         }
 
         try {

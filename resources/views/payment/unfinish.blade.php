@@ -1,21 +1,19 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
+<meta name="robots" content="noindex,nofollow" />
 <!-- Primary Meta Tags -->
-<meta name="title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
-<meta name="description"
-    content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
-<meta name="keywords" content="IWPI, Ikatan Wajib Pajak Indonesia, Cara Pembayaran IWPI, registrasi iwpi" />
+<meta name="title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />

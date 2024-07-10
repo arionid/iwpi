@@ -51,7 +51,9 @@ trait MidtransTrait
                             "first_name" => $anggota->profile->fullname,
                             "phone" => $anggota->profile->phone,
                             "notes" => "Nomor NPWP terdaftar adalah ".$anggota->profile->npwp,
-                        ]
+        ],
+        "custom_field1" => $anggota->profile->npwp,
+        "custom_field2" => $anggota->profile->perusahaan
         ];
 
         $body = json_encode($parameter);

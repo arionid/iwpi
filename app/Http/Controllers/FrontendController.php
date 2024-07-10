@@ -219,7 +219,7 @@ class FrontendController extends Controller
             $paymentDetail->pendaftaran_id = $data->id;
             $paymentDetail->order_id = $midtrans->order_id;
             $paymentDetail->payment_link_id = $midtrans->payment_url;
-            $paymentDetail->expired_at = Carbon::now();
+            $paymentDetail->expired_at = Carbon::now()->addDay();
             $paymentDetail->save();
 
             /* $notifyParam=[
@@ -238,16 +238,15 @@ class FrontendController extends Controller
             $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('email',$validated['email'])->first();
             KirimEmailNotifikasiPendaftaranJob::dispatch($user)
                 ->delay(now()->addSeconds(5));
-
+            return redirect()->away($midtrans->payment_url);
         } catch (\Throwable $th) {
             throw $th;
             \Log::error("Notifikasi Telegram Error");
         }
-        dd($request);
         return redirect()->route('register.member')
         ->with('nominal', $nominalLayanan)
         ->with('success',"Form Pendaftaran Anggota Atas Nama <strong>".$data->fullname."</strong> Telah di Kirimkan,
-        Pendaftaran tersebut telah sedang di proses oleh admin IWPI.
+        Buka Kotak Masuk email ".$validated['email']." dan Ikuti Instruksi yang diberikan.
         Perkembangan proses pendaftaran akan di tindak lanjuti melalui <b>Nomor Telepon & Email</b> Terdaftar");
 
     }

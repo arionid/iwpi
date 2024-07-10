@@ -57,6 +57,8 @@
                                         <th>
                                             @if($item->detail && $item->detail->status == 'Menunggu Validasi')
                                             <span class="badge badge-light-danger">Menunggu Validasi Pembayaran</span>
+                                            @elseif($item->status == 'Waiting' && isset($item->payment_detail))
+                                            <span class="badge badge-light-info">{{ "Midtrans: ".$item->payment_detail->status }}</span>
                                             @else
                                             {!! fUserStatus($item->status) !!}
                                             @endif

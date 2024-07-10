@@ -1,21 +1,19 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
+<meta name="robots" content="noindex,nofollow" />
 <!-- Primary Meta Tags -->
-<meta name="title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
-<meta name="description"
-    content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
-<meta name="keywords" content="IWPI, Ikatan Wajib Pajak Indonesia, Cara Pembayaran IWPI, registrasi iwpi" />
+<meta name="title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="Cara Pembayaran - Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Status Pembayaran - Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />
@@ -72,7 +70,7 @@
             </div>
         </div>
 
-        <div class="about-one__content-box">
+        <div class="about-one__content-box pt-5">
             <div class="sec-title">
                 <div class="sub-title">
                     <h4>Petunjuk</h4>
@@ -81,34 +79,16 @@
             </div>
             <div class="text">
                 <p>
-                    Pembayaran untuk pendaftaran Anggota IWPI - Ikatan Wajib Pajak Indonesia hanya satu Rekening
-                    pembayaran saja yaitu : <br>
-                    <strong class="text-primary">
-                        Bank Mandiri <br />
-                        A/n PERKUMPULAN WAJIB PAJAK INDONESIA <br />
-                        144-00-2772888-7
-                    </strong>
+                    Link pembayaran telah dikirimkan melalui email terdaftar, segera check di kotak masuk / Inbox pada Email anda.<br />
+                    Jika tidak menerima email <b class="text-primary">link pembayaran</b><br />
+                    Segera hubungi Admin Support melalui kontak dibawah ini<br>
+                    <h3 class="text-primary">
+                        Admin Support IWPI <br />
+                        <a href="//wa.me/6282245519467?text=iwpi.info"><i class="fab fa-whatsapp me-2"></i>0822 4551 9467</a> <br />
+                    </h3>
                 </p>
             </div>
-            <div class="about-one__content-list-box">
-                <ul>
-                    <li>
-                        <div class="circle-box"></div>
-                        <p>Lakukan Pembayaran ke Nomor Rekening Bank Milik IWPI</p>
-                    </li>
-                    <li>
-                        <div class="circle-box"></div>
-                        <p>Pastikan Pembayaran Sesuai dengan Tagihan</p>
-                    </li>
-                    <li>
-                        <div class="circle-box"></div>
-                        <p>Setelah Pembayaran Selesai, Upload Bukti Pembarayan di <br /><a
-                                href="{{ route('konfirmasi-pembayaran') }}"
-                                class="btn btn-sm btn-primary">Konfirmasi Pembayaran <i
-                                    class="icon-next"></i></a></p>
-                    </li>
-                </ul>
-            </div>
+
         </div>
     </div>
 </section>

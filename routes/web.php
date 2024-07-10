@@ -50,4 +50,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::resource('management-user', App\Http\Controllers\UserController::class);
     Route::get('profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::match(['put', 'patch'], 'myprofile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('myprofile.update');
+
+    Route::post('midtrans/request-new-payment-link', [App\Http\Controllers\PendaftaranAnggotaController::class, 'requestNewLinkPayment'])->name('midtrans.request-new-payment-link');
 });

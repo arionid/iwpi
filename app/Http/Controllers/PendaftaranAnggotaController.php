@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnggotaIWPI;
+use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
 use App\Models\User;
+use App\Traits\MidtransTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +15,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+
 use Illuminate\Validation\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PendaftaranAnggotaController extends Controller
 {
+    use MidtransTrait;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +29,7 @@ class PendaftaranAnggotaController extends Controller
      */
     public function index()
     {
-        $data = PendaftaranAnggota::with('detail')->select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name')
+        $data = PendaftaranAnggota::with(['detail', 'payment_detail'])->select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name')
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->orderBy('id', 'desc')->get();
         return view('register-anggota.index', compact('data'));
@@ -60,7 +64,7 @@ class PendaftaranAnggotaController extends Controller
      */
     public function show($id)
     {
-        $user = PendaftaranAnggota::select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
+        $user = PendaftaranAnggota::with(['detail', 'payment_detail'])->select('pendaftaran_anggota.*', 'provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
         ->where('pendaftaran_anggota.id', $id)
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')
@@ -263,5 +267,22 @@ class PendaftaranAnggotaController extends Controller
             'user' => $data,
             'qrcode' => $qrcode,
         ]);
+    }
+
+    public function requestNewLinkPayment(Request $request) {
+        try {
+            $paymentDetail = PaymentDetail::findOrFail($request->payment_id);
+            $midtrans = $this->createPaymentLinkApi($paymentDetail->anggota);
+            $paymentDetail->order_id = $midtrans->order_id;
+            $paymentDetail->payment_link_id = $midtrans->payment_url;
+            $paymentDetail->status = 'pending';
+            $paymentDetail->expired_at = Carbon::now()->addDay();
+            $paymentDetail->save();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return redirect()->route('register-anggota.show', $request->user_id)
+        ->with('success',"Link pembayaran baru midtrans telah berhasil dibuat, kirimkan link yang tertera kepada kontak anggota tersebut.");
     }
 }

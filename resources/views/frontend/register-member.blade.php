@@ -75,13 +75,12 @@
                 <h2>Pendaftaran Anggota Berhasil</h2>
                 <p>{!! $message !!}</p>
                 @if ($nominal = Session::get('nominal'))
-                <p>Proses selanjutnya adalah melakukan pembayaran Tagihan Layanan Sebesar <b class="text-light">Rp. {{ number_format($nominal, 2) }}</b>, tata cara pembayaran klik tombol di samping</p>
+                <p>Proses selanjutnya adalah melakukan pembayaran Tagihan Layanan Sebesar <b class="text-light">Rp. {{ number_format($nominal, 2) }}</b>, tata cara pembayaran telah dikirimkan ke alamat email terdaftar.</p>
                 @endif
             </div>
             <div class="cta-two__btn">
-                <a class="thm-btn" href="{{ route('cara_pembayaran') }}">
-                    <span class="txt">Lakukan Pembayaran</span>
-                    <i class="icon-next"></i>
+                <a class="thm-btn" href="{{ route('/') }}">
+                    <span class="txt">Kembali Ke Beranda</span>
                 </a>
             </div>
         </div>
@@ -125,8 +124,8 @@
                                         <div class="form-group">
                                             <select class="form-select" name="layanan_keanggotaan" id="in_layanan_keanggotaan" required>
                                                 <option value="" selected="">Pilih Jenis Keanggotaan</option>
-                                                <option>Perseorangan</option>
-                                                <option>Badan Usaha</option>
+                                                <option {{ old('layanan_keanggotaan') == 'Perseorangan' ? "selected" : "" }}>Perseorangan</option>
+                                                <option {{ old('layanan_keanggotaan') == 'Badan Usaha' ? "selected" : "" }}>Badan Usaha</option>
                                             </select>
                                             @if ($errors->has('layanan_keanggotaan'))
                                             <div class="invalid-feedback">{{ $errors->first('layanan_keanggotaan') }}</div>
@@ -158,7 +157,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group {{ $errors->has('nik') ? ' has-error' : '' }}">
                                         <label class="form-label text-dark fw-bold">Nomor KTP Anggota<span class="text-danger">*</span></label>
-                                        <input type="text" name="nik" placeholder="NIK KTP" class="form-control fw-bold txt-blue"
+                                        <input type="text" name="nik" placeholder="NIK KTP" class="form-control fw-bold txt-blue format_nik"
                                             value="{{ old('nik') }}" required="">
                                         @if ($errors->has('nik'))
                                         <div class="invalid-feedback">{{ $errors->first('nik') }}</div>
@@ -210,7 +209,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label text-dark fw-bold">Tanggal Lahir<span class="text-danger">*</span></label>
-                                        <input type="text" name="born" placeholder="Tanggal Lahir (1990-12-31)"
+                                        <input type="text" name="born" placeholder="Tanggal Lahir (1990-12-31)" autocomplete="off"
                                             class="form-control" value="{{ old('born') }}" id="datepicker" required>
                                         @if ($errors->has('born'))
                                         <div class="invalid-feedback">{{ $errors->first('born') }}</div>
@@ -433,6 +432,7 @@
         function removeOptions(selectbox, judul) { var i; for(i = selectbox.options.length - 1 ; i >= 0 ; i--) { selectbox.remove(i);}
     option = document.createElement( 'option' ); option.text = judul; option.disabled = true; selectbox.add( option ); }
 $('.format_npwp').mask('00.000.000.0-000.0000');
+$('.format_nik').mask('0000000000000000');
 $( "#datepicker" ).datepicker({maxDate: "-17y", dateFormat: "yy-mm-dd"});
 $('#in_province_id').change(function(){
         var prov=document.getElementById("in_province_id").value;

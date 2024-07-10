@@ -163,7 +163,7 @@
                     </div>
                 </div>
             </div>
-            @if($user->status == "Waiting" && $user->detail->status =="Menunggu Validasi")
+            @if($user->status == "Waiting" && ($user->detail->status =="Menunggu Validasi" ))
             <div class="card">
                 <div class="card-header">
                     <h4>Bukti Pembayaran</h4>
@@ -205,6 +205,66 @@
                                     onclick="updatestat('Overdue')">Nonaktif Anggota</a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if($user->status == "Waiting" && ( isset($user->payment_detail) && $user->payment_detail->status != 'payment_detail') )
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h4>Midtrans Payment</h4>
+                </div>
+                <div class="card-body">
+                    <div class="collection-filter-block">
+                        <ul class="pro-services ">
+                            <li>
+                                <div class="media"><i data-feather="info"></i>
+                                    <div class="media-body">
+                                        <h5>Status Pembayaran <br>
+                                            @if(in_array($user->payment_detail->status, array('deny','expired','cancel')))
+                                                <span class="badge badge-danger blinking">{{ $user->payment_detail->status }}</span>
+                                            @else
+                                            <span class="badge badge-success">{{ $user->payment_detail->status }}</span>
+                                            @endif
+                                        </h5>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media"><i data-feather="link"></i>
+                                    <div class="media-body">
+                                        <h5>Link Pembayaran</h5>
+                                        <a href="{{ $user->payment_detail->payment_link_id }}" target="_blank">Buka link</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media"><i data-feather="mail"></i>
+                                    <div class="media-body">
+                                        <h5>Order ID</h5>
+                                        <p>{{ $user->payment_detail->order_id }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media"><i data-feather="clock"></i>
+                                    <div class="media-body">
+                                        <h5>Waktu expired</h5>
+                                        <p>{{ \Carbon\Carbon::parse($user->payment_detail->expired_at)->format('d M Y H:i:00') }}<br>
+                                            <i>{{ \Carbon\Carbon::parse($user->payment_detail->expired_at)->diffForHumans() }}</i>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="m-t-15 btn-group">
+                        @if(in_array($user->payment_detail->status, array('deny','expired','cancel')))
+                        <a class="btn btn-block btn-info" href="javascript:void();" onclick="newrequest({{ $user->payment_detail->id }})">
+                            <i class="fa fa-check-square me-1"></i>Request Link Pembayaran
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -260,6 +320,12 @@
     </div>
 </div>
 <!-- /Row -->
+<form id="new-request" action="{{ route('midtrans.request-new-payment-link') }}" method="POST" class="d-none">
+    <input type="hidden" name="payment_id" value="{{ $user->payment_detail->id ?? '' }}">
+    <input type="hidden" name="user_id" value="{{ $user->id }}">
+    @csrf
+</form>
+
 @endsection
 
 @section('script')
@@ -268,6 +334,12 @@
         document.getElementById("set_user_status").value=params;
         if(confirm('Apakah anda yakin untuk merubah status Akun ini?')) {
                 $('#form-konfirmasi-anggota').submit();
+        }
+    }
+
+    function newrequest(params) {
+        if(confirm('Apakah anda yakin untuk membuat link pembayaran baru?')) {
+                $('#new-request').submit();
         }
     }
 </script>
