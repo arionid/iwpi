@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 trait MidtransTrait
 {
     public function createPaymentLinkApi($anggota) {
-        $order_id = time()."-".$anggota->pendaftaran_id."-".\Str::slug($anggota->profile->district_id);
+        $order_id = time()."-".$anggota->pendaftaran_id."-".\Str::slug($anggota->profile->village_id);
         $client = new Client();
             $headers = [
             'Authorization' => 'Basic '.\config('nnd.midtrans_server_key'),
