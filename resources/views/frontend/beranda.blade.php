@@ -1,8 +1,7 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
 <!-- Primary Meta Tags -->
-<title>Ikatan Wajib Pajak Indonesia</title>
-<meta name="title" content="IWPI - Ikatan Wajib Pajak Indonesia" />
+<meta name="title" content="Ikatan Wajib Pajak Indonesia" />
 <meta name="description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta name="keywords"
@@ -24,6 +23,7 @@
 @endsection
 @section('header')
 @include('frontend.layouts.headerB')
+@section('title', "Ikatan Wajib Pajak Indonesia")
 <style>
     .cta-one__inner {
     background-color: var(--thm-heading-font-color) !important;

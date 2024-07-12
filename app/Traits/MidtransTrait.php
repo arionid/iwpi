@@ -33,7 +33,7 @@ trait MidtransTrait
                 "payment_link_id" => fUrlGenerator($anggota->pendaftaran_id)
             ],
         "customer_required" => true,
-        "usage_limit" => 1,
+        "usage_limit" => 5,
         "expiry" => [
                     // "start_time" => Carbon::now()->addDay()->format('YYYY-MM-DD HH:mm:ss ZZ'),
                     "duration" => 1,

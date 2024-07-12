@@ -54,6 +54,20 @@
                             <p>IWPI saat ini merupakan wadah asosiasi bagi Wajib Pajak di seluruh Indonesia <br>
                                 yang berbentuk Perkumpulan berbadan hukum</p>
                         </div>
+                        <div class="footer-one__socel-link">
+                            <ul class="clearfix">
+                                <li>
+                                    <a href="https://www.youtube.com/@Ikatanwajibpajakindonesia">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.instagram.com/iwpi.id">
+                                        <i class="icon-instagram-symbol"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,10 +85,10 @@
                                     <p><a href="{{ route('news') }}">Artikel</a></p>
                                 </li>
                                 <li>
-                                    <p><a href="{{ route('cara_pembayaran') }}">Cara Pembayaran</a></p>
+                                    <p><a href="{{ route('konfirmasi-pembayaran') }}">Konfirmasi Pembayaran</a></p>
                                 </li>
                                 <li>
-                                    <p><a href="{{ route('konfirmasi-pembayaran') }}">Konfirmasi Pembayaran</a></p>
+                                    <p><a href="{{ url('/privacy-policy') }}">Privacy Policy</a></p>
                                 </li>
                             </ul>
                         </div>

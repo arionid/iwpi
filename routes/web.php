@@ -29,6 +29,7 @@ Route::get('cara-pembayaran', [App\Http\Controllers\FrontendController::class, '
 Route::get('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran');
 Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'submitKonfirmasiPembayaran'])->name('konfirmasi-pembayaran.submit')->middleware('throttle:5,5');
 
+Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
 // payment gateway midtrans system
 
 Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {

@@ -73,7 +73,7 @@ class SitemapCommand extends Command
                     <priority>0.9</priority>
                 </url>
                 <url>
-                    <loc>'.$baseurl.'/cara-pembayaran</loc>
+                    <loc>'.$baseurl.'/privacy-policy</loc>
                     <lastmod>'.Carbon::now()->format('Y-m-d\TH:i:s.uP').'</lastmod>
                     <changefreq>yearly</changefreq>
                     <priority>0.9</priority>

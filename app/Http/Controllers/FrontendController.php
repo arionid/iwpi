@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\validated;
 class FrontendController extends Controller
 {
     use MidtransTrait;
+
     public function beranda() {
         $blog = Blogs::with(["category" => function($query){
             $query->select('name','id');
@@ -102,6 +103,10 @@ class FrontendController extends Controller
         ->with('previous', $blog->previous)
         ->with('next', $blog->next)
         ->with('recentBlog', $recentBlog);
+    }
+
+    public function privacyPolicy() {
+        return view('frontend.privacy-policy');
     }
 
     public function registerMember()
