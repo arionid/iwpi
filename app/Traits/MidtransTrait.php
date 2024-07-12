@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 trait MidtransTrait
 {
     public function createPaymentLinkApi($anggota) {
-
+        $order_id = time()."-".$anggota->pendaftaran_id."-".\Str::slug($anggota->profile->district_id);
         $client = new Client();
             $headers = [
             'Authorization' => 'Basic '.\config('nnd.midtrans_server_key'),
@@ -17,7 +17,7 @@ trait MidtransTrait
             ];
             $body = array(
                 "transaction_details" => [
-                        "order_id" => Str::uuid(),
+                        "order_id" => $order_id,
                         "gross_amount" => 150000,
                         "payment_link_id" => "iwpi-".fUrlGenerator($anggota->pendaftaran_id)
                     ],
@@ -28,7 +28,7 @@ trait MidtransTrait
 
         $parameter = [
         "transaction_details" => [
-                "order_id" => Str::uuid(),
+                "order_id" => $order_id,
                 "gross_amount" => $anggota->layanan_nominal,
                 "payment_link_id" => fUrlGenerator($anggota->pendaftaran_id)
             ],
