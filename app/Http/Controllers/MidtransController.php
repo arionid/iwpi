@@ -53,7 +53,7 @@ class MidtransController extends Controller
                 if(!empty($request->custom_field3)){
                     $query->orWhere('pendaftaran_id', $request->custom_field3);
                 }
-               
+
             });
 
             $detailPayment = $query->first();
@@ -104,7 +104,7 @@ class MidtransController extends Controller
             if($request->transaction_status == "settlement" || $request->transaction_status == 'capture'){
                 try {
                     $notifyParam=[
-                        'title'     =>'TEST Pembayaran Registrasi Anggota',
+                        'title'     =>'Pembayaran Registrasi Anggota',
                         'message'   =>"*".$detailPayment->profile->fullname."* ".$descMsg."\n".
                         "NPWP : ".$detailPayment->profile->npwp."\n".
                         "Perusahaan : ".$detailPayment->profile->perusahaan."\n".
