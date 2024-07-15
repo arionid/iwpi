@@ -58,8 +58,8 @@ class MidtransController extends Controller
 
             $detailPayment = $query->first();
         } catch (\Throwable $th) {
-            throw $th;
-            Log::critical("gagal kosong di pembayaran");
+            // throw $th;
+            Log::critical("Midtrans Gagal", $th);
         }
 
         $descMsg =  "";
@@ -115,7 +115,7 @@ class MidtransController extends Controller
                     Notification::route('telegram', \config('nnd.telegram_id_chat_admin'))
                                 ->notify(new AnggotaRegisterNotification(str_replace("_","-",$notifyParam)));
                 } catch (\Throwable $th) {
-                    throw $th;
+                    // throw $th;
                     \Log::error("Notifikasi Telegram Error");
                 }
 
@@ -131,12 +131,10 @@ class MidtransController extends Controller
                     ]);
                 }
             }elseif($request->transaction_status == 'expire'){
-                AnggotaIWPI::where([['pendaftaran_id', $detailPayment->pendaftaran_id], ['']])->update([
+                AnggotaIWPI::where('pendaftaran_id', $detailPayment->pendaftaran_id)->update([
                     'status'    => 'Link Pembayaran Expired',
                 ]);
             }
-        return \response()->json(["data" => $detailPayment]);
-
             return response()->json(['success' => true], 200);
 
     }
