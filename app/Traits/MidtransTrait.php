@@ -53,7 +53,8 @@ trait MidtransTrait
                             "notes" => "Nomor NPWP terdaftar adalah ".$anggota->profile->npwp,
         ],
         "custom_field1" => $anggota->profile->npwp,
-        "custom_field2" => $anggota->profile->perusahaan
+        "custom_field2" => $anggota->profile->perusahaan,
+        "custom_field3" => $anggota->pendaftaran_id
         ];
 
         $body = json_encode($parameter);

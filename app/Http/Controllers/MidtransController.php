@@ -31,7 +31,7 @@ class MidtransController extends Controller
 
     public function notificationHandler(Request $request) {
         $validated = $request->validate( [
-            'order_id' => 'required|exists:payment_detail,order_id',
+            'order_id' => 'nullable',
             'transaction_status' => 'required',
             'fraud_status' => 'required',
             'payment_type' => 'required',
@@ -44,10 +44,22 @@ class MidtransController extends Controller
         }
 
         try {
-            $detailPayment = PaymentDetail::with(['profile', 'anggota'])->where('order_id', $validated['order_id'])->first();
+            $query = PaymentDetail::with(['profile', 'anggota'])->where('status','!=','settlement');
+
+            $query->where(function ($query) use ($request, $validated)
+            {
+                $query->where('order_id','LIKE', "%".$validated['order_id'])
+                ->orWhere('payment_link_id','like', "%".$request->metadata['extra_info']['payment_link_id']."%");
+                if(!empty($request->custom_field3)){
+                    $query->orWhere('pendaftaran_id', $request->custom_field3);
+                }
+               
+            });
+
+            $detailPayment = $query->first();
         } catch (\Throwable $th) {
-            // throw $th;
-            Log::critical("order_id kosong di pembayaran");
+            throw $th;
+            Log::critical("gagal kosong di pembayaran");
         }
 
         $descMsg =  "";
@@ -59,7 +71,7 @@ class MidtransController extends Controller
                 // echo "Transaction order_id: " . $request->order_id ." successfully captured using " . $request->payment_type;
                 }
             }
-        }else if ($request->transaction_status == 'settlement'){
+        }elseif ($request->transaction_status == 'settlement'){
 
             // TODO set payment status in merchant's database to 'Settlement'
             $descMsg =  "Pembayaran berhasil divalidasi oleh system midtrans menggunakan ".$request->payment_type. " senilai Rp.".\number_format($request->gross_amount);
@@ -119,11 +131,11 @@ class MidtransController extends Controller
                     ]);
                 }
             }elseif($request->transaction_status == 'expire'){
-                AnggotaIWPI::where('pendaftaran_id', $detailPayment->pendaftaran_id)->update([
+                AnggotaIWPI::where([['pendaftaran_id', $detailPayment->pendaftaran_id], ['']])->update([
                     'status'    => 'Link Pembayaran Expired',
                 ]);
             }
-
+        return \response()->json(["data" => $detailPayment]);
 
             return response()->json(['success' => true], 200);
 
