@@ -129,6 +129,12 @@ class MidtransController extends Controller
                         'keterangan'    => "Midtrans ".$request->payment_type,
                         'updated_at' => Carbon::now(),
                     ]);
+
+                    PendaftaranAnggota::where('id', $detailPayment->pendaftaran_id)->update([
+                        'status' => 'Approve',
+                        'date_active' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ]);
                 }
             }elseif($request->transaction_status == 'expire'){
                 AnggotaIWPI::where('pendaftaran_id', $detailPayment->pendaftaran_id)->update([
