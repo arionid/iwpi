@@ -132,7 +132,7 @@ class MidtransController extends Controller
 
                     PendaftaranAnggota::where('id', $detailPayment->pendaftaran_id)->update([
                         'status' => 'Approve',
-                        'date_active' => Carbon::now(),
+                        'date_active' => Carbon::now()->addYear(),
                         'updated_at' => Carbon::now(),
                     ]);
                 }
