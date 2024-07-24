@@ -1,14 +1,14 @@
 @extends('frontend.layouts.master')
 @section('meta-seo')
 <!-- Primary Meta Tags -->
-<meta name="title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
+<meta name="title" content="Pendaftaran Anggota Kehormatan Ikatan Wajib Pajak Indonesia" />
 <meta name="description" content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta name="keywords"
     content="IWPI, Ikatan Wajib Pajak Indonesia, Wajib Pajak, Asosiasi Wajib Pajak, Perkumpulan Wajib Pajak, Pajak Indonesia, DJP, Melawan DJP, Pajak Transparan, Organisasi Pajak" />
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://iwipi.info/" />
-<meta property="og:title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
+<meta property="og:title" content="Pendaftaran Anggota Kehormatan Ikatan Wajib Pajak Indonesia" />
 <meta property="og:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="og:image" content="{{ asset('meta-seo.webp') }}" />
@@ -16,7 +16,7 @@
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="https://iwipi.info/" />
-<meta property="twitter:title" content="Pendaftaran Anggota Ikatan Wajib Pajak Indonesia" />
+<meta property="twitter:title" content="Pendaftaran Anggota Kehormatan Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description"
     content="Ikatan Wajib Pajak Indonesia adalah wadah asosiasi bagi Wajib Pajak di seluruh Indonesia yang berbentuk Perkumpulan berbadan hukum" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />
@@ -45,18 +45,18 @@
 @include('frontend.layouts.header')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 @stop
-@section('title', 'Pendaftaran Anggota Ikatan Wajib Pajak Indonesia')
+@section('title', 'Pendaftaran Anggota Kehormatan Ikatan Wajib Pajak Indonesia')
 @section('content')
 <!-- About Us section start here -->
 {{-- <script src="https://www.google.com/recaptcha/api.js"></script> --}}
 
 <!--Start Page Header-->
-<section class="page-header">
+<section class="page-header primary" style="background-color: #6BB4E2">
     <div class="shape1 rotate-me"><img src="{{ asset('assets/img/shape/page-header-shape1.png') }}" alt=""></div>
     <div class="shape2 float-bob-x"><img src="{{ asset('assets/img/shape/page-header-shape2.png') }}" alt=""></div>
     <div class="container">
         <div class="page-header__inner">
-            <h2>Pendaftaran Anggota</h2>
+            <h2>Pendaftaran Anggota Kehormatan</h2>
             <ul class="thm-breadcrumb">
                 <li><a href="{{ route('/') }}"><span class="fa fa-home"></span> Home</a></li>
                 <li><i class="icon-right-arrow-angle"></i></li>
@@ -72,7 +72,7 @@
         <div class="cta-two__inner">
             <div class="cta-two__inner-bg" style="background-image: url(assets/img/pattern/cta-two__parttern1.png);"></div>
             <div class="cta-two__content">
-                <h2>Pendaftaran Anggota Berhasil</h2>
+                <h2>Pendaftaran Anggota Kehormatan Berhasil</h2>
                 <p>{!! $message !!}</p>
                 @if ($nominal = Session::get('nominal'))
                 <p>Proses selanjutnya adalah melakukan pembayaran Tagihan Layanan Sebesar <b class="text-light">Rp. {{ number_format($nominal, 2) }}</b>, tata cara pembayaran telah dikirimkan ke alamat email terdaftar.</p>
@@ -96,8 +96,9 @@
             <div class="container">
                 <div class="contact-page__bottom-form-inner">
                     <div class="title-box">
-                        <h2>Form Pendaftaran Anggota IWPI</h2>
-                        <p>Hasil Pendaftaran Akan & Infomasi Terkait Tata Cara Pembayaran akan di informasikan oleh admin IWPI melalui <b class="text-primary">Nomor Telepon / WhatsApp </b>yang anda masukkan di Form Pendaftaran dibawah ini.</p>
+                        <h2>Form Pendaftaran Anggota Kehormatan IWPI</h2>
+                        <p>Skema Keanggotaan Ini hanya ditujukan kepada anda yang bekerja di bidang tertentu saja yaitu <b>[Petani, Guru, Tenaga Kesehatan, Buruh, & Dewan Pers]</b></p>
+                        <p>Hasil Pendaftaran Akun & Infomasi Terkait Tata Cara Pembayaran akan di informasikan oleh admin IWPI melalui <b class="text-primary">Alamat Email </b>yang anda masukkan di Form Pendaftaran dibawah ini.</p>
                         <p>*Pastikan Seluruh data yang dimasukkan sesuai dengan asli dan dapat di pertanggung jawabkan.</p>
                     </div>
                     @if ($errors->any())
@@ -114,21 +115,24 @@
 
                     <div class="contact-page__bottom-form-inner-box">
 
-                        <form method="POST" action="{{ route('register.member.submit') }}" enctype="multipart/form-data"
+                        <form method="POST" action="{{ route('register.anggota-kehormatan.submit') }}" enctype="multipart/form-data"
                             class="contact-page__form contact-form-validated">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 py-3">
-                                    <label class="form-label text-dark fw-bold">Jenis Keanggotaan<span class="text-danger">*</span></label>
+                                    <label class="form-label text-dark fw-bold">Bidang Pekerjaan<span class="text-danger">*</span></label>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <select class="form-select" name="layanan_keanggotaan" id="in_layanan_keanggotaan" required>
+                                            <select class="form-select" name="bidang_pekerjaan" id="in_bidang_pekerjaan" required>
                                                 <option value="" selected="">Pilih Jenis Keanggotaan</option>
-                                                <option {{ old('layanan_keanggotaan') == 'Perseorangan' ? "selected" : "" }}>Perseorangan</option>
-                                                <option {{ old('layanan_keanggotaan') == 'Badan Usaha' ? "selected" : "" }}>Badan Usaha</option>
+                                                <option {{ old('bidang_pekerjaan') == 'Petani' ? "selected" : "" }}>Petani</option>
+                                                <option {{ old('bidang_pekerjaan') == 'Guru' ? "selected" : "" }}>Guru</option>
+                                                <option {{ old('bidang_pekerjaan') == 'Tenaga Kesehatan' ? "selected" : "" }}>Tenaga Kesehatan</option>
+                                                <option {{ old('bidang_pekerjaan') == 'Buruh' ? "selected" : "" }}>Buruh</option>
+                                                <option {{ old('bidang_pekerjaan') == 'Dewan Pers' ? "selected" : "" }}>Dewan Pers</option>
                                             </select>
-                                            @if ($errors->has('layanan_keanggotaan'))
-                                            <div class="invalid-feedback">{{ $errors->first('layanan_keanggotaan') }}</div>
+                                            @if ($errors->has('bidang_pekerjaan'))
+                                            <div class="invalid-feedback">{{ $errors->first('bidang_pekerjaan') }}</div>
                                             @endif
                                         </div>
                                     </div>
@@ -137,20 +141,10 @@
                                 <div class="col-md-12">
                                     <div class="form-group {{ $errors->has('npwp') ? ' has-error' : '' }}">
                                         <label class="form-label text-dark fw-bold">Nomor NPWP<span class="text-danger">*</span></label>
-                                        <input type="text" name="npwp" placeholder="No NPWP 15 Digit" class="form-control format_npwp fw-bold txt-blue"
+                                        <input type="text" name="npwp" placeholder="No NPWP 15 /16 Digit" class="form-control format_npwp fw-bold txt-blue"
                                             value="{{ old('npwp') }}" required="">
                                         @if ($errors->has('npwp'))
                                         <div class="invalid-feedback">{{ $errors->first('npwp') }}</div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group {{ $errors->has('perusahaan') ? ' has-error' : '' }}">
-                                        <label class="form-label text-dark fw-bold">Nama Badan Usaha/Perseorangan</label>
-                                        <input type="text" name="perusahaan" placeholder="Kosongi Jika Anda Perseorangan" class="form-control fw-bold"
-                                            value="{{ old('perusahaan') }}">
-                                        @if ($errors->has('perusahaan'))
-                                        <div class="invalid-feedback">{{ $errors->first('perusahaan') }}</div>
                                         @endif
                                     </div>
                                 </div>
@@ -358,6 +352,27 @@
                                     <div class="col-md-12 p-0">
                                         <div class="form-group">
                                             <input type="file" name="file_npwp" class="form-control" required>
+                                            <small id="emailHelp" class="form-text text-danger">File yang diijinkan
+                                                adalah file
+                                                gambar dengan ekstensi [.jpg/.jpeg/.png].</small>
+                                            @if ($errors->has('file_npwp'))
+                                            <div class="invalid-feedback">{{ $errors->first('file_npwp') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label text-dark fw-bold py-2">Upload Bukti Dukung<span class="text-danger">*</span></label>
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-group">
+                                            <input type="file" name="file_bukti_pekerjaan" class="form-control" required>
+                                            <small class="form-text text-dark fw-bold">
+                                                Petani : Bukti Kartu Tani<br>
+                                                Guru : Bukti Karya<br>
+                                                Tenaga Kesehatan : Surat Tanda Registrasi (STR)<br>
+                                                Buruh : Kartu Buruh / Kartu Tanda Karyawan<br>
+                                                Dewan Pers : Anggota Dewan Pers<br>
+                                            </small>
                                             <small id="emailHelp" class="form-text text-danger">File yang diijinkan
                                                 adalah file
                                                 gambar dengan ekstensi [.jpg/.jpeg/.png].</small>

@@ -4,6 +4,26 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
+
+if( !function_exists("fNoKTA"))
+{
+    function fNoKTA($village_id, $type = 'kehormatan'){
+        $counter = 1;
+        if($type ==  'kehormatan'){
+                $checking = \App\Models\PendaftaranAnggotaKehormatan::whereNotNull('no_kta_kehormatan')
+                ->where([['no_kta_kehormatan', 'LIKE', $village_id."%"]])
+                ->orderBy('no_kta_kehormatan', 'DESC')->first();
+                if($checking){
+                    try {
+                        $explode = \explode('.', $checking->no_kta_kehormatan);
+                        $counter = (int) end($explode) + 1;
+                    } catch (\Throwable $th) {  }
+                }
+        }
+        return $village_id.".B.".sprintf('%05d', $counter);
+    }
+}
+
 if(! function_exists('fUrlGenerator')){
     function fUrlGenerator($user = '0')
     {

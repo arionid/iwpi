@@ -39,6 +39,11 @@
                             <i data-feather="users"></i>
                             <span>Register Anggota</span></a>
                     </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title"
+                            href="{{ route('anggota-kehormatan.index')}}">
+                            <i data-feather="users" class="text-danger"></i>
+                            <span>Anggota Kehormatan</span></a>
+                    </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
                             <i data-feather="user"></i>
                             <span>Management User</span></a>

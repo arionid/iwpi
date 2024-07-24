@@ -38,6 +38,10 @@ Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {
     Route::get('payment-error', [App\Http\Controllers\MidtransController::class, 'paymentError'])->name('error');
 });
 
+
+Route::get('/registrasi-anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'registerMember'])->name('register.anggota-kehormatan');
+Route::post('/registrasi-anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'submitRegisterMember'])->name('register.anggota-kehormatan.submit')->middleware('throttle:5,5');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('blog', App\Http\Controllers\BlogController::class);
@@ -53,4 +57,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::match(['put', 'patch'], 'myprofile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('myprofile.update');
 
     Route::post('midtrans/request-new-payment-link', [App\Http\Controllers\PendaftaranAnggotaController::class, 'requestNewLinkPayment'])->name('midtrans.request-new-payment-link');
+
+
+Route::get('/anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'index'])->name('anggota-kehormatan.index');
+Route::get('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'show'])->name('anggota-kehormatan.show');
+Route::post('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'destroy'])->name('anggota-kehormatan.destroy');
+Route::get('register-anggota/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'kartuAnggota'])->name('anggota-kehormatan.kartu-anggota');
 });
