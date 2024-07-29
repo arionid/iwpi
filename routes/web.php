@@ -66,5 +66,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
 Route::get('/anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'index'])->name('anggota-kehormatan.index');
 Route::get('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'show'])->name('anggota-kehormatan.show');
 Route::post('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'destroy'])->name('anggota-kehormatan.destroy');
-Route::get('register-anggota/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'kartuAnggota'])->name('anggota-kehormatan.kartu-anggota');
+Route::get('register-anggota-kehormatan/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'kartuAnggota'])->name('anggota-kehormatan.kartu-anggota');
 });
