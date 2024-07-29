@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\KirimEmailAnggotaKehormatanJob;
 use App\Jobs\KirimEmailNotifikasiPendaftaranJob;
 use App\Models\PendaftaranAnggotaKehormatan;
 use App\Notifications\AnggotaRegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\validated;
+use Intervention\Image\Image;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PendaftaranAnggotaKehormatanController extends Controller
@@ -76,7 +78,6 @@ class PendaftaranAnggotaKehormatanController extends Controller
 
         if( !$validated )
         {
-            dd($request);
             return back()->withErrors( $validated );
         }
 
@@ -122,31 +123,21 @@ class PendaftaranAnggotaKehormatanController extends Controller
             $data->ip_client_register = \fGetClientIp();
             $data->save();
 
-            /* $notifyParam=[
-                'title'     =>'Registrasi Anggota IWPI',
-                'message'   =>"*".$validated['fullname']."* Berhasil Melakukan Pendaftaran Calon Anggota  *IWPI.INFO*\n".
+            $notifyParam=[
+                'title'     =>'Registrasi Anggota Kehormatan',
+                'message'   =>"*".$validated['fullname']."* Berhasil Melakukan Pendaftaran Anggota Kehormatan *IWPI.INFO*\n".
                 "NPWP : ".$validated['npwp']."\n".
-                "Perusahaan : ".$perusahaan."\n".
-                "Layanan : ".$validated['layanan_keanggotaan']."\n".
+                "Bidang : ".$validated['bidang_pekerjaan']."\n".
                 "E-MAIL : ".$validated['email']."\n".
                 "No.Tlp : ".$validated['phone']."\n",
             ];
             Notification::route('telegram', \config('nnd.telegram_id_chat_admin'))
-                        ->notify(new AnggotaRegisterNotification($notifyParam)); */
-
-            // notif pendaftar
-            /* $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('email',$validated['email'])->first();
-            KirimEmailNotifikasiPendaftaranJob::dispatch($user)
-                ->delay(now()->addSeconds(5)); */
+                        ->notify(new AnggotaRegisterNotification(str_replace("_","-",$notifyParam)));
         } catch (\Throwable $th) {
             throw $th;
             \Log::error("Notifikasi Telegram Error");
         }
-        dd($request);
-        return redirect()->route('register.anggota-kehormatan')
-        ->with('success',"Form Pendaftaran Anggota Atas Nama <strong>".$data->fullname."</strong> Telah di Kirimkan,
-        Buka Kotak Masuk email ".$validated['email']." dan Ikuti Instruksi yang diberikan.
-        Perkembangan proses pendaftaran akan di tindak lanjuti melalui <b>Nomor Telepon & Email</b> Terdaftar");
+        return redirect()->route('anggota-kehormatan.download', $data->id);
 
     }
 
@@ -199,9 +190,74 @@ class PendaftaranAnggotaKehormatanController extends Controller
                 ->generate($link);
 
         // return $qrcode;
-        return view('register-anggota.cetak-kartu')->with([
+        return view('anggota-kehormatan.cetak-kartu')->with([
             'user' => $data,
             'qrcode' => $qrcode,
         ]);
+    }
+
+    public function downloadKta($id) {
+        $data = PendaftaranAnggotaKehormatan::select('pendaftaran_anggota_kehormatan.*','provinsi.nama AS provinces_name', 'kabupaten.nama AS regency_name', 'kecamatan.nama AS district_name', 'kelurahan.nama AS village_name')
+        ->where('pendaftaran_anggota_kehormatan.id', $id)
+        ->leftjoin('provinsi', 'pendaftaran_anggota_kehormatan.province_id', 'provinsi.kode')
+        ->leftjoin('kabupaten', 'pendaftaran_anggota_kehormatan.regency_id', 'kabupaten.kode')
+        ->leftjoin('kecamatan', 'pendaftaran_anggota_kehormatan.district_id', 'kecamatan.kode')
+        ->leftjoin('kelurahan', 'pendaftaran_anggota_kehormatan.village_id', 'kelurahan.kode')->first();
+        if(empty($data) || !empty($data->kta_files))
+            \abort(404);
+        $link = route('anggota.kartu-anggota', ["id" => $data->no_kta_kehormatan]);
+        $qrcode = QrCode::size(130)
+                ->backgroundColor(255, 255, 255)
+                ->margin(2)
+                ->format('png')
+                ->eyeColor(1, 0, 0, 0, 26, 138, 255)
+                ->generate($link);
+
+        // return $qrcode;
+        return view('anggota-kehormatan.cetak-kartu-auto')->with([
+            'user' => $data,
+            'qrcode' => $qrcode,
+        ]);
+
+    }
+
+    public function uploadKta(Request $request) {
+
+        $data = PendaftaranAnggotaKehormatan::findOrFail($request->id);
+        try {
+
+            $file = str_replace('data:image/png;base64,', '', $request->image);
+            $safeName = \Str::uuid().'.'.'png';
+            $success = file_put_contents(public_path().'/uploads/images/kta/'.$safeName, base64_decode($file));
+
+
+            $data->kta_files = '/uploads/images/kta/'.$safeName;
+            $data->save();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return response()->json(['success'=> true]);
+
+    }
+
+    public function registerDone($id) {
+        $data = PendaftaranAnggotaKehormatan::where('no_kta_kehormatan', $id)->first();
+
+        if(empty($data))
+            \abort(404);
+
+        // KIRIM KTA VIA EMAIL KE ANGGOTA BARU
+        try {
+            KirimEmailAnggotaKehormatanJob::dispatch($data)->delay(now()->addSeconds(5));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return redirect()->route('register.anggota-kehormatan')
+        ->with('success',"Form Pendaftaran Anggota Atas Nama <strong>".$data->fullname."</strong> Telah di Kirimkan,
+        Buka Kotak Masuk email <strong>".$data->email."</strong> dan Ikuti Instruksi yang diberikan.
+        Perkembangan proses pendaftaran akan di tindak lanjuti melalui <b>Nomor Telepon & Email</b> Terdaftar");
+
     }
 }

@@ -20,7 +20,10 @@ class CreatePendaftaranAnggotaKehormatanTable extends Migration
             $table->string('npwp', 30)->unique();
             $table->string('city_born');
             $table->date('born');
-            $table->string('village_id');
+            $table->string('province_id', 4);
+            $table->string('district_id', 8);
+            $table->string('regency_id', 12);
+            $table->string('village_id', 18);
             $table->text('address');
             $table->string('phone');
             $table->enum('gender', ['Perempuan', 'Laki-Laki']);

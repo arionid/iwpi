@@ -35,5 +35,6 @@ class PendaftaranAnggotaKehormatan extends Model
         'jabatan',
         'tgl_mulai',
         'tgl_akhir',
+        'kta_files'
     ];
 }

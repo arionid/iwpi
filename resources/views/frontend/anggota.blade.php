@@ -205,13 +205,15 @@
                                 <div class="general p-5 f-w-600 f-16">
                                     <h5 class="mb-3 display-4 font-weight-bold title">Data Anggota</h5>
                                     <ul class="biodata">
-                                        <li>Nomor Anggota<span class="text-primary">@if($user->status == 'Waiting') -
+                                        <li>Nomor Anggota<span class="text-primary">@if($user->no_kta_kehormatan) {{ $user->no_kta_kehormatan }} @elseif($user->status == 'Waiting') -
                                                 @else {{ $user->nomor_anggota }}@endif</span></li>
                                         <li>Nama Lengkap <span class="text-primary">{{ $user->fullname }}</span></li>
                                         <li>NIK <span>...</span></li>
                                         @if($user->layanan == 'Badan Usaha')
                                         <li>Jenis Anggota<span>{{ $user->layanan }}</span></li>
                                         <li>Perusahaan<span>{!! \Str::upper($user->perusahaan) !!}</span></li>
+                                        @elseif($user->no_kta_kehormatan)
+                                        <li>Bidang Pekerjaan<span>{{ Str::upper($user->bidang_pekerjaan) }}</span></li>
                                         @endif
                                         <li>Jabatan <span>{{ $user->jabatan }}</span></li>
                                         <li>Jenis Kelamin <span>...</span></li>
@@ -230,6 +232,10 @@
                                                 \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
                                             @else
                                             <span class="badge bg-primary">{{ $user->status }}</span>
+                                            @endif
+                                            @if($user->no_kta_kehormatan)
+                                            <span class="badge bg-success">Anggota Telah Aktif Hingga {{
+                                                \Carbon\Carbon::parse($user->date_active)->format('d/m/Y')}}</span>
                                             @endif
                                         </li>
                                     </ul>

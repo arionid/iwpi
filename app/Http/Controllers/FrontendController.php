@@ -8,6 +8,7 @@ use App\Models\AnggotaIWPI;
 use App\Models\Blogs;
 use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
+use App\Models\PendaftaranAnggotaKehormatan;
 use App\Notifications\AnggotaRegisterNotification;
 use App\Rules\ReCaptcha;
 use App\Traits\MidtransTrait;
@@ -18,8 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\RateLimiter;
 
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\validated;
 
@@ -307,7 +308,7 @@ class FrontendController extends Controller
     public function postKTA(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'captcha' => 'required|captcha',
+            // 'captcha' => 'required|captcha',
             "kta"      => "required",
         ],[
             'throttle' => 'Terlalu banyak percobaan gagal, this IP is Susspended from server.',
@@ -317,7 +318,6 @@ class FrontendController extends Controller
         if ($validator->fails()) {
             return back()->withErrors( $validator );
         }
-
 
         $user = PendaftaranAnggota::select('pendaftaran_anggota.fullname',
         'pendaftaran_anggota.jabatan',
@@ -333,6 +333,23 @@ class FrontendController extends Controller
         ->leftjoin('anggota_iwpi', 'pendaftaran_anggota.id', 'anggota_iwpi.pendaftaran_id')
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->leftjoin('kabupaten', 'pendaftaran_anggota.regency_id', 'kabupaten.kode')->first();
+
+
+
+        if (str_contains($request->kta, '.B.')) {
+            // DATA ANGGOTA KEHORMATAN
+            $user = PendaftaranAnggotaKehormatan::select('pendaftaran_anggota_kehormatan.fullname',
+            'pendaftaran_anggota_kehormatan.bidang_pekerjaan',
+            'pendaftaran_anggota_kehormatan.no_kta_kehormatan',
+            'pendaftaran_anggota_kehormatan.tgl_akhir AS date_active',
+            'pendaftaran_anggota_kehormatan.nik',
+            'provinsi.nama AS provinces_name',
+            'kabupaten.nama AS regency_name')
+            ->where('pendaftaran_anggota_kehormatan.no_kta_kehormatan', $request->kta)
+            ->leftjoin('provinsi', 'pendaftaran_anggota_kehormatan.province_id', 'provinsi.kode')
+            ->leftjoin('kabupaten', 'pendaftaran_anggota_kehormatan.regency_id', 'kabupaten.kode')->first();
+        }
+
         if(empty($user)) { \abort(404); }
         // \sleep(3);
         return view('frontend.anggota', compact('user'));

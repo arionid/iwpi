@@ -42,6 +42,10 @@ Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {
 Route::get('/registrasi-anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'registerMember'])->name('register.anggota-kehormatan');
 Route::post('/registrasi-anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'submitRegisterMember'])->name('register.anggota-kehormatan.submit')->middleware('throttle:5,5');
 
+Route::get('download-kta-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'downloadKta'])->name('anggota-kehormatan.download');
+Route::post('download-kta-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'uploadKta'])->name('anggota-kehormatan.upload');
+Route::get('anggota-kehormatan-done/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'registerDone'])->name('anggota-kehormatan.done');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('blog', App\Http\Controllers\BlogController::class);

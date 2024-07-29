@@ -33,10 +33,13 @@
                                                         <a href="#">Konsultasi Gratis</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Litigasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan">Konsultasi Litigasi</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('/') }}#bidang-pelayanan"">Konsultasi Non Litigasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan">Konsultasi Non Litigasi</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('register.anggota-kehormatan') }}#bidang-pelayanan">Anggota Kehormatan</a>
                                                     </li>
                                                 </ul>
                                             </li>
