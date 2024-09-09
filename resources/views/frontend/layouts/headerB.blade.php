@@ -21,7 +21,16 @@
                                     <div class="navbar-wrap main-menu">
                                         <ul class="navigation">
                                             <li><a href="{{ route('/') }}">Beranda</a></li>
-                                            <li><a href="{{ route('about-us') }}">Tentang Kami</a></li>
+                                            <li class="menu-item-has-children"><a href="#">Tentang Kami</a>
+                                                <ul class="sub-menu">
+                                                    <li>
+                                                        <a href="{{ route('arti-logo') }}">Arti Logo IWPI</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('about-us') }}">Struktur Organisasi</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                             <li><a href="{{ route('/') }}#bidang-pelayanan">Bidang Pelayanan</a></li>
                                             <li><a href="{{ route('news') }}">Artikel</a></li>
                                             <li class="menu-item-has-children"><a href="{{ route('/') }}#keanggotaan">Keanggotaan</a>

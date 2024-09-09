@@ -3,26 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\KirimEmailNotifikasiPendaftaranJob;
-use App\Mail\VerifikasiPendaftaranMail;
 use App\Models\AnggotaIWPI;
 use App\Models\Blogs;
 use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
 use App\Models\PendaftaranAnggotaKehormatan;
 use App\Notifications\AnggotaRegisterNotification;
-use App\Rules\ReCaptcha;
 use App\Traits\MidtransTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\validated;
 
 class FrontendController extends Controller
 {
@@ -47,6 +41,11 @@ class FrontendController extends Controller
 
     public function aboutUs() {
         return view('frontend.about-us');
+    }
+
+    public function artiLogo() {
+        return view('frontend.arti-logo');
+        // return view('frontend.yellow-list');
     }
 
     public function news() {
