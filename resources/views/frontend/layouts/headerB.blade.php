@@ -52,10 +52,27 @@
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <li class="menu-item-has-children"><a href="{{ route('yellowlist') }}#keanggotaan">Yellow List</a>
+                                                <ul class="sub-menu">
+                                                    <li>
+                                                        <a href="{{ route('form-pengaduan') }}">Buat Pengaduan</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </div>
                                 </nav>
                             </div>
+                        </div>
+                    </div>
+                    <div class="main-header-three__bottom-right">
+                        <div class="header-btn-box-three">
+                            <a class="thm-btn" href="{{ route('form-pengaduan') }}">
+                                <span class="txt">
+                                    Pengaduan Fiskus
+                                    <i class="icon-next"></i>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>

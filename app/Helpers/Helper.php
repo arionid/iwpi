@@ -5,6 +5,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 
+if( !function_exists("hide_string"))
+{
+   function hide_string(string $string, string $chars = '*', int $length = 4, int $init = 6): string {
+    $stLeng = strlen($string);
+    $roun = round($stLeng * (60 / 100));
+        $getString  = $string;  // String yang akan disensor.
+        $getChars   = $chars;   // Karakter yang akan digunakan.
+        $getLength  = $roun;  // Panjang karakter sensor.
+        $getInit    = $stLeng - $roun;    // Jumlah default karakter sensor.
+        return substr_replace($getString, str_repeat($getChars, (strlen($getString) - $getLength)), $getInit, (strlen($getString) - $getLength));
+      }
+}
+
 if( !function_exists("fNoKTA"))
 {
     function fNoKTA($village_id, $type = 'kehormatan'){

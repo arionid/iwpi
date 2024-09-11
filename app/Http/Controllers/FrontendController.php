@@ -8,14 +8,17 @@ use App\Models\Blogs;
 use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
 use App\Models\PendaftaranAnggotaKehormatan;
+use App\Models\Pengaduan;
+use App\Models\UnitKerjaDjp;
 use App\Notifications\AnggotaRegisterNotification;
 use App\Traits\MidtransTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class FrontendController extends Controller
@@ -429,6 +432,94 @@ class FrontendController extends Controller
 
     public function refreshCaptcha() {
         return response()->json(['captcha'=> captcha_img('flat')]);
+    }
+
+    public function formPengaduan() {
+        $province = DB::table('provinsi')->orderBy('kode', 'ASC')->get();
+        $djp = UnitKerjaDjp::orderBy('id', 'asc')->get();
+        return view('frontend.form-pengaduan', compact('province', 'djp'));
+    }
+
+    public function yellowlist() {
+        $data = Pengaduan::select('pengaduan.*', DB::raw('COUNT(*) as total'))
+        ->where('status', '1')
+        ->groupBy('pengaduan.fullname')->orderBy('id', 'desc')->get();
+        return view('frontend.yellow-list', compact('data'));
+    }
+
+    public function pengaduanYellowList(Request $request) {
+        $validated = $request->validate( [
+            'cp' => 'nullable',
+            'jenis_pengaduan' => 'required',
+            'kategori' => 'required',
+            'kantor' => 'nullable',
+            'unit_djp' => 'nullable',
+            'fullname' => 'required',
+            'nip' => 'nullable',
+            'jabatan' => 'nullable',
+            'gender' => 'nullable',
+            'province_id' => 'required',
+            'regency_id' => 'required',
+            'kronologi' => 'required',
+            'file.*' => 'required|file|mimes:jpg,png,pdf,doc,docx|max:20048',
+        ],[
+            'throttle' => 'Terlalu banyak percobaan gagal, this IP is Susspended from server.',
+            'cp.required' => 'Nomor Kontak Pelapor Harus diisi',
+            'jenis_pengaduan.required' => 'Nomor Jenis Pengaduan Harus diisi',
+            'kategori.required' => 'Nomor Kategori Harus diisi',
+            'nip.required' => 'Nomor KTP Harus diisi',
+            'fullname.required' => 'Data Nama Terlapor tidak Di Ijinkan Kosong',
+            'unit_djp.required' => 'Data Kantor Unit DJP Terlapor tidak Di Ijinkan Kosong',
+            'province_id.required' => 'Data Provinsi tidak Di Ijinkan Kosong',
+            'regency_id.required' => 'Data Kabupaten/KOta tidak Di Ijinkan Kosong',
+            'gender.required' => 'Data Jenis Kelamin tidak Di Ijinkan Kosong',
+            'kronologi.required' => 'Data Kronologi harus di setujui terlebih dahulu.',
+            'agreement_1.required' => 'Data Persyaratan 1 harus di setujui terlebih dahulu.',
+            'captcha.*' => 'Captcha yang di masukkan Tidak Sesuai!'
+        ]);
+
+        if( !$validated )
+        {
+            return back()->withErrors( $validated );
+        }
+
+        if( isset($validated['file']) ){
+            $uploadFile = [];
+            for ($i=0; $i < sizeof($validated['file']); $i++) {
+                $files          =   uploadFile(
+                    'pengaduan', 'dokumen', 'bukti', $validated['file'][$i]
+                 );
+
+                 array_push($uploadFile, $files);
+            }
+        }
+        try {
+            $data = new Pengaduan();
+            $data->pelapor = $validated['cp'];
+            $data->jenis_pengaduan = $validated['jenis_pengaduan'];
+            $data->kategori = $validated['kategori'];
+            $data->kantor = $validated['kantor'] ?? null;
+            $data->unit_djp = $validated['unit_djp'] ?? null;
+            $data->fullname = $validated['fullname'];
+            $data->nip = $validated['nip'] ?? null;
+            $data->jabatan = $validated['jabatan'];
+            $data->gender = $validated['gender'];
+            $data->province_id = $validated['province_id'];
+            $data->regency_id = $validated['regency_id'];
+            $data->kronologi = $validated['kronologi'];
+            $data->files = (isset($uploadFile)) ? json_encode($uploadFile, JSON_UNESCAPED_SLASHES) : null;
+            $data->user_agent = $request->userAgent();
+            $data->ip_client_register = \fGetClientIp();
+            $data->save();
+        } catch (\Throwable $th) {
+            throw $th;
+            Log::error($th);
+        }
+
+        return redirect()->route('form-pengaduan')
+        ->with('success',"Form Pengaduan berhasil dikirimkan, Admin IWPI sedang menverifikasi laporan ini,
+        Perkembangan proses pendaftaran akan di tindak lanjuti melalui <b>Nomor Telepon & Email</b> yang di masukkan sebelumnya.");
+
     }
 
 

@@ -21,5 +21,6 @@
 <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 <style>
 .muter{animation:60s linear infinite animName!important}@keyframes animName{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.header-btn-box-three{position:relative;display:block}.header-btn-box-three .thm-btn:hover,.header-btn-box-three a{color:var(--thm-black)}.header-btn-box-three a.thm-btn:after{background-color:var(--thm-primary)}.header-btn-box-three a.thm-btn:before{background:var(--bs-yellow)}
 </style>
 

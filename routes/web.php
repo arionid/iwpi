@@ -47,6 +47,10 @@ Route::get('download-kta-kehormatan/{id}', [App\Http\Controllers\PendaftaranAngg
 Route::post('download-kta-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'uploadKta'])->name('anggota-kehormatan.upload');
 Route::get('anggota-kehormatan-done/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'registerDone'])->name('anggota-kehormatan.done');
 
+Route::get('pengaduan', [App\Http\Controllers\FrontendController::class, 'formPengaduan'])->name('form-pengaduan');
+Route::post('pengaduan', [App\Http\Controllers\FrontendController::class, 'pengaduanYellowList'])->name('submit-form-pengaduan');
+Route::get('yellow-list', [App\Http\Controllers\FrontendController::class, 'yellowlist'])->name('yellowlist');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('blog', App\Http\Controllers\BlogController::class);
@@ -64,8 +68,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::post('midtrans/request-new-payment-link', [App\Http\Controllers\PendaftaranAnggotaController::class, 'requestNewLinkPayment'])->name('midtrans.request-new-payment-link');
 
 
-Route::get('/anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'index'])->name('anggota-kehormatan.index');
-Route::get('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'show'])->name('anggota-kehormatan.show');
-Route::post('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'destroy'])->name('anggota-kehormatan.destroy');
-Route::get('register-anggota-kehormatan/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'kartuAnggota'])->name('anggota-kehormatan.kartu-anggota');
+    Route::get('/anggota-kehormatan', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'index'])->name('anggota-kehormatan.index');
+    Route::get('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'show'])->name('anggota-kehormatan.show');
+    Route::post('/anggota-kehormatan/{id}', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'destroy'])->name('anggota-kehormatan.destroy');
+    Route::get('register-anggota-kehormatan/kartu/{slug}/download', [App\Http\Controllers\PendaftaranAnggotaKehormatanController::class, 'kartuAnggota'])->name('anggota-kehormatan.kartu-anggota');
+
+
+    Route::resource('pengaduan-yellow-page', App\Http\Controllers\PengaduanController::class);
+    Route::post('pengaduan-yellow-page/status/laporan', [App\Http\Controllers\PengaduanController::class, 'publishStatus'])->name('pengaduan-yellow-page.publish-status');
+
+
 });

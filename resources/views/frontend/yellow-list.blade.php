@@ -87,6 +87,28 @@
         border-radius: 0 !important;
         background: transparent !important;
     }
+    .team-one__single-img .social-share-box {
+    width: 50px;
+    text-align: center;
+    line-height: normal;
+}
+
+    .team-one__single-img .social-share-box span {
+    font-weight: 700;
+}
+
+    .team-one__single-img .social-share-box:hover {
+        border-radius: 15px 15px 0px 0px;
+    background: #fff
+}
+
+.team-one__single-img .social-share-box:hover span {
+    font-weight: 700;
+    transform: unset;
+    color: var(--bs-red)
+}
+
+
 </style>
 @stop
 @section('title', "Yellow List - Ikatan Wajib Pajak Indonesia")
@@ -120,7 +142,7 @@
             </h2>
         </div>
         <div class="text">
-            <p>Data dibawah ini merupakan hasil dari laporan masyarakat melalui form pelaporan Yellow list.<br />
+            <p>Data dibawah ini merupakan hasil dari laporan masyarakat melalui form pelaporan Yellow list di website IWPI<br />
                 Oknum Fiskus / Praktisi yang terdata di list kami, patut untuk menjadi perhatian bagi wajib pajak<br />
                 <b>
                     Jika anda mengalami kendala terkait perpajakan dapat melaporkan kepada kami melaui form degan cara klik
@@ -128,33 +150,28 @@
             </p>
         </div>
         <div class="row mt-5">
-            @for($i = 0; $i < 2; $i++)
+            @foreach ($data->slice(0, 3) as $item)
             <!--Start Single Team One-->
             <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay=".3s">
                 <div class="team-one__single">
                     <div class="team-one__single-img">
-                        <img src="{{ asset('assets/img/icon/icon-man.webp') }}" alt="image">
+                        @if($item->gender == 'Laki-Laki')
+                        <img src="{{ asset('assets/img/icon/icon-man.webp') }}" alt="{{ hide_string($item->fullname, '*',8, 6) }}">
+                        @else
+                        <img src="{{ asset('assets/img/icon/icon-women.webp') }}" alt="{{ hide_string($item->fullname, '*',8, 6) }}">
+                        @endif
+                        {{-- <div class="social-share-box">
+                            <span>{{ sprintf('%02d',$item->total) }} <sup>Laporan</sup></span>
+                        </div> --}}
                     </div>
                     <div class="team-one__single-title">
-                        <h3><a href="#">Stiphen Jhonson</a></h3>
-                        <p>KPP Madya Malang</p>
+                        <h3><a href="#">{{ hide_string($item->fullname, '*',8, 6) }}</a></h3>
+                        <p>@if($item->kategori == 'Fiskus'){{ $item->unit_djp }} @else {{ hide_string($item->kantor) }} @endif</p>
                     </div>
                 </div>
             </div>
             <!--End Single Team One-->
-            <!--Start Single Team One-->
-            <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInDown" data-wow-delay=".3s">
-                <div class="team-one__single">
-                    <div class="team-one__single-img">
-                        <img src="{{ asset('assets/img/icon/icon-women.webp') }}" alt="image">
-                    </div>
-                    <div class="team-one__single-title">
-                        <h3><a href="#">Michle Jhon Doe</a></h3>
-                        <p>KPP Pratama Malang Utara</p>
-                    </div>
-                </div>
-            </div>
-            @endfor
+            @endforeach
             <!--End Single Team One-->
         </div>
     </div>
@@ -168,32 +185,39 @@
                 <h4>List Tabel Yellow List</h4>
             </div>
             <h2>
-                Daftar Lengkap <br>Yellow Page Terlapor...
+                Daftar Lengkap <br>Yellow List Terlapor...
             </h2>
         </div>
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <th scope="col">NIP</th>
+                    <th scope="col">#</th>
                     <th scope="col">Nama Lengkap</th>
                     <th scope="col">Kantor/Jabatan</th>
                     <th scope="col">Kategori</th>
-                    <th scope="col">Keterangan</th>
+                    <th scope="col">Jenis Pengaduan</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($data as $item)
                 <tr scope="row">
                     <td>
-                        1392
+                        {{ $loop->iteration }}
                     </td>
-                    <td><a href="#">James Yates</a></td>
+                    <td><a href="#">{{ hide_string($item->fullname, '*',8, 6) }}</a></td>
                     <td>
-                        Kantor Wilayah DJP Jawa Timur III
-                        <small class="d-block">KPP Madya Malang</small>
+                        @if($item->kategori == 'Fiskus')
+                        {{ $item->unit_djp }}
+                        <small class="d-block">{{ $item->jabatan }}</small>
+                        @else
+                        {{ hide_string($item->kantor) }}
+                        <small class="d-block">{{ $item->jabatan }}</small>
+                        @endif
                     </td>
-                    <td>+63 983 0962 971</td>
-                    <td>FISKUS</td>
+                    <td>{{ $item->kategori }}</td>
+                    <td>{{ $item->jenis_pengaduan }}</td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
