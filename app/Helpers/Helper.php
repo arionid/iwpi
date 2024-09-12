@@ -5,17 +5,48 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 
+if( !function_exists("replaceLastVowel"))
+{
+    function replaceLastVowel(string $string, string $chars = '*', int $length = 4, int $init = 6): string  {
+        // Define the vowels
+        $vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+
+        // Split the input into individual words
+        $words = explode(' ', $string);
+
+        // Iterate over each word
+        foreach ($words as &$word) {
+            // Find the position of the last vowel
+            $lastVowelPos = -1;
+            for ($i = strlen($word) - 1; $i >= 0; $i--) {
+                if (in_array($word[$i], $vowels)) {
+                    $lastVowelPos = $i;
+                    break;
+                }
+            }
+
+            // If a vowel was found, replace it with '*'
+            if ($lastVowelPos !== -1) {
+                $word[$lastVowelPos] = $chars;
+            }
+        }
+
+        // Return the modified string by joining the words back
+        return implode(' ', $words);
+    }
+}
+
 if( !function_exists("hide_string"))
 {
-   function hide_string(string $string, string $chars = '*', int $length = 4, int $init = 6): string {
+    function hide_string(string $string, string $chars = '*', int $length = 4, int $init = 6): string {
     $stLeng = strlen($string);
-    $roun = round($stLeng * (60 / 100));
+    $roun = round($stLeng * (80 / 100));
         $getString  = $string;  // String yang akan disensor.
         $getChars   = $chars;   // Karakter yang akan digunakan.
-        $getLength  = $roun;  // Panjang karakter sensor.
+        $getLength  = round($stLeng * (40 / 100));  // Panjang karakter sensor.
         $getInit    = $stLeng - $roun;    // Jumlah default karakter sensor.
         return substr_replace($getString, str_repeat($getChars, (strlen($getString) - $getLength)), $getInit, (strlen($getString) - $getLength));
-      }
+    }
 }
 
 if( !function_exists("fNoKTA"))

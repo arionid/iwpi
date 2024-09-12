@@ -146,7 +146,7 @@
                 Oknum Fiskus / Praktisi yang terdata di list kami, patut untuk menjadi perhatian bagi wajib pajak<br />
                 <b>
                     Jika anda mengalami kendala terkait perpajakan dapat melaporkan kepada kami melaui form degan cara klik
-                    <a href="" class="fw-bold">disini</a></b>
+                    <a href="{{ route('form-pengaduan') }}" class="fw-bold">disini</a></b>
             </p>
         </div>
         <div class="row mt-5">
@@ -156,17 +156,17 @@
                 <div class="team-one__single">
                     <div class="team-one__single-img">
                         @if($item->gender == 'Laki-Laki')
-                        <img src="{{ asset('assets/img/icon/icon-man.webp') }}" alt="{{ hide_string($item->fullname, '*',8, 6) }}">
+                        <img src="{{ asset('assets/img/icon/icon-man.webp') }}" alt="{{ replaceLastVowel($item->fullname, 'x') }}">
                         @else
-                        <img src="{{ asset('assets/img/icon/icon-women.webp') }}" alt="{{ hide_string($item->fullname, '*',8, 6) }}">
+                        <img src="{{ asset('assets/img/icon/icon-women.webp') }}" alt="{{ replaceLastVowel($item->fullname, 'x') }}">
                         @endif
                         {{-- <div class="social-share-box">
                             <span>{{ sprintf('%02d',$item->total) }} <sup>Laporan</sup></span>
                         </div> --}}
                     </div>
                     <div class="team-one__single-title">
-                        <h3><a href="#">{{ hide_string($item->fullname, '*',8, 6) }}</a></h3>
-                        <p>@if($item->kategori == 'Fiskus'){{ $item->unit_djp }} @else {{ hide_string($item->kantor) }} @endif</p>
+                        <h3><a href="#">{{ replaceLastVowel($item->fullname, 'x') }}</a></h3>
+                        <p>@if($item->kategori == 'Fiskus'){{ $item->unit_djp }} @else {{ replaceLastVowel($item->kantor, 'x') }} @endif</p>
                     </div>
                 </div>
             </div>
@@ -196,6 +196,7 @@
                     <th scope="col">Kantor/Jabatan</th>
                     <th scope="col">Kategori</th>
                     <th scope="col">Jenis Pengaduan</th>
+                    <th scope="col">Pelapor</th>
                 </tr>
             </thead>
             <tbody>
@@ -204,7 +205,7 @@
                     <td>
                         {{ $loop->iteration }}
                     </td>
-                    <td><a href="#">{{ hide_string($item->fullname, '*',8, 6) }}</a></td>
+                    <td><a href="#">{{ replaceLastVowel($item->fullname, 'x') }}</a></td>
                     <td>
                         @if($item->kategori == 'Fiskus')
                         {{ $item->unit_djp }}
@@ -216,6 +217,7 @@
                     </td>
                     <td>{{ $item->kategori }}</td>
                     <td>{{ $item->jenis_pengaduan }}</td>
+                    <td>Wajib Pajak/Kuasa</td>
                 </tr>
                 @endforeach
             </tbody>
