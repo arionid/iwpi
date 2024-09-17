@@ -98,7 +98,7 @@
                     <div class="title-box">
                         <h2>Form Pengaduan <br />Fiskus/Praktisi Pajak</h2>
                         <p>Pengaduan ini merupakan fasilitas untuk menyampaikan keluhan kepada <b class="text-primary">Anggota/ Karyawan/ Oknum/ Pejabat Fiskus/ Praktisi Pajak </b> atas pelayanan pelaksanaan yang tidak sesuai dengan Standar Pelayanan, atau pengabaian kewajiban dan/ atau pelanggaran larangan terkait pelayanan pajak.</p>
-                        <p>*Data Pelapor bersifat rahasia, data yang di inputkan untuk validasi dan menginformasikan perkembangan terkait pengaduan yang disampaikan.</p>
+                        <p>*Data Kontak Pelapor bersifat rahasia, data yang di inputkan untuk validasi dan menginformasikan perkembangan terkait pengaduan yang disampaikan.</p>
                         <p>*Pastikan Seluruh data yang dimasukkan sesuai dengan asli dan dapat di pertanggung jawabkan.</p>
                     </div>
                     @if ($errors->any())
@@ -120,11 +120,30 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label class="form-label text-dark fw-bold">Nama Pelapor<span class="text-danger">*</span></label>
+                                        <input type="text" name="nama_pelapor" placeholder="Nama Pelapor" class="form-control"
+                                            required="" value="{{ old('nama_pelapor') }}" required>
+                                        @if ($errors->has('nama_pelapor'))
+                                        <div class="invalid-feedback">{{ $errors->first('nama_pelapor') }}</div>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label text-dark fw-bold">Peran Pelapor<span class="text-danger">*</span></label>
+                                        <select class="form-select" name="peran_pelapor" required>
+                                            <option value="" selected="">Peran Pelapor Sebagai</option>
+                                            <option {{ old('peran_pelapor') == 'Wajib Pajak' ? "selected" : "" }}>Wajib Pajak</option>
+                                            <option {{ old('peran_pelapor') == 'Kuasa Hukum' ? "selected" : "" }}>Kuasa Hukum</option>
+                                        </select>
+                                        @if ($errors->has('peran_pelapor'))
+                                        <div class="invalid-feedback">{{ $errors->first('peran_pelapor') }}</div>
+                                        @endif
+                                    </div>
+                                    <div class="form-group mt-2">
                                         <label class="form-label text-dark fw-bold">Kontak Pelapor [Email/No Telepon]<span class="text-danger">*</span></label>
-                                        <input type="text" name="cp" placeholder="Nomor Telepon" class="form-control"
-                                            required="" value="{{ old('cp') }}">
-                                        @if ($errors->has('cp'))
-                                        <div class="invalid-feedback">{{ $errors->first('cp') }}</div>
+                                        <input type="text" name="tlp_pelapor" placeholder="Nomor Telepon" class="form-control"
+                                            required="" value="{{ old('tlp_pelapor') }}">
+                                        @if ($errors->has('tlp_pelapor'))
+                                        <div class="invalid-feedback">{{ $errors->first('tlp_pelapor') }}</div>
                                         @endif
                                     </div>
                                 </div>

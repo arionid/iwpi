@@ -163,7 +163,7 @@ class PengaduanController extends Controller
                 unlinkFile($item);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
         $data->delete();
         return redirect()->route('pengaduan-yellow-page.index')

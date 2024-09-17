@@ -82,10 +82,26 @@
                                     </div>
                                 </li>
                                 <li>
+                                    <div class="media"><i data-feather="user"></i>
+                                        <div class="media-body">
+                                            <h5>Nama Pelapor</h5>
+                                            {{ $data->pelapor }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media"><i data-feather="users"></i>
+                                        <div class="media-body">
+                                            <h5>Peran Pelapor</h5>
+                                            {{ $data->peran_pelapor }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
                                     <div class="media"><i data-feather="phone"></i>
                                         <div class="media-body">
                                             <h5>Kontak Pelapor</h5>
-                                            {{ $data->pelapor }}
+                                            {{ $data->tlp_pelapor }}
                                         </div>
                                     </div>
                                 </li>

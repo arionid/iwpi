@@ -36,26 +36,34 @@
     ==========================================
     */
     function dynamicCurrentMenuClass(selector) {
-        let FileName = window.location.href.split('/').reverse()[0];
+        let currentUrl = window.location.href; // Full URL including fragment
+        let currentPath = window.location.pathname; // Path portion of the URL
+        let currentFragment = window.location.hash; // Fragment portion (e.g., #bidang-pelayanan)
 
         selector.find('li').each(function () {
             let anchor = $(this).find('a');
-            if ($(anchor).attr('href') == FileName) {
+            let anchorHref = $(anchor).attr('href');
+            // Handle external links and internal links with or without fragments
+            if (
+                currentUrl === anchorHref || // Exact match for full URL (including fragment)
+                (anchorHref.startsWith('/') && currentPath === anchorHref.split('#')[0] && currentFragment === anchorHref.split('#')[1]) // Match path and fragment
+            ) {
                 $(this).addClass('active');
             }
         });
-        // if any li has .current elmnt add class
+
+        // Add 'active' class to parent 'li' elements if any child has it
         selector.children('li').each(function () {
             if ($(this).find('.active').length) {
                 $(this).addClass('active');
             }
         });
-        // if no file name return
-        if ('' == FileName) {
+
+        // Add 'active' class to the first menu item if no specific match found
+        if ((currentPath === '/' && !currentFragment) || currentUrl === '') {
             selector.find('li').eq(0).addClass('active');
         }
     }
-
     // dynamic current class
     let mainNavUL = $('.menu-nav').find('.navigation');
     dynamicCurrentMenuClass(mainNavUL);

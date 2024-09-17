@@ -449,7 +449,9 @@ class FrontendController extends Controller
 
     public function pengaduanYellowList(Request $request) {
         $validated = $request->validate( [
-            'cp' => 'nullable',
+            'nama_pelapor' => 'nullable',
+            'peran_pelapor' => 'nullable',
+            'tlp_pelapor' => 'nullable',
             'jenis_pengaduan' => 'required',
             'kategori' => 'required',
             'kantor' => 'nullable',
@@ -464,7 +466,9 @@ class FrontendController extends Controller
             'file.*' => 'required|file|mimes:jpg,png,pdf,doc,docx|max:20048',
         ],[
             'throttle' => 'Terlalu banyak percobaan gagal, this IP is Susspended from server.',
-            'cp.required' => 'Nomor Kontak Pelapor Harus diisi',
+            'nama_pelapor.required' => 'Nama Kontak Pelapor Harus diisi',
+            'peran_pelapor.required' => 'Peran Kontak Pelapor Harus diisi',
+            'tlp_pelapor.required' => 'Telepon Pelapor Harus diisi',
             'jenis_pengaduan.required' => 'Nomor Jenis Pengaduan Harus diisi',
             'kategori.required' => 'Nomor Kategori Harus diisi',
             'nip.required' => 'Nomor KTP Harus diisi',
@@ -495,7 +499,9 @@ class FrontendController extends Controller
         }
         try {
             $data = new Pengaduan();
-            $data->pelapor = $validated['cp'];
+            $data->pelapor = $validated['nama_pelapor'];
+            $data->peran_pelapor = $validated['peran_pelapor'];
+            $data->tlp_pelapor = $validated['tlp_pelapor'];
             $data->jenis_pengaduan = $validated['jenis_pengaduan'];
             $data->kategori = $validated['kategori'];
             $data->kantor = $validated['kantor'] ?? null;

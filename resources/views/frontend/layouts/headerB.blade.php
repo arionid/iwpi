@@ -52,13 +52,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li class="menu-item-has-children"><a href="{{ route('yellowlist') }}">Yellow List</a>
-                                                <ul class="sub-menu">
-                                                    <li>
-                                                        <a href="{{ route('form-pengaduan') }}">Buat Pengaduan</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
+                                            <li><a href="{{ route('yellowlist') }}">Yellow List</a></li>
                                         </ul>
                                     </div>
                                 </nav>
