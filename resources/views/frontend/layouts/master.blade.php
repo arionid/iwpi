@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +19,7 @@
     @include('frontend.layouts.css')
     @yield('style')
 </head>
+
 <body class="body-white-bg">
     <!-- preloader -->
     <div id="preloader">
@@ -97,7 +99,7 @@
                                 <span class="icon-mail-inbox-app"></span>
                             </div>
                             <div class="text">
-                                <p><a href="mailto:admin@iwpi.com">admin@iwpi.com</a></p>
+                                <p><a href="mailto:admin@iwpi.com">admin@iwpi.info</a></p>
                             </div>
                         </div>
                     </div>
@@ -127,4 +129,5 @@
     @include('frontend.layouts.script')
     @yield('footer-script')
 </body>
+
 </html>
