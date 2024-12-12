@@ -245,7 +245,7 @@
                                 </ul>
                             </div>
                             <div class="m-t-15 btn-group">
-                                @if (in_array($user->payment_detail->status, ['deny', 'expired', 'cancel']) || empty($user->payment_detail->status))
+                                @if (in_array($user->payment_detail->status, ['deny', 'expired', 'cancel']) || empty($user->payment_detail->status) || $user->status == 'Link Pembayaran Expired')
                                     <a class="btn btn-block btn-info" href="javascript:void();" onclick="newrequest({{ $user->payment_detail->id }})">
                                         <i class="fa fa-check-square me-1"></i>Request Link Pembayaran
                                     </a>
@@ -289,13 +289,13 @@
                                     <li>Tempat Tanggal Lahir <span
                                             class="font-primary">{{ $user->city_born .
                                                 '
-                                                                                    ' .
+                                                                                                                                                                            ' .
                                                 \Carbon\Carbon::parse($user->born)->format('d/m/Y') }}</span>
                                     </li>
                                     <li>Usia <span
                                             class="font-primary">{{ \Carbon\Carbon::parse($user->born)->diff(\Carbon\Carbon::now())->format('%y
-                                                                                    Tahun,
-                                                                                    %m Bulan and %d Hari') }}</span>
+                                                                                                                                                                            Tahun,
+                                                                                                                                                                            %m Bulan and %d Hari') }}</span>
                                     </li>
                                     <li>Alamat KTP<span class="font-primary"> <span>{!! $user->address !!}</span></li>
                                     <li>Provinsi<span class="font-primary">{{ $user->provinces_name }}</span></li>
