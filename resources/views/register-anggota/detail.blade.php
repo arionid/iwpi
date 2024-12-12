@@ -286,16 +286,10 @@
                                     <li>Perusahaan / Perseorangan <span class="font-primary">{{ $user->perusahaan ?? 'Perseorangan' }}</span></li>
                                     <li>Jenis Kelamin <span class="font-primary">{{ $user->gender }}</span></li>
                                     <li>Status Perkawinan <span class="font-primary">{{ $user->perkawinan }}</span></li>
-                                    <li>Tempat Tanggal Lahir <span
-                                            class="font-primary">{{ $user->city_born .
-                                                '
-                                                                                                                                                                            ' .
-                                                \Carbon\Carbon::parse($user->born)->format('d/m/Y') }}</span>
+                                    <li>Tempat Tanggal Lahir <span class="font-primary">{{ $user->city_born . ' ' . \Carbon\Carbon::parse($user->born)->format('d/m/Y') }}</span>
                                     </li>
                                     <li>Usia <span
-                                            class="font-primary">{{ \Carbon\Carbon::parse($user->born)->diff(\Carbon\Carbon::now())->format('%y
-                                                                                                                                                                            Tahun,
-                                                                                                                                                                            %m Bulan and %d Hari') }}</span>
+                                            class="font-primary">{{ \Carbon\Carbon::parse($user->born)->diff(\Carbon\Carbon::now())->format('%y Tahun, %m Bulan and %d Hari') }}</span>
                                     </li>
                                     <li>Alamat KTP<span class="font-primary"> <span>{!! $user->address !!}</span></li>
                                     <li>Provinsi<span class="font-primary">{{ $user->provinces_name }}</span></li>
