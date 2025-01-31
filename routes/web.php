@@ -34,7 +34,7 @@ Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::c
 Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
 
 Route::get('/SayembaraIlmiah',function() {
-    if(Carbon::today() > Carbon::parse('2025-02-28')){
+    if(Carbon::now()->greaterThan(Carbon::parse('2025-02-28'))){
         abort(404);
     }
     return redirect()->away('https://forms.gle/zUYZ8Aq3sg8DQUFj8');
