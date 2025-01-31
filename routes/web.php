@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,13 @@ Route::get('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::cl
 Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'submitKonfirmasiPembayaran'])->name('konfirmasi-pembayaran.submit')->middleware('throttle:5,5');
 
 Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
+
+Route::get('/SayembaraIlmiah',function() {
+    if(Carbon::today() > Carbon::parse('2025-02-28')){
+        abort(404);
+    }
+    return redirect()->away('https://forms.gle/zUYZ8Aq3sg8DQUFj8');
+});
 // payment gateway midtrans system
 
 Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {
