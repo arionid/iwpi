@@ -1,8 +1,8 @@
- <!--Start Main Header One -->
- <header class="main-header main-header-two">
+<!--Start Main Header One -->
+<header class="main-header main-header-two">
     <div class="main-header-two__bottom">
         <div id="sticky-header" class="menu-area">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="main-header-two__bottom-inner">
                     <div class="main-header-two__bottom-left">
                         <div class="logo-box-one">
@@ -53,6 +53,7 @@
                                                 </ul>
                                             </li>
                                             <li><a href="{{ route('yellowlist') }}">Yellow List</a></li>
+                                            <li><a href="{{ route('frontend.download') }}">Download</a></li>
                                         </ul>
                                     </div>
                                 </nav>
@@ -85,7 +86,6 @@
                 </a>
             </div>
             <div class="menu-outer">
-                <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
             </div>
             <div class="contact-info">
                 <div class="icon-box"><span class="icon-phone-call"></span>

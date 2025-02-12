@@ -32,7 +32,7 @@
     </div>
     <div class="main-header-three__bottom">
         <div id="sticky-header" class="menu-area">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="main-header-three__bottom-inner">
                     <div class="main-header-three__bottom-left">
                         <div class="logo-box-one">
@@ -72,7 +72,7 @@
                                                         <a href="#">Konsultasi Gratis</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('/') }}#bidang-pelayanan" >Konsultasi Litigasi</a>
+                                                        <a href="{{ route('/') }}#bidang-pelayanan">Konsultasi Litigasi</a>
                                                     </li>
                                                     <li>
                                                         <a href="{{ route('/') }}#bidang-pelayanan">Konsultasi Non Litigasi</a>
@@ -89,6 +89,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <li><a href="{{ route('frontend.download') }}">Download</a></li>
                                         </ul>
                                     </div>
                                 </nav>

@@ -31,6 +31,7 @@ Route::get('cara-pembayaran', [App\Http\Controllers\FrontendController::class, '
 Route::get('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran');
 Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::class, 'submitKonfirmasiPembayaran'])->name('konfirmasi-pembayaran.submit')->middleware('throttle:5,5');
 
+Route::get('/download', [App\Http\Controllers\FrontendController::class, 'download'])->name('frontend.download');
 Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
 
 Route::get('/SayembaraIlmiah',function() {
