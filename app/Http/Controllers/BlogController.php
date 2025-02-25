@@ -68,14 +68,14 @@ class BlogController extends Controller
             $blog->excerpt  = (isset($request->excerpt)) ? $request->excerpt : Str::limit(strip_tags($validated['content']), 155);
             $blog->content  = $validated['content'];
             $blog->featured_img = (isset($featured_img)) ? $featured_img : null;
-            // $blog->status       = $validated[''];
+            $blog->status       = $request->status;
             $blog->type         = $validated['type'];
             $blog->meta_title   = (isset($request->meta_title)) ? $request->meta_title : Str::limit($validated['title'], 55);
             $blog->meta_description     = (isset($request->meta_description)) ? Str::limit($request->meta_description, 160) : Str::limit(strip_tags($validated['content']), 155);
             $blog->meta_image   = (isset($featured_img)) ? $featured_img : null;
             // $blog->tag  = $validated[''];
             $blog->categories_id   = $validated['categories'];
-            $blog->published_at = Carbon::now();
+            $blog->published_at = $request->published_at ?? Carbon::now();
             $blog->author_id = Auth::id();
             /* if( isset($validated['featured_img']) )
                 $blog->addMedia($validated['featured_img'])
@@ -87,7 +87,7 @@ class BlogController extends Controller
 
         } catch (\Throwable $th) {
             // throw $th;
-            \Log::emergency($th);
+            Log::emergency($th);
         }
         return redirect()->route('blog.index')->with('success',"Artikel <b>".$validated['title']."</b> berhasil ditambahkan.");
     }
@@ -164,13 +164,13 @@ class BlogController extends Controller
             $blog->meta_image   = (isset($featured_img)) ? $featured_img : $blog->featured_img;
             // $blog->tag  = $validated[''];
             $blog->categories_id   = $validated['categories'];
-            $blog->published_at = Carbon::now();
+            $blog->published_at = $request->published_at ?? Carbon::now();
             $blog->author_id = Auth::id();
 
             $blog->save();
         } catch (\Throwable $th) {
             // throw $th;
-            \Log::emergency($th);
+            Log::emergency($th);
         }
         return redirect()->route('blog.index')->with('success',"Artikel <b>".$validated['title']."</b> berhasil diperbaruhi.");
     }

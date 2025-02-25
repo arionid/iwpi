@@ -57,7 +57,7 @@ class MemberUpdate extends Command
                 'status'    => 'Pembayaran Valid',
                 'tgl_mulai' => Carbon::now(),
                 'tgl_akhir' => Carbon::now()->addYear(),
-                'keterangan'    => "Midtrans Manual Update",
+                'keterangan'    => "Manual Update",
                 'updated_at' => Carbon::now(),
             ]);
 

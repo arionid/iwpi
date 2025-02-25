@@ -32,6 +32,7 @@ class FrontendController extends Controller
         ->with(["author" => function($query){
             $query->select('name','id');
             }])
+        ->where('status', 1)
         // ->whereIn('id', [82, 84, 86])
         ->limit(3)
         ->get();
@@ -59,6 +60,7 @@ class FrontendController extends Controller
             ->with(["author" => function($query){
                 $query->select('name','id');
                 }])
+            ->where('status', 1)
             ->latest()->limit(5)->get();
         });
 
@@ -69,6 +71,7 @@ class FrontendController extends Controller
         ->with(["author" => function($query){
             $query->select('name','id');
             }])
+        ->where('status', 1)
         ->latest()
         ->paginate(5);
 
@@ -87,7 +90,7 @@ class FrontendController extends Controller
             ->with(["author" => function($query){
                 $query->select('name','id');
                 }])
-            ->where([['slug', $slug]])
+            ->where([['slug', $slug],['status', 1]])
             ->first();
         });
 
@@ -114,7 +117,7 @@ class FrontendController extends Controller
 
     public function registerMember()
     {
-        $province = \DB::table('provinsi')->orderBy('kode', 'ASC')->get();
+        $province = DB::table('provinsi')->orderBy('kode', 'ASC')->get();
         return view('frontend.register-member', compact('province'));
     }
 
@@ -249,7 +252,7 @@ class FrontendController extends Controller
             return redirect()->away($midtrans->payment_url);
         } catch (\Throwable $th) {
             throw $th;
-            \Log::error("Notifikasi Telegram Error");
+            Log::error("Notifikasi Telegram Error");
         }
         return redirect()->route('register.member')
         ->with('nominal', $nominalLayanan)
@@ -423,7 +426,7 @@ class FrontendController extends Controller
                         ->notify(new AnggotaRegisterNotification($notifyParam));
         } catch (\Throwable $th) {
             // throw $th;
-            \Log::error("Notifikasi Telegram Error");
+            Log::error("Notifikasi Telegram Error");
         }
         \sleep(3);
 

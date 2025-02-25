@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        // Commands\BloggerCommand::class,
+        // Commands\SitemapCommand::class,
     ];
 
     /**
@@ -25,6 +26,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('blogger:automation')
+        ->everyThirtyMinutes()
+        ->timezone('Asia/Jakarta')
+        ->between('6:00', '18:00')
+        ->withoutOverlapping();
+
+        $schedule->command('generate:sitemap')
+        ->dailyAt('07:00')
+        ->timezone('Asia/Jakarta')
+        ->withoutOverlapping();
     }
 
     /**
