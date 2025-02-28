@@ -35,7 +35,7 @@ Route::get('/download', [App\Http\Controllers\FrontendController::class, 'downlo
 Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
 
 Route::get('/SayembaraIlmiah',function() {
-    if(Carbon::now()->greaterThan(Carbon::parse('2025-02-28'))){
+    if(Carbon::now()->greaterThan(Carbon::parse('2025-03-01'))){
         abort(404);
     }
     return redirect()->away('https://forms.gle/zUYZ8Aq3sg8DQUFj8');
