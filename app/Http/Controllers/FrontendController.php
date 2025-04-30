@@ -543,6 +543,11 @@ class FrontendController extends Controller
                 'name' => 'Keterangan Tertulis - Implementasi Coretax DJP',
                 'loc'   => 'document-download/keterangan-tertulis-implementasi-coretax-djp.pdf',
                 'type'  => 'pdf'
+            ],
+            [
+                'name' => 'Surat Edaran Ketua Umum',
+                'loc'   => 'document-download/se-iwpipenyikapan-skp-dan-stp.pdf',
+                'type'  => 'pdf'
             ]
             );
         return view('frontend.listdownload', compact('document'));
