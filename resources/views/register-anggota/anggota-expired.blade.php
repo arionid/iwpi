@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Register Anggota')
+@section('title', 'Data Anggota Expired')
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('adm-assets/css/vendors/datatables.css') }}">
@@ -14,7 +14,7 @@
 
 @section('breadcrumb-items')
     <li class="breadcrumb-item">Data Anggota</li>
-    <li class="breadcrumb-item active">List Register Anggota</li>
+    <li class="breadcrumb-item active">Anggota Expired</li>
 @endsection
 
 @section('content')
@@ -67,7 +67,8 @@
                     "url": "{{ route('register-anggota.dataJson') }}",
                     "type": "POST",
                     "data": {
-                        "_token": "{{ csrf_token() }}"
+                        "_token": "{{ csrf_token() }}",
+                        'category': 'overdue'
                     },
                     "dataType": "JSON"
                 },

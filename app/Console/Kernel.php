@@ -36,6 +36,11 @@ class Kernel extends ConsoleKernel
         ->dailyAt('07:00')
         ->timezone('Asia/Jakarta')
         ->withoutOverlapping();
+
+        $schedule->command('membership:update')
+        ->dailyAt('09:00')
+        ->timezone('Asia/Jakarta')
+        ->withoutOverlapping();
     }
 
     /**

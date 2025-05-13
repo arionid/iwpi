@@ -1,8 +1,9 @@
 <?php
 
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 
 if( !function_exists("replaceLastVowel"))
@@ -197,7 +198,7 @@ if( !function_exists("fUserStatus"))
     function fUserStatus(string $status): string
     {
 
-        switch (\Str::lower($status)) {
+        switch (Str::lower($status)) {
             case 'waiting':
                 $badge = 'badge-light-warning';
                 break;
@@ -212,6 +213,7 @@ if( !function_exists("fUserStatus"))
                 break;
 
             case 'overdue':
+                $status = "Member Overdue";
                 $badge = 'badge-light-primary';
                 break;
 

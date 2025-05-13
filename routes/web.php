@@ -34,12 +34,6 @@ Route::post('konfirmasi-pembayaran', [App\Http\Controllers\FrontendController::c
 Route::get('/download', [App\Http\Controllers\FrontendController::class, 'download'])->name('frontend.download');
 Route::get('/privacy-policy', [App\Http\Controllers\FrontendController::class, 'privacyPolicy']);
 
-Route::get('/SayembaraIlmiah',function() {
-    if(Carbon::now()->greaterThan(Carbon::parse('2025-03-01'))){
-        abort(404);
-    }
-    return redirect()->away('https://forms.gle/zUYZ8Aq3sg8DQUFj8');
-});
 // payment gateway midtrans system
 
 Route::group(['prefix' => 'reg', 'name' => 'midtrans'], function () {
@@ -73,6 +67,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::resource('management-user', App\Http\Controllers\UserController::class);
     Route::get('profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::match(['put', 'patch'], 'myprofile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('myprofile.update');
+    Route::get('anggota-expired', [App\Http\Controllers\PendaftaranAnggotaController::class, 'AnggotaExpired'])->name('register-anggota.expired');
+    Route::post('register-anggota/json/datajson', [App\Http\Controllers\PendaftaranAnggotaController::class, 'dataJson'])->name('register-anggota.dataJson');
 
     Route::post('midtrans/request-new-payment-link', [App\Http\Controllers\PendaftaranAnggotaController::class, 'requestNewLinkPayment'])->name('midtrans.request-new-payment-link');
 

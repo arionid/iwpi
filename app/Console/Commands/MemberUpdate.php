@@ -43,10 +43,12 @@ class MemberUpdate extends Command
     {
 
         $memberId = $this->option('id') ?? false;
-        if(!$memberId){ return "error"; }
+        if(!$memberId){
+            fLogs('member id empty','i');
+            return false;
+        }
 
         try {
-
             $pendaftaran = PendaftaranAnggota::where([['id',$memberId],['status','!=', 'Approve']])
             ->orderBy('id', 'desc')->first();
             if(!$pendaftaran) {

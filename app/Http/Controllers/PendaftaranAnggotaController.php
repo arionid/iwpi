@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -33,6 +34,11 @@ class PendaftaranAnggotaController extends Controller
         ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
         ->orderBy('id', 'desc')->get();
         return view('register-anggota.index', compact('data'));
+    }
+
+    public function AnggotaExpired()
+    {
+        return view('register-anggota.anggota-expired');
     }
 
     /**
@@ -95,7 +101,7 @@ class PendaftaranAnggotaController extends Controller
             \abort(404);
 
         $province =  Cache::remember('dt_province', now()->addYear(1), function () {
-            return \DB::table('provinsi')->orderBy('kode', 'ASC')->get();
+            return DB::table('provinsi')->orderBy('kode', 'ASC')->get();
             });
 
         return view('register-anggota.edit', compact('user'))->with([
@@ -229,7 +235,7 @@ class PendaftaranAnggotaController extends Controller
         }
 
         try {
-            $data->status = \Str::title($request->status);
+            $data->status = Str::title($request->status);
             $data->date_active = Carbon::now()->addYear();
             $data->save();
 
@@ -284,5 +290,105 @@ class PendaftaranAnggotaController extends Controller
 
         return redirect()->route('register-anggota.show', $request->user_id)
         ->with('success',"Link pembayaran baru midtrans telah berhasil dibuat, kirimkan link yang tertera kepada kontak anggota tersebut.");
+    }
+
+
+
+    public function dataJson(Request $request)
+    {
+        $columns = [
+            0 => 'id',
+            1 => 'fullname',
+            2 => 'npwp',
+            3 => 'layanan',
+            4 => 'phone',
+            5 => 'provinsi_nama',
+            6 => 'status',
+            7 => 'created_at',
+        ];
+
+        $db = PendaftaranAnggota::select('pendaftaran_anggota.*', 'anggota_iwpi.layanan', 'provinsi.nama as provinsi_nama', 'anggota_iwpi.status as status_pembayaran')
+                ->leftjoin('provinsi', 'pendaftaran_anggota.province_id', 'provinsi.kode')
+                ->leftjoin('anggota_iwpi', 'pendaftaran_anggota.id', 'anggota_iwpi.pendaftaran_id');
+
+        if($request->category == 'overdue'){
+            $db =$db->where(function($q) {
+                    $q->where('pendaftaran_anggota.date_active', '<', Carbon::now())
+                    ->orWhere('pendaftaran_anggota.status', 'Overdue');
+                });
+                // ->where([['pendaftaran_anggota.date_active', '<', Carbon::now()], ['pendaftaran_anggota.status', 'Overdue']]);
+        }
+
+        $totalData = $db->count();
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+
+
+        if (empty($request->input('search.value'))) {
+            $database = $db->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
+            $totalFiltered = $totalData;
+        } else {
+            $search = $request->input('search.value');
+            $query = $db->where(function($q) use ($search) {
+                $q->where('fullname', 'like', "%{$search}%")
+                    ->orWhere('npwp', 'like', "%{$search}%")
+                    ->orWhere('anggota_iwpi.layanan', 'like', "%{$search}%")
+                    ->orWhere('pendaftaran_anggota.status', 'like', "%{$search}%")
+                    ->orWhere('provinsi.nama', 'like', "%{$search}%");
+            });
+
+            $database = $query->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order, $dir)
+                            ->get();
+            $totalFiltered = $query->count();
+        }
+
+        $data = [];
+
+        if ($database) {
+            foreach ($database as $item) {
+
+                if($item->status_pembayaran == 'Menunggu Validasi') {
+                    $status  = '<span class="badge badge-light-danger">Menunggu Validasi Pembayaran</span>';
+                }elseif($item->status == 'Waiting') {
+                    $status  = '<span class="badge badge-light-info">Menunggu Pembayaran</span>';
+                }else{
+                    $status = ''.fUserStatus($item->status).'';
+                }
+
+                $nestedData['i'] = '';
+                $nestedData['fullname'] = $item->fullname;
+                $nestedData['npwp'] = $item->npwp;
+                $nestedData['layanan'] = $item->layanan;
+                $nestedData['phone'] = '<a href="//wa.me/'.fWaNumber($item->phone).'" class="text-success"><i class="fa fa-whatsapp me-1"></i>'.$item->phone.'</a>';
+                $nestedData['provinsi_nama'] = $item->provinsi_nama;
+
+                $nestedData['status'] = $status;
+                $nestedData['date_active'] = Carbon::parse($item->date_active)->format('Y/m/d');
+                $nestedData['action'] = '<ul class="action"><li class="fw-bold me-2 edit"><a href="'.route('register-anggota.edit', $item->id).'" data-bs-original-title="" title=""><i
+class="icon-pencil"></i></a></li><li><a href="'.route('register-anggota.show', $item->id).'" data-bs-original-title="" title="Lihat Data"><i
+class="icon-write"></i></a></li></ul>';
+
+                $data[] = $nestedData;
+            }
+        }
+
+        $json_data = [
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => intval($totalData),
+            'recordsFiltered' => intval($totalFiltered),
+            'data' => $data,
+        ];
+
+        $json_data = json_encode($json_data);
+
+        return response($json_data);
     }
 }
