@@ -548,6 +548,11 @@ class FrontendController extends Controller
                 'name' => 'Surat Edaran Ketua Umum',
                 'loc'   => 'document-download/se-iwpipenyikapan-skp-dan-stp.pdf',
                 'type'  => 'pdf'
+            ],
+            [
+                'name' => 'Nota Dinas Perekaman Audio',
+                'loc'   => 'document-download/nd-016-iwpi-nd-xii-2024.pdf',
+                'type'  => 'pdf'
             ]
             );
         return view('frontend.listdownload', compact('document'));
