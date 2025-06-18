@@ -553,6 +553,11 @@ class FrontendController extends Controller
                 'name' => 'Nota Dinas Perekaman Audio',
                 'loc'   => 'document-download/nd-016-iwpi-nd-xii-2024.pdf',
                 'type'  => 'pdf'
+            ],
+            [
+                'name' => 'Surat Edaran - Verifikasi Identitas & Legalitas',
+                'loc'   => 'document-download/se-056-iwpi-verifikasi-identitas.pdf',
+                'type'  => 'pdf'
             ]
             );
         return view('frontend.listdownload', compact('document'));
