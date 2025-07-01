@@ -44,14 +44,6 @@
                             </ul>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
-                            <i data-feather="user"></i>
-                            <span>Management User</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('management-user.index') }}">List Users</a></li>
-                            <li><a href="{{ route('management-user.create') }}">Add User</a></li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
                             <i data-feather="target" class="text-danger"></i>
                             <span>Data Pengaduan</span></a>
                         <ul class="sidebar-submenu">
@@ -63,6 +55,24 @@
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title fw-bold" href="https://dashboard.midtrans.com/" target="_blank">
                             <i data-feather="radio" class="text-primary"></i>
                             <span>Dashboard Midtrans</span></a>
+                    </li>
+
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+                            <i data-feather="file"></i>
+                            <span>Menu Download</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('menu-download.index') }}">List Data</a></li>
+                            <li><a href="{{ route('menu-download.create') }}">Add Data</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+                            <i data-feather="user"></i>
+                            <span>Management User</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('management-user.index') }}">List Users</a></li>
+                            <li><a href="{{ route('management-user.create') }}">Add User</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>

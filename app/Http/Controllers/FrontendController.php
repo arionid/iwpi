@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\KirimEmailNotifikasiPendaftaranJob;
 use App\Models\AnggotaIWPI;
 use App\Models\Blogs;
+use App\Models\MenuDownload;
 use App\Models\PaymentDetail;
 use App\Models\PendaftaranAnggota;
 use App\Models\PendaftaranAnggotaKehormatan;
@@ -533,33 +534,8 @@ class FrontendController extends Controller
 
     public function download()
     {
-        $document = array(
-            [
-                'name' => 'Format Surat Pemberitahuan Kendala Core Tax',
-                'loc'   => 'document-download/format-surat-pemberitahuan-kendala-core-tax.docx',
-                'type'  => 'word'
-            ],
-            [
-                'name' => 'Keterangan Tertulis - Implementasi Coretax DJP',
-                'loc'   => 'document-download/keterangan-tertulis-implementasi-coretax-djp.pdf',
-                'type'  => 'pdf'
-            ],
-            [
-                'name' => 'Surat Edaran Ketua Umum',
-                'loc'   => 'document-download/se-iwpipenyikapan-skp-dan-stp.pdf',
-                'type'  => 'pdf'
-            ],
-            [
-                'name' => 'Nota Dinas Perekaman Audio',
-                'loc'   => 'document-download/nd-016-iwpi-nd-xii-2024.pdf',
-                'type'  => 'pdf'
-            ],
-            [
-                'name' => 'Surat Edaran - Verifikasi Identitas & Legalitas',
-                'loc'   => 'document-download/se-056-iwpi-verifikasi-identitas.pdf',
-                'type'  => 'pdf'
-            ]
-            );
+        $document = MenuDownload::where('status', 1)->orderBy('id', 'desc')->get();
+
         return view('frontend.listdownload', compact('document'));
     }
 

@@ -129,30 +129,30 @@
                                             @foreach ($document as $item)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item['name'] }}</td>
+                                                    <td>{{ $item->nama }}</td>
                                                     <td class="text-lowercase">
-                                                        @if ($item['type'] == 'word')
+                                                        @if ($item->jenis == 'docx' || $item->jenis == 'doc')
                                                             <i class="fa fa-file-word me-1 text-primary"></i>
-                                                        @elseif($item['type'] == 'pdf')
+                                                        @elseif($item->jenis == 'pdf')
                                                             <i class="fa fa-file-pdf me-1 text-danger"></i>
-                                                        @elseif($item['type'] == 'zip')
+                                                        @elseif($item->jenis == 'zip')
                                                             <i class="fa fa-file-zipper me-1"></i>
-                                                        @elseif($item['type'] == 'image')
+                                                        @elseif($item->jenis == 'jpg')
                                                             <i class="fa fa-image me-1"></i>
-                                                        @elseif($item['type'] == 'video')
+                                                        @elseif($item->jenis == 'mp4')
                                                             <i class="fa fa-file-video me-1"></i>
-                                                        @elseif($item['type'] == 'audio')
+                                                        @elseif($item->jenis == 'mp3')
                                                             <i class="fa fa-file-audio me-1"></i>
                                                         @else
                                                             <i class="fa fa-file me-1"></i>
                                                         @endif
-                                                        {{ $item['type'] }}
+                                                        {{ $item->jenis }}
                                                     </td>
-                                                    <td><a href="{{ asset('/uploads/' . $item['loc']) }}" target="_blank" class="btn btn-sm btn-default fw-bold"><i
+                                                    <td class="text-center"><a href="{{ asset('/uploads/' . $item->file) }}" target="_blank" class="btn btn-sm btn-default fw-bold"><i
                                                                 class="fa fa-download"></i>
                                                             Unduh Dokumen</a>
                                                     </td>
-                                                    <td>-</td>
+                                                    <td>{!! $item->keterangan ?? '-' !!}</td>
                                                 </tr>
                                             @endforeach
 
@@ -167,58 +167,4 @@
     </section>
     <!--End Contact Page-->
 
-@endsection
-@section('footer-script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha256-yE5LLp5HSQ/z+hJeCqkz9hdjNkk1jaiGG0tDCraumnA=" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-
-        function enableBtn() {
-            const submitButton = document.getElementById("btn-submit");
-            submitButton.removeAttribute("disabled");
-        }
-
-        function removeOptions(selectbox, judul) {
-            var i;
-            for (i = selectbox.options.length - 1; i >= 0; i--) {
-                selectbox.remove(i);
-            }
-            option = document.createElement('option');
-            option.text = judul;
-            option.disabled = true;
-            selectbox.add(option);
-        }
-        $('#in_province_id').change(function() {
-            var prov = document.getElementById("in_province_id").value;
-            $.ajax({
-                type: 'POST',
-                url: "{{ config('nnd.link-online') . '/list-region' }}",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "id": prov,
-                    "category": 'regency'
-                },
-                success: function(data) {
-                    select = document.getElementById('in_regency_id');
-                    removeOptions(select, 'Pilih Kota/Kabupaten');
-                    $.each(data, function(index, data) {
-                        option = document.createElement('option');
-                        option.value = data.kode;
-                        option.text = data.nama;
-                        select.selectedIndex = "0";
-                        select.add(option);
-                    });
-                }
-            });
-
-            $("#in_regency_id").focus();
-            $('#in_regency_id').prop('disabled', false);
-            document.getElementById('in_regency_id').selectedIndex = "1";
-        });
-    </script>
 @endsection

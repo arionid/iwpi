@@ -82,5 +82,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function () {
     Route::resource('pengaduan-yellow-page', App\Http\Controllers\PengaduanController::class);
     Route::post('pengaduan-yellow-page/status/laporan', [App\Http\Controllers\PengaduanController::class, 'publishStatus'])->name('pengaduan-yellow-page.publish-status');
 
+    Route::resource('menu-download', App\Http\Controllers\MenuDownloadController::class);
+
 
 });
