@@ -22,7 +22,7 @@ class AnggotaMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:update';
+    protected $signature = 'membership:update  {--resend=}';
 
     /**
      * The console command description.
@@ -48,11 +48,18 @@ class AnggotaMembership extends Command
      */
     public function handle()
     {
+
         $today = Carbon::now()->format('Y-m-d');
         $anggotaIwpi =AnggotaIWPI::where('status', '!=', 'Menunggu Pembayaran')->whereDate('tgl_akhir', '<=', $today)->get();
-        //  $anggotaIwpi =AnggotaIWPI::where('pendaftaran_id','27')->get();
 
         foreach ($anggotaIwpi as $item) {
+
+            if($this->option('resend')){
+                fLogs('Resend whatsapp to '.$item->nomor_anggota, 'i');
+                $this->resendWA($item->pendaftaran_id);
+                continue;
+            }
+
             // MOVE DATA TO HISTORY DATA
             $checking = HistoryMembership::where([
                 ['anggota_id', $item->pendaftaran_id],
@@ -115,5 +122,12 @@ class AnggotaMembership extends Command
 
         fLogs('Layanan membership up-todate', 's');
         return 0;
+    }
+
+    public function resendWA($user_id)
+    {
+        $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
+        $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $user_id)->first();
+                KirimNotifPerpanjangan::dispatch($user, $paymentDetail->payment_link_id)->delay(now()->addSeconds(5));
     }
 }

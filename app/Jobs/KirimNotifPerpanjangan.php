@@ -44,18 +44,24 @@ class KirimNotifPerpanjangan implements ShouldQueue
     public function handle()
     {
 
-        $message = "Halo {name}\nPemberitahuan, Layanan Membership di IWPI.info *Ikatan Wajib Pajak Indonesia* telah berakhir pada *{var1}*,Berikut kami sertakan link pembayaran untuk perpanjangan Membership selama 1 tahun ke depan.\n\nLink Pembayaran: *{var2}*\nlink diatas berlaku hingga 24jam dimulai saat pesan ini dikirim. \nJika pembayaran tidak dilakukan, anda akan dikeluarkan dari GRUP serta DIHAPUS dari keanggotaan Ikatan Wajib Pajak Indonesia dalam 2x24jam, \n\nSalam Hormat.\nIkatan Wajib Pajak Indonesia";
-        $response = Http::withHeaders([
-            'Authorization' => $this->auth,
-        ])
-        ->asForm()->post($this->url.'/send', [
-                'target' => $this->target,
-                'message' => $message,
-                'delay' => '5'
-        ]);
+        try {
 
-        if( $response->failed() ){
-            Log::error('fonnte error');
+            $message = "Halo {name}\nPemberitahuan, Layanan Membership di IWPI.info *Ikatan Wajib Pajak Indonesia* telah berakhir pada *{var1}*,Berikut kami sertakan link pembayaran untuk perpanjangan Membership selama 1 tahun ke depan.\n\nLink Pembayaran: *{var2}*\nlink diatas berlaku hingga 24jam dimulai saat pesan ini dikirim. \nJika pembayaran tidak dilakukan, anda akan dikeluarkan dari GRUP serta DIHAPUS dari keanggotaan Ikatan Wajib Pajak Indonesia dalam 2x24jam, \n\nSalam Hormat.\nIkatan Wajib Pajak Indonesia";
+            $response = Http::withHeaders([
+                'Authorization' => $this->auth,
+            ])
+            ->asForm()->post($this->url.'/send', [
+                    'target' => $this->target,
+                    'message' => $message,
+                    'delay' => '5'
+            ]);
+
+            if( $response->failed() ){
+                Log::error('fonnte error');
+            }
+
+        } catch (\Throwable $th) {
+            throw $th;
         }
 
         return;
