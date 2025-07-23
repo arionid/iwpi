@@ -48,17 +48,20 @@ class AnggotaMembership extends Command
      */
     public function handle()
     {
+           if($this->option('resend')){
+                fLogs('Resend whatsapp to member', 'i');
+                $this->resendWA();
+                return;
+            }
 
         $today = Carbon::now()->format('Y-m-d');
         $anggotaIwpi =AnggotaIWPI::where('status', '!=', 'Menunggu Pembayaran')->whereDate('tgl_akhir', '<=', $today)->get();
 
-        foreach ($anggotaIwpi as $item) {
 
-            if($this->option('resend')){
-                fLogs('Resend whatsapp to '.$item->nomor_anggota, 'i');
-                $this->resendWA($item->pendaftaran_id);
-                continue;
-            }
+
+
+
+        foreach ($anggotaIwpi as $item) {
 
             // MOVE DATA TO HISTORY DATA
             $checking = HistoryMembership::where([
@@ -124,10 +127,16 @@ class AnggotaMembership extends Command
         return 0;
     }
 
-    public function resendWA($user_id)
+    public function resendWA($user_id = false)
     {
-        $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
-        $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $user_id)->first();
-                KirimNotifPerpanjangan::dispatch($user, $paymentDetail->payment_link_id)->delay(now()->addSeconds(5));
+        // $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
+        $paymentDetail = PaymentDetail::whereDate('created_at', Carbon::today())->where('status', 'pending')->get();
+        foreach ($paymentDetail as $item) {
+
+            fLogs('Resend order-id: '.$item->order_id, 'i');
+            $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $item->pendaftaran_id)->first();
+                KirimNotifPerpanjangan::dispatch($user, $item->payment_link_id)->delay(now()->addSeconds(5));
+        }
+
     }
 }
