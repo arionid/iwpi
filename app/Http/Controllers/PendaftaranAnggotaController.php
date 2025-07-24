@@ -282,7 +282,7 @@ class PendaftaranAnggotaController extends Controller
             $paymentDetail->order_id = $midtrans->order_id;
             $paymentDetail->payment_link_id = $midtrans->payment_url;
             $paymentDetail->status = 'pending';
-            $paymentDetail->expired_at = Carbon::now()->addDay();
+            $paymentDetail->expired_at = Carbon::now()->addDay(3);
             $paymentDetail->save();
         } catch (\Throwable $th) {
             throw $th;

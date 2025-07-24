@@ -109,7 +109,7 @@ class AnggotaMembership extends Command
                 $paymentDetail->pendaftaran_id = $item->pendaftaran_id;
                 $paymentDetail->order_id = $midtrans->order_id;
                 $paymentDetail->payment_link_id = $midtrans->payment_url;
-                $paymentDetail->expired_at = Carbon::now()->addHours(24);
+                $paymentDetail->expired_at = Carbon::now()->addDay(3);
                 $paymentDetail->save();
 
                 // SEND NOTIF EMAIL /WHATSAPP

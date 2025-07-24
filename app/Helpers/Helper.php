@@ -72,7 +72,7 @@ if( !function_exists("fNoKTA"))
 if(! function_exists('fUrlGenerator')){
     function fUrlGenerator($user = '0')
     {
-        return "iwpi-".bin2hex(random_bytes(5)).time().'ll62816554176Y'.$user;
+        return "iwpi-".bin2hex(random_bytes(5)).time().'Y'.$user;
     }
 }
 if(! function_exists('fWaNumber')){

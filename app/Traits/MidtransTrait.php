@@ -36,7 +36,7 @@ trait MidtransTrait
         "usage_limit" => 5,
         "expiry" => [
                     // "start_time" => Carbon::now()->addDay()->format('YYYY-MM-DD HH:mm:ss ZZ'),
-                    "duration" => 1,
+                    "duration" => 3,
                     "unit" => "days"
                 ],
         "item_details" => [

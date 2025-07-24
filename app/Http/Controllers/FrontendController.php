@@ -231,7 +231,7 @@ class FrontendController extends Controller
             $paymentDetail->pendaftaran_id = $data->id;
             $paymentDetail->order_id = $midtrans->order_id;
             $paymentDetail->payment_link_id = $midtrans->payment_url;
-            $paymentDetail->expired_at = Carbon::now()->addDay();
+            $paymentDetail->expired_at = Carbon::now()->addDay(3);
             $paymentDetail->save();
 
             /* $notifyParam=[
