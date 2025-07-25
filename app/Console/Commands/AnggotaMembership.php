@@ -48,18 +48,14 @@ class AnggotaMembership extends Command
      */
     public function handle()
     {
-           if($this->option('resend')){
-                fLogs('Resend whatsapp to member', 'i');
-                $this->resendWA();
-                return;
-            }
+        if($this->option('resend')){
+            fLogs('Resend whatsapp to member', 'i');
+            $this->resendWA();
+            return;
+        }
 
         $today = Carbon::now()->format('Y-m-d');
-        $anggotaIwpi =AnggotaIWPI::where('status', '!=', 'Menunggu Pembayaran')->whereDate('tgl_akhir', '<=', $today)->get();
-
-
-
-
+        $anggotaIwpi =AnggotaIWPI::where('status', '!=', 'Menunggu Pembayaran')->whereDate('tgl_akhir', $today)->get();
 
         foreach ($anggotaIwpi as $item) {
 
@@ -118,7 +114,7 @@ class AnggotaMembership extends Command
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollback();
-                throw $th;
+                // throw $th;
                 Log::error($th->getMessage());
             }
         }
