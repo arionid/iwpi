@@ -304,7 +304,8 @@ class PendaftaranAnggotaController extends Controller
             4 => 'phone',
             5 => 'provinsi_nama',
             6 => 'status',
-            7 => 'created_at',
+            7 => 'pembayaran',
+            8 => 'created_at',
         ];
 
         $db = PendaftaranAnggota::select('pendaftaran_anggota.*', 'anggota_iwpi.layanan', 'provinsi.nama as provinsi_nama', 'anggota_iwpi.status as status_pembayaran')
@@ -357,7 +358,7 @@ class PendaftaranAnggotaController extends Controller
 
                 if($item->status_pembayaran == 'Menunggu Validasi') {
                     $status  = '<span class="badge badge-light-danger">Menunggu Validasi Pembayaran</span>';
-                }elseif($item->status == 'Waiting') {
+                }elseif($item->status == 'Waiting' ) {
                     $status  = '<span class="badge badge-light-info">Menunggu Pembayaran</span>';
                 }else{
                     $status = ''.fUserStatus($item->status).'';
@@ -371,6 +372,7 @@ class PendaftaranAnggotaController extends Controller
                 $nestedData['provinsi_nama'] = $item->provinsi_nama;
 
                 $nestedData['status'] = $status;
+                $nestedData['status_pembayaran'] = $item->status_pembayaran;
                 $nestedData['date_active'] = Carbon::parse($item->date_active)->format('Y/m/d');
                 $nestedData['action'] = '<ul class="action"><li class="fw-bold me-2 edit"><a href="'.route('register-anggota.edit', $item->id).'" data-bs-original-title="" title=""><i
 class="icon-pencil"></i></a></li><li><a href="'.route('register-anggota.show', $item->id).'" data-bs-original-title="" title="Lihat Data"><i

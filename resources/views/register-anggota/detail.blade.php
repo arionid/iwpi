@@ -195,12 +195,12 @@
                     </div>
                 @endif
 
-                @if ($user->status == 'Waiting' && (isset($user->payment_detail) && $user->payment_detail->status != 'payment_detail'))
-                    <div class="card">
-                        <div class="card-header bg-info">
-                            <h4>Midtrans Payment</h4>
-                        </div>
-                        <div class="card-body">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4>Midtrans Payment</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (isset($user->payment_detail) && $user->payment_detail->status != 'payment_detail')
                             <div class="collection-filter-block">
                                 <ul class="pro-services ">
                                     <li>
@@ -245,15 +245,24 @@
                                 </ul>
                             </div>
                             <div class="m-t-15 btn-group">
-                                @if (in_array($user->payment_detail->status, ['deny', 'expired', 'cancel']) || empty($user->payment_detail->status) || $user->status == 'Link Pembayaran Expired')
+                                @if (in_array($user->payment_detail->status, ['deny', 'expired', 'cancel', 'pending']) && $user->payment_detail->expired_at < \Carbon\Carbon::now() && $user->status != 'Approve')
                                     <a class="btn btn-block btn-info" href="javascript:void();" onclick="newrequest({{ $user->payment_detail->id }})">
-                                        <i class="fa fa-check-square me-1"></i>Request Link Pembayaran
+                                        <i class="fa fa-check-square me-1"></i>Request Link Pembayaran Baru
                                     </a>
                                 @endif
                             </div>
-                        </div>
+                        @else
+                            <div class="m-t-15 btn-group">
+                                @if (!$user->payment_detail && $user->status != 'Approve')
+                                    <a class="btn btn-block btn-info" href="javascript:void();" onclick="newrequest()">
+                                        <i class="fa fa-check-square me-1"></i>Request Link Pembayaran Baru
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
                     </div>
-                @endif
+                </div>
+
             </div>
             <div class="col-sm-9">
                 <div class="card">

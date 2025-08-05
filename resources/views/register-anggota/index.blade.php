@@ -34,7 +34,7 @@
                                         <th>Layanan</th>
                                         <th>No. HP</th>
                                         <th>Provinsi</th>
-                                        <th>Status</th>
+                                        <th>Status Anggota</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
