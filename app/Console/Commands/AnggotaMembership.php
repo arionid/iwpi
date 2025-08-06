@@ -22,7 +22,7 @@ class AnggotaMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:update  {--resend=}';
+    protected $signature = 'membership:update {--resend=}';
 
     /**
      * The console command description.
@@ -55,9 +55,13 @@ class AnggotaMembership extends Command
         }
 
         $today = Carbon::now()->format('Y-m-d');
-        $anggotaIwpi =AnggotaIWPI::where('status', '!=', 'Menunggu Pembayaran')->whereDate('tgl_akhir', $today)->get();
+        $anggotaIwpi =AnggotaIWPI::whereDate('tgl_akhir','<=', $today)
+        ->where([['status','!=','Menunggu Pembayaran'], ['keterangan', '!=','Menunggu Pembayaran Perpanjangan Biaya Membership']])
+        ->get();
 
         foreach ($anggotaIwpi as $item) {
+            fLogs('member '.$item->pendaftaran_id, 'e');
+            continue ;
 
             // MOVE DATA TO HISTORY DATA
             $checking = HistoryMembership::where([
@@ -95,6 +99,7 @@ class AnggotaMembership extends Command
                     'updated_at' => Carbon::now()
                 ]);
 
+                /*
                 // hapus data payment_detail yang lama
                 PaymentDetail::where('pendaftaran_id', $item->pendaftaran_id)->delete();
 
@@ -110,7 +115,7 @@ class AnggotaMembership extends Command
 
                 // SEND NOTIF EMAIL /WHATSAPP
                 $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $item->pendaftaran_id)->first();
-                KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->delay(now()->addSeconds(5));
+                KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->delay(now()->addSeconds(5)); */
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollback();

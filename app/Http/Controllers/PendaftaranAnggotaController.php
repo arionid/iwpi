@@ -313,11 +313,11 @@ class PendaftaranAnggotaController extends Controller
                 ->leftjoin('anggota_iwpi', 'pendaftaran_anggota.id', 'anggota_iwpi.pendaftaran_id');
 
         if($request->category == 'overdue'){
-            $db =$db->where(function($q) {
+            $db=$db->where(function($q) {
                     $q->where('pendaftaran_anggota.date_active', '<', Carbon::now())
                     ->orWhere('pendaftaran_anggota.status', 'Overdue');
                 });
-                // ->where([['pendaftaran_anggota.date_active', '<', Carbon::now()], ['pendaftaran_anggota.status', 'Overdue']]);
+                // $db->where([['pendaftaran_anggota.date_active', '<', Carbon::now()], ['pendaftaran_anggota.status', 'Overdue']]);
         }
 
         $totalData = $db->count();
