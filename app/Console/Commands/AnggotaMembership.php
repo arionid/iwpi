@@ -99,7 +99,7 @@ class AnggotaMembership extends Command
                     'updated_at' => Carbon::now()
                 ]);
 
-                /*
+
                 // hapus data payment_detail yang lama
                 PaymentDetail::where('pendaftaran_id', $item->pendaftaran_id)->delete();
 
@@ -115,7 +115,7 @@ class AnggotaMembership extends Command
 
                 // SEND NOTIF EMAIL /WHATSAPP
                 $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $item->pendaftaran_id)->first();
-                KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->delay(now()->addSeconds(5)); */
+                KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->delay(now()->addSeconds(5));
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollback();
