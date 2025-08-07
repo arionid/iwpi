@@ -60,8 +60,6 @@ class AnggotaMembership extends Command
         ->get();
 
         foreach ($anggotaIwpi as $item) {
-            fLogs('member '.$item->pendaftaran_id, 'e');
-            continue ;
 
             // MOVE DATA TO HISTORY DATA
             $checking = HistoryMembership::where([
