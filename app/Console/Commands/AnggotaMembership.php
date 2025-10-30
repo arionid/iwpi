@@ -135,7 +135,7 @@ class AnggotaMembership extends Command
     public function resendWA($user_id = false)
     {
         if($user_id) {
-            $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
+            $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->get();
         }else{
             $paymentDetail = PaymentDetail::whereDate('created_at', '>', Carbon::today()->subDays(2))->where('status', 'pending')->get();
         }

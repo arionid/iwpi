@@ -42,4 +42,7 @@ return [
     'link-online' =>  env('ONLINE_LINK', null),
     'midtrans_link' => env('MIDTRANS_LINK', null),
     'midtrans_server_key' => env('MIDTRANS_SERVER_KEY_ENCODE64', null),
+
+    'fonnte_key' => env('FONNTE_TOKEN', null),
+    'fonnte_url' => env('FONNTE_URL', null),
 ];
