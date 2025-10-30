@@ -21,6 +21,8 @@ class KirimNotifPerpanjangan implements ShouldQueue
      *
      * @return void
      */
+    protected $whatsapp_key;
+    protected $whatsapp_url;
     public $target;
     public $user;
 
@@ -28,7 +30,8 @@ class KirimNotifPerpanjangan implements ShouldQueue
 
     public function __construct($user, $payment_link)
     {
-
+        $this->whatsapp_key = config('nnd.fonnte_key');
+        $this->whatsapp_url = config('nnd.fonnte_url');
         $this->user = $user;
         $this->target = $user->phone.'|'.$user->fullname.'|'.Carbon::parse($user->date_active)->format('d/m/Y').'|'.$payment_link;
     }
@@ -45,9 +48,9 @@ class KirimNotifPerpanjangan implements ShouldQueue
 
             $message = "Halo {name}\nPemberitahuan, Layanan Membership di IWPI.info *Ikatan Wajib Pajak Indonesia* telah berakhir pada *{var1}*,Berikut kami sertakan link pembayaran untuk perpanjangan Membership selama 1 tahun ke depan.\n\nLink Pembayaran: *{var2}*\nlink diatas berlaku hingga 24jam dimulai saat pesan ini dikirim. \nJika pembayaran tidak dilakukan, anda akan dikeluarkan dari GRUP serta DIHAPUS dari keanggotaan Ikatan Wajib Pajak Indonesia dalam 2x24jam, \n\nSalam Hormat.\nIkatan Wajib Pajak Indonesia";
             $response = Http::withHeaders([
-                'Authorization' => config('nnd.fonnte_key'),
+                'Authorization' => $this->whatsapp_key,
             ])
-            ->asForm()->post( config('nnd.fonnte_url').'/send', [
+            ->asForm()->post( $this->whatsapp_url.'/send', [
                     'target' => $this->target,
                     'message' => $message,
                     'delay' => '5',
