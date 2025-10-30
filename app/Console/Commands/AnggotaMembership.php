@@ -162,7 +162,8 @@ class AnggotaMembership extends Command
                     sleep(5);
                 }
 
-                $midtrans = $this->createPaymentLinkApi($item->profile);
+                $user = PendaftaranAnggota::with(['detail'])->where('id', $item->pendaftaran_id)->first();
+                $midtrans = $this->createPaymentLinkApi($user);
                 PaymentDetail::where('id', $item->id)->update([
                     'order_id' => $midtrans->order_id,
                     'payment_link_id' => $midtrans->payment_url,
@@ -170,7 +171,6 @@ class AnggotaMembership extends Command
                     'updated_at' => Carbon::now()
                 ]);
 
-                $user = PendaftaranAnggota::with(['detail'])->where('id', $item->pendaftaran_id)->first();
                 KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->onQueue('default')->delay(now()->addSeconds(5));
 
             } catch (\Throwable $th) {
