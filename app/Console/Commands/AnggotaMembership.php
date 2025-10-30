@@ -154,7 +154,11 @@ class AnggotaMembership extends Command
     }
 
     public function forceResend(){
-        $paymentDetail = PaymentDetail::whereDate('expired_at', '>', '2025-10-01')->whereDate('expired_at', '<', Carbon::today())->where('status', 'pending')->get();
+        $paymentDetail = PaymentDetail::with('profile')
+        ->whereDate('expired_at', '>', '2025-10-01')
+        ->whereDate('expired_at', '<', Carbon::today())
+        ->whereDate('created_at', '<', Carbon::today())
+        ->where('status', 'pending')->get();
         foreach ($paymentDetail as $key => $item) {
             fLogs('Force resend order-id: '.$item->order_id, 'i');
             try {
@@ -162,8 +166,8 @@ class AnggotaMembership extends Command
                     sleep(5);
                 }
 
-                $user = PendaftaranAnggota::with(['detail'])->where('id', $item->pendaftaran_id)->first();
-                $midtrans = $this->createPaymentLinkApi($user);
+                $anggota = AnggotaIWPI::where('pendaftaran_id', $item->pendaftaran_id)->first();
+                $midtrans = $this->createPaymentLinkApi($anggota);
                 PaymentDetail::where('id', $item->id)->update([
                     'order_id' => $midtrans->order_id,
                     'payment_link_id' => $midtrans->payment_url,
@@ -171,7 +175,7 @@ class AnggotaMembership extends Command
                     'updated_at' => Carbon::now()
                 ]);
 
-                KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->onQueue('default')->delay(now()->addSeconds(5));
+                KirimNotifPerpanjangan::dispatch($item->profile, $midtrans->payment_url)->onQueue('default')->delay(now()->addSeconds(5));
 
             } catch (\Throwable $th) {
                 throw $th;
