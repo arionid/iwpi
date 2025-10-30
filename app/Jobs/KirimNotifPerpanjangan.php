@@ -26,6 +26,8 @@ class KirimNotifPerpanjangan implements ShouldQueue
     public $target;
     public $user;
 
+    public $tries = 3;
+
     public function __construct($user, $payment_link)
     {
         $this->auth = env('FONNTE_TOKEN', 'nndproject');
@@ -53,7 +55,8 @@ class KirimNotifPerpanjangan implements ShouldQueue
             ->asForm()->post($this->url.'/send', [
                     'target' => $this->target,
                     'message' => $message,
-                    'delay' => '5'
+                    'delay' => '5',
+                    'countryCode' => '62',
             ]);
 
             if( $response->failed() ){
@@ -61,6 +64,7 @@ class KirimNotifPerpanjangan implements ShouldQueue
             }
 
         } catch (\Throwable $th) {
+            Log::error('fonnte error'. $th->getMessage());
             throw $th;
         }
 

@@ -22,7 +22,7 @@ class AnggotaMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:update {--resend=}';
+    protected $signature = 'membership:update {--resend=} {--id=} {--force=}';
 
     /**
      * The console command description.
@@ -48,9 +48,15 @@ class AnggotaMembership extends Command
      */
     public function handle()
     {
+        if($this->option('force')){
+            fLogs('Force resend whatsapp to member', 'i');
+            $this->forceResend();
+            return;
+        }
+
         if($this->option('resend')){
             fLogs('Resend whatsapp to member', 'i');
-            $this->resendWA();
+            $this->resendWA($this->option('id'));
             return;
         }
 
@@ -128,14 +134,49 @@ class AnggotaMembership extends Command
 
     public function resendWA($user_id = false)
     {
-        // $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
-        $paymentDetail = PaymentDetail::whereDate('created_at', Carbon::today())->where('status', 'pending')->get();
+        if($user_id) {
+            $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->first();
+        }else{
+            $paymentDetail = PaymentDetail::whereDate('created_at', '>', Carbon::today()->subDays(2))->where('status', 'pending')->get();
+        }
+
         foreach ($paymentDetail as $item) {
 
             fLogs('Resend order-id: '.$item->order_id, 'i');
+            try {
             $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $item->pendaftaran_id)->first();
-                KirimNotifPerpanjangan::dispatch($user, $item->payment_link_id)->delay(now()->addSeconds(5));
-        }
 
+            KirimNotifPerpanjangan::dispatch($user, $item->payment_link_id)->onQueue('default')->delay(now()->addSeconds(5));
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        }
     }
+
+    public function forceResend(){
+        $paymentDetail = PaymentDetail::with('profile')->whereDate('expired_at', '<', Carbon::today())->where('status', 'pending')->get();
+        foreach ($paymentDetail as $key => $item) {
+            fLogs('Force resend order-id: '.$item->order_id, 'i');
+            try {
+                if($key % 10 == 0){
+                    sleep(5);
+                }
+
+                $midtrans = $this->createPaymentLinkApi($item->profile);
+                PaymentDetail::where('id', $item->id)->update([
+                    'order_id' => $midtrans->order_id,
+                    'payment_link_id' => $midtrans->payment_url,
+                    'expired_at' => Carbon::now()->addDay(3),
+                    'updated_at' => Carbon::now()
+                ]);
+
+                KirimNotifPerpanjangan::dispatch($item->profile, '21313')->onQueue('default')->delay(now()->addSeconds(5));
+
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        }
+    }
+
+
 }
