@@ -22,7 +22,7 @@ class AnggotaMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:update {--resend=} {--id=} {--force=}';
+    protected $signature = 'membership:update {--resend=} {--id=} {--force=} {--renew_id=}';
 
     /**
      * The console command description.
@@ -60,8 +60,13 @@ class AnggotaMembership extends Command
             return;
         }
 
+        if($this->option('renew_id')){
+            $this->renewByID($this->option('renew_id'));
+            return;
+        }
+
         $today = Carbon::now()->format('Y-m-d');
-        $anggotaIwpi =AnggotaIWPI::whereDate('tgl_akhir','<=', $today)
+        $anggotaIwpi =AnggotaIWPI::with('profile')->whereDate('tgl_akhir','<=', $today)
         ->where([['status','!=','Menunggu Pembayaran'], ['keterangan', '!=','Menunggu Pembayaran Perpanjangan Biaya Membership']])
         ->get();
 
@@ -76,7 +81,7 @@ class AnggotaMembership extends Command
             ])->first();
 
             if(!$checking){
-                fLogs('Layanan '.$item->layanan.' Member '.$item->nomor_anggota, 'e');
+                fLogs('Layanan '.$item->layanan.' Member '.$item->profile->fullname, 'e');
                 $data = new HistoryMembership();
                 $data->anggota_id = $item->pendaftaran_id;
                 $data->tgl_mulai = $item->tgl_mulai;
@@ -126,6 +131,9 @@ class AnggotaMembership extends Command
                 // throw $th;
                 Log::error($th->getMessage());
             }
+
+            fLogs('Proses membership expired untuk member id '.$item->pendaftaran_id, 'i');
+            sleep(5);
         }
 
         fLogs('Layanan membership up-todate', 's');
@@ -181,6 +189,37 @@ class AnggotaMembership extends Command
                 throw $th;
             }
         }
+    }
+
+    public function renewByID($id) {
+
+        $anggota =AnggotaIWPI::with('profile')
+        ->whereDate('tgl_akhir','<=', Carbon::now()->format('Y-m-d'))
+        ->where([['pendaftaran_id', $id],['status','Menunggu Pembayaran'], ['keterangan','Menunggu Pembayaran Perpanjangan Biaya Membership']])
+        ->first();
+
+        if(!$anggota){
+            return fLogs('Data member '.$id.' tidak ditemukan', 'e');
+        }
+
+        $paymentDetail =  PaymentDetail::where('pendaftaran_id', $anggota->pendaftaran_id)->first();
+
+        if($paymentDetail->expired_at >= Carbon::now()){
+            return fLogs('Data payment masih aktif sampai '.$paymentDetail->expired_at, 'e');
+        }else{
+            fLogs('Buat Link Payment Baru member id '.$anggota->pendaftaran_id, 'i');
+            $midtrans = $this->createPaymentLinkApi($anggota);
+            $paymentDetail->order_id = $midtrans->order_id;
+            $paymentDetail->payment_link_id = $midtrans->payment_url;
+            $paymentDetail->expired_at = Carbon::now()->addDay(3);
+            $paymentDetail->save();
+        }
+
+        fLogs('Proses resend whatsapp untuk member id '.$anggota->pendaftaran_id, 's');
+        // SEND NOTIF EMAIL /WHATSAPP
+        $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $anggota->pendaftaran_id)->first();
+        KirimNotifPerpanjangan::dispatch($user, $midtrans->payment_url)->delay(now()->addSeconds(5));
+
     }
 
 
