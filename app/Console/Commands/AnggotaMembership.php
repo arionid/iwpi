@@ -22,7 +22,7 @@ class AnggotaMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:update {--resend=} {--id=} {--force=} {--renew_id=}';
+    protected $signature = 'membership:update {--resend=} {--force=} {--renew_id=}';
 
     /**
      * The console command description.
@@ -56,7 +56,7 @@ class AnggotaMembership extends Command
 
         if($this->option('resend')){
             fLogs('Resend whatsapp to member', 'i');
-            $this->resendWA($this->option('id'));
+            $this->resendWA($this->option('resend'));
             return;
         }
 
@@ -140,23 +140,26 @@ class AnggotaMembership extends Command
         return 0;
     }
 
-    public function resendWA($user_id = false)
+    public function resendWA($user_id)
     {
-        if($user_id) {
-            $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->get();
-        }else{
-            $paymentDetail = PaymentDetail::whereDate('created_at', '>', Carbon::today()->subDays(2))->where('status', 'pending')->get();
-        }
+        $paymentDetail = PaymentDetail::where([['pendaftaran_id', $user_id], ['status', 'pending']])->orderBy('id', 'DESC')->get();
 
         foreach ($paymentDetail as $item) {
+            if($item->expired_at < Carbon::today()) {
+                fLogs('Data payment sudah expired di'.$item->expired_at, 'e');
+                continue;
+            }
 
-            fLogs('Resend order-id: '.$item->order_id, 'i');
             try {
             $user = PendaftaranAnggota::with(['detail','payment_detail'])->where('id', $item->pendaftaran_id)->first();
-
             KirimNotifPerpanjangan::dispatch($user, $item->payment_link_id)->onQueue('default')->delay(now()->addSeconds(5));
+
+            fLogs('Resend order-id: '.$item->order_id, 'i');
             } catch (\Throwable $th) {
+
+                fLogs('Gagal Mengirim Pesan Ulang', 'e');
                 throw $th;
+
             }
         }
     }
