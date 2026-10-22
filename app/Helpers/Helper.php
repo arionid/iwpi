@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 
 if( !function_exists("replaceLastVowel"))
@@ -114,12 +115,10 @@ if( !function_exists("saveAndResizeImage") )
         $path       =   public_path( 'uploads/' . $str_path );
 
 
-        // Create new Canvas and insert the image
-        $img        =   Image::make( $image )->resize( $width, $height, function($constraint)
-                        {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        });
+        // Perkecil sesuai batas lebar/tinggi tanpa memperbesar gambar
+        $img        =   (new ImageManager(new Driver()))
+                            ->read( $image )
+                            ->scaleDown( $width, $height );
 
         $img->save( $path );
 
