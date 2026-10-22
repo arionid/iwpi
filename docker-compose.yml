@@ -1,64 +1,25 @@
-x-app: &app
-  build:
-    context: .
-    dockerfile: Dockerfile
-  image: iwpi-app:latest
-  env_file: .env
-  environment: &app-env
-    DB_HOST: db
-    DB_PORT: 3306
-    DB_DATABASE: ${DB_DATABASE:-iwpi}
-    DB_USERNAME: ${DB_USERNAME:-iwpi}
-    DB_PASSWORD: ${DB_PASSWORD:-secret}
-  volumes: &app-volumes
-    - ./storage:/var/www/html/storage
-  restart: unless-stopped
-
+name: "partaix-id"
 services:
   app:
-    <<: *app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nndproject/iwpi.info
+    container_name: iwpi-info
+    restart: always
+    env_file:
+      - .env-docker
     ports:
-      - "${APP_PORT:-8080}:80"
-    environment:
-      <<: *app-env
-      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-false}
-    depends_on:
-      db:
-        condition: service_healthy
-
-  scheduler:
-    <<: *app
-    command: ["php", "artisan", "schedule:work"]
-    depends_on:
-      db:
-        condition: service_healthy
-
-  queue:
-    <<: *app
-    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3"]
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: mariadb:10.11
-    environment:
-      MARIADB_DATABASE: ${DB_DATABASE:-iwpi}
-      MARIADB_USER: ${DB_USERNAME:-iwpi}
-      MARIADB_PASSWORD: ${DB_PASSWORD:-secret}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
-      TZ: Asia/Jakarta
-    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--max_allowed_packet=48M"]
-    ports:
-      - "${DB_FORWARD_PORT:-3307}:3306"
+      - "8080:80"
+    # Source & vendor sudah ada di dalam image; hanya data yang perlu persisten.
+    # public/storage dan public/media adalah symlink ke storage/app/public (dibuat entrypoint).
     volumes:
-      - dbdata:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
+      - ./storage:/var/www/html/storage
+    networks:
+      - inet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
-volumes:
-  dbdata:
+networks:
+  inet:
+    driver: bridge
