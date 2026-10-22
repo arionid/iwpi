@@ -54,7 +54,7 @@ class FrontendController extends Controller
     }
 
     public function news() {
-        $recentBlog = Cache::remember('recent-blog', now()->addHours(2), function () {
+        $recentBlog = Cache::remember(Blogs::CACHE_RECENT, now()->addHours(2), function () {
             return Blogs::with(["category" => function($query){
                 $query->select('name','id');
                 }])
@@ -84,7 +84,7 @@ class FrontendController extends Controller
     }
 
     public function newsDetail($slug) {
-        $blog = Cache::remember('detail-new-'.$slug, now()->addDay(), function () use ($slug){
+        $blog = Cache::remember(Blogs::detailCacheKey($slug), now()->addDay(), function () use ($slug){
             return Blogs::with(["category" => function($query){
                 $query->select('name','id');
                 }])
@@ -96,13 +96,14 @@ class FrontendController extends Controller
         });
 
         if(empty($blog)){ \abort(404); }
-        $recentBlog = Cache::remember('recent-blog', now()->addMinutes(30), function () {
+        $recentBlog = Cache::remember(Blogs::CACHE_RECENT, now()->addMinutes(30), function () {
             return Blogs::with(["category" => function($query){
                 $query->select('name','id');
                 }])
             ->with(["author" => function($query){
                 $query->select('name','id');
                 }])
+            ->where('status', 1)
             ->latest()->limit(5)->get();
         });
 

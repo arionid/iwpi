@@ -39,4 +39,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        // Nama penulis ikut tersimpan di cache blog
+        static::updated(function (User $user) {
+            if ($user->wasChanged('name')) {
+                Blogs::forgetCache(
+                    Blogs::withTrashed()->where('author_id', $user->id)->pluck('slug')->all()
+                );
+            }
+        });
+    }
 }
