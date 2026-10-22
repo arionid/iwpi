@@ -1,0 +1,4 @@
+SELECT a.id, b.layanan,b.nomor_anggota, a.email, a.fullname, a.npwp, a.perusahaan, a.phone, a.city_born, a.`status`, b.tgl_mulai AS tgl_member_mulai, a.date_active, c.tgl_akhir as perpanjangan
+FROM pendaftaran_anggota a
+LEFT JOIN anggota_iwpi b ON a.id = b.pendaftaran_id
+LEFT JOIN history_membership c ON a.id = c.anggota_id

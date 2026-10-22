@@ -166,6 +166,7 @@ class BlogController extends Controller
             $blog->categories_id   = $validated['categories'];
             $blog->published_at = $request->published_at ?? Carbon::now();
             $blog->author_id = Auth::id();
+            $blog->deleted_at = null;
 
             $blog->save();
         } catch (\Throwable $th) {
@@ -189,7 +190,7 @@ class BlogController extends Controller
         } catch (\Throwable $th) {
                 //throw $th;
         }
-        $data->delete();
+        $data->forceDelete();
 
         return redirect()->route('blog.index')->with('success',"Artikel <b>".$data->title."</b> berhasil dihapus dari database.");
 
