@@ -144,9 +144,7 @@ class FrontendController extends Controller
             'file_ktp' => 'required|mimes:jpg,jpeg,png',
             'file_npwp' => 'required|mimes:jpg,jpeg,png',
             'agreement_1' => 'required',
-            // 'g-recaptcha-response' => 'recaptcha',
-            // OR since v4.0.0
-            // recaptchaFieldName() => recaptchaRuleName()
+            'captcha' => 'required|captcha',
         ],[
             'throttle' => 'Terlalu banyak mengirimkan form pendaftaran. Coba lagi dalam waktu :seconds detik.',
             'npwp.required' => 'Nomor NPWP Harus diisi',
@@ -168,7 +166,8 @@ class FrontendController extends Controller
             'file_ktp.required' => 'Data Foto KTP tidak Di Ijinkan Kosong',
             'file_npwp.required' => 'Data Foto NPWP tidak Di Ijinkan Kosong',
             'agreement_1.required' => 'Data Persyaratan 1 harus di setujui terlebih dahulu.',
-            'agreement_2.required' => 'Data Persyaratan 2 harus di setujui terlebih dahulu.'
+            'agreement_2.required' => 'Data Persyaratan 2 harus di setujui terlebih dahulu.',
+            'captcha.*' => 'Captcha yang di masukkan Tidak Sesuai!'
         ]);
 
         if( !$validated )
@@ -469,6 +468,7 @@ class FrontendController extends Controller
             'regency_id' => 'required',
             'kronologi' => 'required',
             'file.*' => 'required|file|mimes:jpg,png,pdf,doc,docx|max:20048',
+            'captcha' => 'required|captcha',
         ],[
             'throttle' => 'Terlalu banyak percobaan gagal, this IP is Susspended from server.',
             'nama_pelapor.required' => 'Nama Kontak Pelapor Harus diisi',

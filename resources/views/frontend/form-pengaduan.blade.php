@@ -18,9 +18,6 @@
 <meta property="twitter:title" content="Form Pengaduan Fiskus/Praktisi Pajak - Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:description" content="Form Pengaduan Fiskus/Praktisi Pajak - Ikatan Wajib Pajak Indonesia" />
 <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" /><meta name="csrf-token" content="{{ csrf_token() }}">
-{!! htmlScriptTagJsApi([
-'action' => 'homepage',
-]) !!}
 @endsection
 @section('header')
 @include('frontend.layouts.header')
@@ -315,16 +312,30 @@
                                     @if ($errors->has('agreement_1'))
                                     <div class="invalid-feedback">{{ $errors->first('agreement_1') }}</div>
                                     @endif
-                                    {!! htmlFormSnippet([
-                                    "theme" => "light",
-                                    "size" => "normal",
-                                    "tabindex" => "3",
-                                    "callback" => "enableBtn",
-                                    ]) !!}
+                                    <div class="row pt-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group captcha">
+                                                <span>{!! captcha_img('flat') !!}</span>
+                                                <button type="button" class="btn btn-primary btn-refresh"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" name="captcha" placeholder="Isi Jawaban Math disini"
+                                                    class="form-control input-lg" required="" aria-required="true" autocomplete="off">
+                                                @if ($errors->has('captcha'))
+                                                <span class="help-block text-danger">
+                                                    <strong>{{ $errors->first('captcha') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="contact-page__btn">
-                                <button class="thm-btn" type="submit"  disabled="disabled" id="btn-submit">
+                                <button class="thm-btn" type="submit" id="btn-submit">
                                     <span class="txt">
                                         Kirim Pengaduan <i class="fas fa-arrow-right"></i>
                                     </span>
@@ -360,10 +371,15 @@
 $(document).ready(function() {
     $('.select2').select2();
 });
-    function enableBtn() {
-          const submitButton = document.getElementById("btn-submit");
-          submitButton.removeAttribute("disabled");
-        }
+    $(".btn-refresh").click(function(){
+        $.ajax({
+            type:'GET',
+            url:'{{ route('refresh_captcha') }}',
+            success:function(data){
+                $(".captcha span").html(data.captcha);
+            }
+        });
+    });
 
         function removeOptions(selectbox, judul) { var i; for(i = selectbox.options.length - 1 ; i >= 0 ; i--) { selectbox.remove(i);}
     option = document.createElement( 'option' ); option.text = judul; option.disabled = true; selectbox.add( option ); }

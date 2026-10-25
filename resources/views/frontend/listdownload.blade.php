@@ -19,9 +19,6 @@
     <meta property="twitter:description" content="Download Dokumen - Ikatan Wajib Pajak Indonesia" />
     <meta property="twitter:image" content="{{ asset('meta-seo.webp') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! htmlScriptTagJsApi([
-        'action' => 'homepage',
-    ]) !!}
 @endsection
 @section('header')
     @include('frontend.layouts.header')

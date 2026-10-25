@@ -50,6 +50,7 @@ class PendaftaranAnggotaKehormatanController extends Controller
             'file_npwp' => 'required|mimes:jpg,jpeg,png',
             'file_bukti_pekerjaan' => 'required|mimes:jpg,jpeg,png',
             'agreement_1' => 'required',
+            'captcha' => 'required|captcha',
         ],[
             'throttle' => 'Terlalu banyak mengirimkan form pendaftaran. Coba lagi dalam waktu :seconds detik.',
             'npwp.required' => 'Nomor NPWP Harus diisi',
@@ -73,7 +74,8 @@ class PendaftaranAnggotaKehormatanController extends Controller
             'file_npwp.required' => 'Data Foto NPWP tidak Di Ijinkan Kosong',
             'file_bukti_pekerjaan.required' => 'Data Bukti Dukung tidak Di Ijinkan Kosong',
             'agreement_1.required' => 'Data Persyaratan 1 harus di setujui terlebih dahulu.',
-            'agreement_2.required' => 'Data Persyaratan 2 harus di setujui terlebih dahulu.'
+            'agreement_2.required' => 'Data Persyaratan 2 harus di setujui terlebih dahulu.',
+            'captcha.*' => 'Captcha yang di masukkan Tidak Sesuai!'
         ]);
 
         if( !$validated )
