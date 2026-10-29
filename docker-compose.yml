@@ -1,25 +1,21 @@
-name: "partaix-id"
+name: "iwpi-info"
 services:
-  app:
+  webserve:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nndproject/iwpi.info
-    container_name: iwpi-info
+    image: nndproject/iwipi.info
+    container_name: iwpi.info_main
     restart: always
     env_file:
       - .env-docker
-    ports:
-      - "8080:80"
     # Source & vendor sudah ada di dalam image; hanya data yang perlu persisten.
     # public/storage dan public/media adalah symlink ke storage/app/public (dibuat entrypoint).
     volumes:
       - ./storage:/var/www/html/storage
     networks:
-      - inet
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
+        nginx-proxy-network:
+            ipv4_address: 10.10.0.2
 networks:
-  inet:
-    driver: bridge
+    nginx-proxy-network:
+        external: true
